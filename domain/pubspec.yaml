@@ -1,0 +1,9 @@
+name: domain
+description: "Business rules for After Us: entities, repository contracts and use cases. Pure Dart, no Flutter."
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.5
+
+resolution: workspace

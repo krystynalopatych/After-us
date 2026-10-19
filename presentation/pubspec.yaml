@@ -1,0 +1,20 @@
+name: presentation
+description: "Presentation layer for After Us: app page, pages, widgets and BLoCs. Depends only on domain."
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.5
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  domain: any
+  flutter_bloc: ^9.1.1
+  equatable: ^3.0.0
+  go_router: ^18.1.0
+
+flutter:
+  uses-material-design: true

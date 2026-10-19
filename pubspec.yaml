@@ -1,0 +1,42 @@
+name: after_us_game
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.5
+
+workspace:
+  - domain
+  - data
+  - presentation
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  domain: any
+  data: any
+  presentation: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  build_runner: ^2.16.2
+  flutter_gen_runner: ^5.15.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+flutter_gen:
+  output: presentation/lib/generated/assets/
+  line_length: 80

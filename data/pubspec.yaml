@@ -1,0 +1,12 @@
+name: data
+description: "Data layer for After Us: data sources and implementations of the domain repository contracts."
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.5
+
+resolution: workspace
+
+dependencies:
+  domain: any
