@@ -1,4 +1,4 @@
-import 'package:domain/repositories/character_repository.dart';
+import 'package:domain/character/repository/character_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'level_1_event.dart';

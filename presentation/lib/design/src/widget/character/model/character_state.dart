@@ -6,8 +6,8 @@ enum CharacterState {
   sad;
 
   AssetGenImage get image => switch (this) {
-    normal => Assets.images.characterNormal,
-    happy => Assets.images.characterHappy,
-    sad => Assets.images.characterSad,
+    normal => Assets.resources.assets.images.imgMainCharacter,
+    happy => Assets.resources.assets.images.imgMainCharacterHappy,
+    sad => Assets.resources.assets.images.imgMainCharacterSad,
   };
 }

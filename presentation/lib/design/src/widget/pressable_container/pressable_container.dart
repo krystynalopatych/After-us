@@ -11,11 +11,13 @@ final class PressableContainer extends StatelessWidget {
 
   final AssetGenImage image;
   final VoidCallback onTap;
+  final Color highlightColor;
 
   const PressableContainer({
     super.key,
     required this.image,
     required this.onTap,
+    this.highlightColor = Colors.white,
   });
 
   @override
@@ -37,7 +39,7 @@ final class PressableContainer extends StatelessWidget {
                 imageFilter: ImageFilter.blur(sigmaX: _glowBlurSigma, sigmaY: _glowBlurSigma),
                 child: image.image(
                   fit: .contain,
-                  color: Colors.white,
+                  color: highlightColor,
                   colorBlendMode: .srcIn,
                 ),
               ),

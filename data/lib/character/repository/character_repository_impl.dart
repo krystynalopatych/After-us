@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:domain/entities/character_mood.dart';
-import 'package:domain/repositories/character_repository.dart';
+import 'package:domain/character/model/character_mood.dart';
+import 'package:domain/character/repository/character_repository.dart';
 
 final class CharacterRepositoryImpl implements CharacterRepository {
   final _moodController = StreamController<CharacterMood>.broadcast();

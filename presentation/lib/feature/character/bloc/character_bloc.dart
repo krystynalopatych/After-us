@@ -1,5 +1,5 @@
-import 'package:domain/entities/character_mood.dart';
-import 'package:domain/repositories/character_repository.dart';
+import 'package:domain/character/model/character_mood.dart';
+import 'package:domain/character/repository/character_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/src/widget/character/model/character_state.dart';
 

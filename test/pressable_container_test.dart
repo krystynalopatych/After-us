@@ -14,7 +14,7 @@ void main() {
         home: SceneContainer(
           children: [
             BackgroundContainer(
-              image: Assets.images.background,
+              image: Assets.resources.assets.images.background,
               elements: [
                 BackgroundElement(
                   left: 960,
@@ -22,7 +22,7 @@ void main() {
                   width: 200,
                   height: 400,
                   child: PressableContainer(
-                    image: Assets.images.characterNormal,
+                    image: Assets.resources.assets.images.imgMainCharacter,
                     onTap: () => taps++,
                   ),
                 ),

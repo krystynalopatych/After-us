@@ -5,7 +5,7 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 extension BuildContextExtension on BuildContext {
   bool get isDarkMode => DesignSystemTheme.isDarkTheme(this);
 
-  $AssetsImagesGen get images => Assets.images;
+  $ResourcesAssetsImagesGen get images => Assets.resources.assets.images;
 
   (DesignSystemColors, DesignSystemTypography) get colorsTypography => (colors, typography);
 

@@ -1,4 +1,4 @@
-import 'package:domain/repositories/character_repository.dart';
+import 'package:domain/character/repository/character_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';

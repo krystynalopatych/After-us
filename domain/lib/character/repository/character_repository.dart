@@ -1,4 +1,4 @@
-import 'package:domain/entities/character_mood.dart';
+import 'package:domain/character/model/character_mood.dart';
 
 abstract interface class CharacterRepository {
   CharacterMood get mood;

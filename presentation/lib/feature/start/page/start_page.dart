@@ -1,4 +1,4 @@
-import 'package:domain/repositories/character_repository.dart';
+import 'package:domain/character/repository/character_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
@@ -7,10 +7,9 @@ import 'package:presentation/feature/start/bloc/start_bloc.dart';
 import 'package:presentation/flow/app_flow_router/app_route.dart';
 
 class StartPage extends StatelessWidget {
-  static const _buttonTop = 440.0;
-  static const _buttonWidth = 350.0;
-  static const _buttonHeight = 200.0;
-  static const _buttonLefts = [360.0, 810.0, 1260.0];
+  static const _buttonTop = 220.0;
+  static const _buttonSize = 300.0;
+  static const _buttonLefts = [410.0, 810.0, 1210.0];
 
   const StartPage({super.key});
 
@@ -18,9 +17,9 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final images = context.images;
     final levels = [
-      (images.level1Button, AppRoute.level1),
-      (images.level2Button, AppRoute.level2),
-      (images.level3Button, AppRoute.level3),
+      (images.imgButtonLevel1, AppRoute.level1),
+      (images.imgButtonLevel2, AppRoute.level2),
+      (images.imgButtonLevel3, AppRoute.level3),
     ];
 
     return BlocProvider(
@@ -33,8 +32,8 @@ class StartPage extends StatelessWidget {
             BackgroundElement(
               left: _buttonLefts[index],
               top: _buttonTop,
-              width: _buttonWidth,
-              height: _buttonHeight,
+              width: _buttonSize,
+              height: _buttonSize,
               child: PressableContainer(
                 image: image,
                 onTap: () => route.go(context),

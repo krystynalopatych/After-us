@@ -32,14 +32,14 @@ void main() {
 
     expect(find.byType(StartPage), findsOneWidget);
     expect(find.byType(PressableContainer), findsNWidgets(3));
-    expect(characterImage(Assets.images.characterNormal), findsOneWidget);
+    expect(characterImage(Assets.resources.assets.images.imgMainCharacter), findsOneWidget);
 
     await tester.tap(find.byType(PressableContainer).at(1));
     await tester.pumpAndSettle();
 
     expect(find.byType(Level2Page), findsOneWidget);
     expect(find.byType(StartPage), findsNothing);
-    expect(characterImage(Assets.images.characterSad), findsOneWidget);
+    expect(characterImage(Assets.resources.assets.images.imgMainCharacterSad), findsOneWidget);
   });
 
   testWidgets('Opening a level URL directly redirects to the start screen', (
