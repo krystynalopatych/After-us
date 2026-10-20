@@ -1,5 +1,5 @@
+import 'package:domain/location/model/game_location.dart';
 import 'package:domain/progress/model/game_level.dart';
-import 'package:domain/save/model/game_location.dart';
 
 final class GameSave {
   final GameLevel level;

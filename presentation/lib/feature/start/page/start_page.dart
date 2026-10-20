@@ -1,7 +1,4 @@
-import 'package:domain/app/repository/app_repository.dart';
-import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
-import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
@@ -9,7 +6,19 @@ import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/start/bloc/start_bloc.dart';
 import 'package:presentation/flow/app_flow_router/app_route.dart';
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
+  const StartPage._();
+
+  static Widget withBloc() => BlocProvider(
+    create: (_) => StartBloc()..add(const StartStarted()),
+    child: const StartPage._(),
+  );
+
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
   static const _buttonTops = [330.0, 560.0, 790.0];
   static const _menuButtonWidth = 690.0;
   static const _buttonHeight = 230.0;
@@ -18,33 +27,31 @@ class StartPage extends StatelessWidget {
   static const _backButtonWidth = 240.0;
   static const _backButtonHeight = 160.0;
 
-  const StartPage({super.key});
+  late final StartBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = context.read();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      lazy: false,
-      create: (context) => StartBloc(
-        context.read<AppRepository>(),
-        context.read<CharacterRepository>(),
-        context.read<ProgressRepository>(),
-      )..add(const StartStarted()),
-      child: BlocBuilder<StartBloc, StartState>(
-        builder: (context, state) => BackgroundContainer(
-          image: context.images.imgLogoPage,
-          elements: state.isLevelSelection ? _levelButtons(context, state) : _menuButtons(context),
-        ),
+    return BlocBuilder<StartBloc, StartState>(
+      bloc: _bloc,
+      builder: (context, state) => BackgroundContainer(
+        image: context.images.imgLogoPage,
+        elements: state.isLevelSelection ? _levelButtons(state) : _menuButtons(),
       ),
     );
   }
 
-  List<BackgroundElement> _menuButtons(BuildContext context) {
+  List<BackgroundElement> _menuButtons() {
     final images = context.images;
-    final bloc = context.read<StartBloc>();
     final buttons = [
-      (images.imgButtonNewGame, () => bloc.add(const StartNewGameTapped())),
+      (images.imgButtonNewGame, () => _bloc.add(const StartNewGameTapped())),
       (images.imgButtonLoadGame, () => AppRoute.loadGame.go(context)),
-      (images.imgButtonExit, () => bloc.add(const StartExitTapped())),
+      (images.imgButtonExit, () => _bloc.add(const StartExitTapped())),
     ];
 
     return [
@@ -53,7 +60,7 @@ class StartPage extends StatelessWidget {
     ];
   }
 
-  List<BackgroundElement> _levelButtons(BuildContext context, StartState state) {
+  List<BackgroundElement> _levelButtons(StartState state) {
     final images = context.images;
     final buttons = [
       (images.imgButtonLevel1, GameLevel.level1),
@@ -69,7 +76,7 @@ class StartPage extends StatelessWidget {
         height: _backButtonHeight,
         child: PressableContainer(
           image: images.imgButtonBack,
-          onTap: () => context.read<StartBloc>().add(const StartBackTapped()),
+          onTap: () => _bloc.add(const StartBackTapped()),
         ),
       ),
       for (final (index, (image, level)) in buttons.indexed)

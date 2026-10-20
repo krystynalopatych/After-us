@@ -20,11 +20,11 @@ abstract final class AppRouter {
         return null;
       },
       routes: [
-        _route(AppRoute.start, (_, _) => const StartPage()),
-        _route(AppRoute.loadGame, (_, _) => const LoadGamePage()),
-        _route(AppRoute.level1, (_, _) => const Level1Page()),
-        _route(AppRoute.level2, (_, _) => const Level2Page()),
-        _route(AppRoute.level3, (_, _) => const Level3Page()),
+        _route(AppRoute.start, (_, _) => StartPage.withBloc()),
+        _route(AppRoute.loadGame, (_, _) => LoadGamePage.withBloc()),
+        _route(AppRoute.level1, (_, _) => Level1Page.withBloc()),
+        _route(AppRoute.level2, (_, _) => Level2Page.withBloc()),
+        _route(AppRoute.level3, (_, _) => Level3Page.withBloc()),
       ],
     );
   }

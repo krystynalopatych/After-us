@@ -413,18 +413,6 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgZapyskaStory =>
       const AssetGenImage('resources/assets/images/img_zapyska_story.png');
 
-  /// File path: resources/assets/images/level_1_background.png
-  AssetGenImage get level1Background =>
-      const AssetGenImage('resources/assets/images/level_1_background.png');
-
-  /// File path: resources/assets/images/level_2_background.png
-  AssetGenImage get level2Background =>
-      const AssetGenImage('resources/assets/images/level_2_background.png');
-
-  /// File path: resources/assets/images/level_3_background.png
-  AssetGenImage get level3Background =>
-      const AssetGenImage('resources/assets/images/level_3_background.png');
-
   /// List of all assets
   List<AssetGenImage> get values => [
     background,
@@ -522,9 +510,6 @@ class $ResourcesAssetsImagesGen {
     imgWaterSodis,
     imgZapyska,
     imgZapyskaStory,
-    level1Background,
-    level2Background,
-    level3Background,
   ];
 }
 

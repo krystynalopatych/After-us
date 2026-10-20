@@ -7,3 +7,7 @@ sealed class CharacterEvent {
 final class CharacterStarted extends CharacterEvent {
   const CharacterStarted();
 }
+
+final class CharacterTapped extends CharacterEvent {
+  const CharacterTapped();
+}

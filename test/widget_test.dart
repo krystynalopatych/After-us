@@ -1,13 +1,22 @@
 import 'package:data/character/repository/character_repository_impl.dart';
+import 'package:data/location/repository/location_repository_impl.dart';
+import 'package:data/material/repository/material_repository_impl.dart';
+import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
+import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/location/repository/location_repository.dart';
+import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/design/design_src.dart';
+import 'package:presentation/di/di_container.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
 import 'package:presentation/feature/app/page/app_page.dart';
 import 'package:presentation/feature/level_1/page/level_1_page.dart';
@@ -36,15 +45,17 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.pumpWidget(
-      AppPage(
-        createAppBloc: AppBloc.new,
-        appRepository: appRepository ?? _FakeAppRepository(),
-        characterRepository: CharacterRepositoryImpl(),
-        progressRepository: ProgressRepositoryImpl(),
-        saveRepository: saveRepository ?? SaveRepositoryImpl(),
-      ),
-    );
+    await diContainer.reset();
+    diContainer
+      ..registerSingleton<AppRepository>(appRepository ?? _FakeAppRepository())
+      ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
+      ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
+      ..registerSingleton<MaterialRepository>(MaterialRepositoryImpl())
+      ..registerSingleton<PlayerRepository>(PlayerRepositoryImpl())
+      ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
+      ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl());
+
+    await tester.pumpWidget(const AppPage(createAppBloc: AppBloc.new));
     await tester.pumpAndSettle();
   }
 
@@ -148,6 +159,46 @@ void main() {
     expect(find.byType(LoadGamePage), findsNothing);
     expect(find.byType(StartPage), findsOneWidget);
     expect(buttonImage(Assets.resources.assets.images.imgButtonNewGame), findsNWidgets(2));
+  });
+
+  testWidgets('Level starts at home with the HUD and the map switches location', (
+    WidgetTester tester,
+  ) async {
+    final images = Assets.resources.assets.images;
+    await pumpApp(tester);
+
+    await tester.tap(buttonImage(images.imgButtonNewGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(images.imgButtonLevel1).last);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Level1Page), findsOneWidget);
+    expect(buttonImage(images.imgHouseRectangle), findsOneWidget);
+    expect(find.byType(CharacterContainer), findsOneWidget);
+    expect(find.text('100'), findsOneWidget);
+    expect(find.text('80'), findsOneWidget);
+    expect(buttonImage(images.imgInventory), findsOneWidget);
+    expect(buttonImage(images.imgMap), findsNothing);
+
+    await tester.tap(buttonImage(images.imgMapIcon).last);
+    await tester.pumpAndSettle();
+
+    expect(buttonImage(images.imgMap), findsOneWidget);
+    expect(buttonImage(images.imgSvalkaIcon), findsNWidgets(2));
+    expect(buttonImage(images.imgStoreIcon), findsNothing);
+
+    await tester.tap(buttonImage(images.imgForestIcon).last);
+    await tester.pumpAndSettle();
+
+    expect(buttonImage(images.imgMap), findsNothing);
+    expect(buttonImage(images.imgForest), findsOneWidget);
+    expect(buttonImage(images.imgHouseRectangle), findsNothing);
+
+    for (final image in [images.imgMainCharacterHappy, images.imgMainCharacterSad, images.imgMainCharacter]) {
+      tester.widget<CharacterContainer>(find.byType(CharacterContainer)).onTap();
+      await tester.pumpAndSettle();
+      expect(buttonImage(image), findsOneWidget);
+    }
   });
 
   testWidgets('Opening a level URL directly redirects to the start screen', (

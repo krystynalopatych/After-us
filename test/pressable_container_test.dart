@@ -11,24 +11,28 @@ void main() {
     var taps = 0;
     await tester.pumpWidget(
       MaterialApp(
-        home: SceneContainer(
-          children: [
-            BackgroundContainer(
-              image: Assets.resources.assets.images.background,
-              elements: [
-                BackgroundElement(
-                  left: 960,
-                  top: 540,
-                  width: 200,
-                  height: 400,
-                  child: PressableContainer(
-                    image: Assets.resources.assets.images.imgMainCharacter,
-                    onTap: () => taps++,
+        home: DesignSystemTheme(
+          data: .light(),
+          brightness: .light,
+          child: SceneContainer(
+            children: [
+              BackgroundContainer(
+                image: Assets.resources.assets.images.background,
+                elements: [
+                  BackgroundElement(
+                    left: 960,
+                    top: 540,
+                    width: 200,
+                    height: 400,
+                    child: PressableContainer(
+                      image: Assets.resources.assets.images.imgMainCharacter,
+                      onTap: () => taps++,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

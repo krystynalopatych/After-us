@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/design/src/theme/design_system_theme.dart';
 
 final class SceneContainer extends StatelessWidget {
   static const designSize = Size(1920, 1080);
@@ -13,7 +14,7 @@ final class SceneContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.black,
+      color: DesignSystemTheme.of(context).colors.base.black,
       child: Center(
         child: FittedBox(
           child: SizedBox.fromSize(
