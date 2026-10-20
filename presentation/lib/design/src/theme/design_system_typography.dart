@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:presentation/generated/assets/fonts.gen.dart';
 
 final class DesignSystemTypography extends Equatable {
+  final TextStyle banner;
   final TextStyle display;
   final TextStyle headline;
   final TextStyle title;
@@ -10,6 +11,7 @@ final class DesignSystemTypography extends Equatable {
   final TextStyle caption;
 
   const DesignSystemTypography({
+    required this.banner,
     required this.display,
     required this.headline,
     required this.title,
@@ -19,6 +21,13 @@ final class DesignSystemTypography extends Equatable {
 
   factory DesignSystemTypography.main(Color color) {
     return DesignSystemTypography(
+      banner: TextStyle(
+        fontFamily: FontFamily.pixelifySans,
+        fontSize: 120,
+        height: 136 / 120,
+        fontWeight: .w700,
+        color: color,
+      ),
       display: TextStyle(
         fontFamily: FontFamily.pixelifySans,
         fontSize: 48,
@@ -59,6 +68,7 @@ final class DesignSystemTypography extends Equatable {
 
   @override
   List<Object> get props => [
+    banner,
     display,
     headline,
     title,

@@ -1,3 +1,4 @@
+import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
@@ -19,6 +20,13 @@ void registerUseCases() {
       () => LocationPickupsUseCase(
         locationRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => PassSecondUseCase(
+        dayRepository: diContainer.get(),
+        playerRepository: diContainer.get(),
+        pollutionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

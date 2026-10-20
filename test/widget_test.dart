@@ -15,6 +15,7 @@ import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/day/repository/ticker_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
@@ -46,12 +47,7 @@ import 'package:presentation/feature/load_game/page/load_game_page.dart';
 import 'package:presentation/feature/start/page/start_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
-final class _FakeAppRepository implements AppRepository {
-  int exitCount = 0;
-
-  @override
-  void exit() => exitCount++;
-}
+import 'helpers/test_dependencies.dart';
 
 void main() {
   Finder buttonImage(AssetGenImage image) => find.byWidgetPredicate(
@@ -68,8 +64,10 @@ void main() {
     matching: find.byType(AnimatedOpacity),
   );
 
-  double opacityOf(WidgetTester tester, AssetGenImage image) =>
-      tester.widget<AnimatedOpacity>(fadeOf(image).first).opacity;
+  double opacityOf(
+    WidgetTester tester,
+    AssetGenImage image,
+  ) => tester.widget<AnimatedOpacity>(fadeOf(image).first).opacity;
 
   Future<void> startLevel1(WidgetTester tester) async {
     await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonNewGame).last);
@@ -78,7 +76,10 @@ void main() {
     await pumpScene(tester);
   }
 
-  Future<void> tapText(WidgetTester tester, String text) async {
+  Future<void> tapText(
+    WidgetTester tester,
+    String text,
+  ) async {
     await tester.tap(find.text(text));
     await pumpScene(tester);
   }
@@ -102,7 +103,7 @@ void main() {
 
     await diContainer.reset();
     diContainer
-      ..registerSingleton<AppRepository>(appRepository ?? _FakeAppRepository())
+      ..registerSingleton<AppRepository>(appRepository ?? FakeAppRepository())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
@@ -114,7 +115,8 @@ void main() {
       ..registerSingleton<PlayerRepository>(playerRepository ?? PlayerRepositoryImpl())
       ..registerSingleton<PollutionRepository>(pollutionRepository ?? PollutionRepositoryImpl())
       ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
-      ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl());
+      ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl())
+      ..registerSingleton<TickerRepository>(ManualTickerRepository());
     registerUseCases();
 
     await tester.pumpWidget(const AppPage(createAppBloc: AppBloc.new));
@@ -160,7 +162,7 @@ void main() {
     (
       WidgetTester tester,
     ) async {
-      final appRepository = _FakeAppRepository();
+      final appRepository = FakeAppRepository();
       await pumpApp(
         tester,
         appRepository: appRepository,
@@ -236,7 +238,7 @@ void main() {
               14,
               5,
             ),
-            day: 1,
+            day: const .first(),
             stats: const .initial(),
             materials: const [],
             inventory: const [],
@@ -297,7 +299,7 @@ void main() {
               16,
               30,
             ),
-            day: 1,
+            day: const .first(),
             stats: const PlayerStats(
               health: 90,
               hunger: 55,

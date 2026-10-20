@@ -1,0 +1,119 @@
+import 'dart:math';
+
+import 'package:domain/day/model/game_day.dart';
+import 'package:domain/day/model/level_outcome.dart';
+import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/player/model/player_stats.dart';
+import 'package:domain/player/repository/player_repository.dart';
+import 'package:domain/pollution/repository/pollution_repository.dart';
+import 'package:domain/progress/model/game_level.dart';
+
+final class PassSecondUseCase {
+  static const _hungerPerDay = 40.0;
+  static const _thirstPerDay = 60.0;
+  static const _starvingHealthPerDay = 25.0;
+  static const _dehydratedHealthPerDay = 35.0;
+  static const _recoveryHealthPerDay = 10.0;
+  static const _wellFedLevel = 50.0;
+  static const _weakHealthLevel = 30.0;
+  static const _weakDropMultiplier = 1.5;
+
+  final DayRepository _dayRepository;
+  final PlayerRepository _playerRepository;
+  final PollutionRepository _pollutionRepository;
+
+  const PassSecondUseCase({
+    required this._dayRepository,
+    required this._playerRepository,
+    required this._pollutionRepository,
+  });
+
+  void call(GameLevel level) {
+    if (_dayRepository.outcome != null) {
+      return;
+    }
+    var stats = _secondStats(_playerRepository.stats);
+    var day = _dayRepository.day.copyWith(seconds: _dayRepository.day.seconds + 1);
+    LevelOutcome? outcome;
+
+    if (day.isOver) {
+      stats = _endOfDayStats(stats);
+      if (day.number >= level.days) {
+        outcome = .noTimeLeft;
+      } else {
+        day = GameDay(
+          number: day.number + 1,
+          seconds: 0,
+        );
+      }
+    }
+    if (stats.health <= 0) {
+      outcome = .died;
+    }
+
+    _playerRepository.setStats(stats);
+    _dayRepository.setDay(day);
+    if (outcome != null) {
+      _dayRepository.setOutcome(outcome);
+    }
+  }
+
+  PlayerStats _secondStats(PlayerStats stats) {
+    final multiplier = stats.health < _weakHealthLevel ? _weakDropMultiplier : 1.0;
+    final hunger = max(
+      0.0,
+      stats.hunger - _perSecond(_hungerPerDay) * multiplier,
+    );
+    final thirst = max(
+      0.0,
+      stats.thirst - _perSecond(_thirstPerDay) * multiplier,
+    );
+    final health =
+        stats.health +
+        _healthChange(
+          hunger,
+          thirst,
+        );
+    return stats.copyWith(
+      health: health.clamp(
+        0.0,
+        stats.healthCeiling,
+      ),
+      hunger: hunger,
+      thirst: thirst,
+    );
+  }
+
+  double _healthChange(
+    double hunger,
+    double thirst,
+  ) {
+    var change = 0.0;
+    if (hunger <= 0) {
+      change -= _perSecond(_starvingHealthPerDay);
+    }
+    if (thirst <= 0) {
+      change -= _perSecond(_dehydratedHealthPerDay);
+    }
+    if (hunger > _wellFedLevel && thirst > _wellFedLevel) {
+      change += _perSecond(_recoveryHealthPerDay);
+    }
+    return change;
+  }
+
+  PlayerStats _endOfDayStats(PlayerStats stats) {
+    final ceiling = max(
+      0.0,
+      stats.healthCeiling - _pollutionRepository.pollution.dailyHealthCeilingDrop,
+    );
+    return stats.copyWith(
+      health: min(
+        stats.health,
+        ceiling,
+      ),
+      healthCeiling: ceiling,
+    );
+  }
+
+  static double _perSecond(double perDay) => perDay / GameDay.secondsPerDay;
+}

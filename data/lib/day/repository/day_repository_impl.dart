@@ -1,30 +1,49 @@
 import 'dart:async';
 
+import 'package:domain/day/model/game_day.dart';
+import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/repository/day_repository.dart';
 
 final class DayRepositoryImpl implements DayRepository {
-  static const _firstDay = 1;
-
-  final _dayController = StreamController<int>.broadcast();
-  int _day = _firstDay;
-
-  @override
-  int get day => _day;
+  final _dayController = StreamController<GameDay>.broadcast();
+  final _outcomeController = StreamController<LevelOutcome?>.broadcast();
+  GameDay _day = const .first();
+  LevelOutcome? _outcome;
 
   @override
-  Stream<int> get dayStream => _dayController.stream;
+  GameDay get day => _day;
 
   @override
-  void nextDay() => _update(_day + 1);
+  Stream<GameDay> get dayStream => _dayController.stream;
 
   @override
-  void restore(int day) => _update(day);
+  LevelOutcome? get outcome => _outcome;
 
   @override
-  void reset() => _update(_firstDay);
+  Stream<LevelOutcome?> get outcomeStream => _outcomeController.stream;
 
-  void _update(int day) {
+  @override
+  void setDay(GameDay day) => _updateDay(day);
+
+  @override
+  void setOutcome(LevelOutcome outcome) => _updateOutcome(outcome);
+
+  @override
+  void restore(GameDay day) {
+    _updateOutcome(null);
+    _updateDay(day);
+  }
+
+  @override
+  void reset() => restore(const .first());
+
+  void _updateDay(GameDay day) {
     _day = day;
     _dayController.add(day);
+  }
+
+  void _updateOutcome(LevelOutcome? outcome) {
+    _outcome = outcome;
+    _outcomeController.add(outcome);
   }
 }

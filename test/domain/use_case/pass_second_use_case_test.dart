@@ -1,0 +1,322 @@
+import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/player/repository/player_repository_impl.dart';
+import 'package:data/pollution/repository/pollution_repository_impl.dart';
+import 'package:domain/day/model/game_day.dart';
+import 'package:domain/day/model/level_outcome.dart';
+import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/player/model/player_stats.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  late DayRepositoryImpl day;
+  late PlayerRepositoryImpl player;
+  late PollutionRepositoryImpl pollution;
+  late PassSecondUseCase passSecond;
+
+  setUp(() {
+    day = DayRepositoryImpl();
+    player = PlayerRepositoryImpl();
+    pollution = PollutionRepositoryImpl();
+    passSecond = PassSecondUseCase(
+      dayRepository: day,
+      playerRepository: player,
+      pollutionRepository: pollution,
+    );
+  });
+
+  void pass([int seconds = 1]) {
+    for (var i = 0; i < seconds; i++) {
+      passSecond(.level1);
+    }
+  }
+
+  test(
+    'every second moves the day one second forward',
+    () {
+      pass(5);
+
+      expect(
+        day.day,
+        const GameDay(
+          number: 1,
+          seconds: 5,
+        ),
+      );
+    },
+  );
+
+  test(
+    'a full day drops hunger by 40 and thirst by 60',
+    () {
+      pass(GameDay.secondsPerDay);
+
+      expect(
+        player.stats.hunger,
+        closeTo(
+          40,
+          0.001,
+        ),
+      );
+      expect(
+        player.stats.thirst,
+        closeTo(
+          20,
+          0.001,
+        ),
+      );
+    },
+  );
+
+  test(
+    'the day ends after ten minutes and the next one starts',
+    () {
+      pass(GameDay.secondsPerDay);
+
+      expect(
+        day.day,
+        const GameDay(
+          number: 2,
+          seconds: 0,
+        ),
+      );
+      expect(
+        day.outcome,
+        isNull,
+      );
+    },
+  );
+
+  test(
+    'health recovers 10 a day while hunger and thirst are above 50',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 50,
+          hunger: 100,
+          thirst: 100,
+        ),
+      );
+      pass(300);
+
+      expect(
+        player.stats.health,
+        closeTo(
+          55,
+          0.001,
+        ),
+      );
+    },
+  );
+
+  test(
+    'health never goes above the ceiling',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 89.99,
+          hunger: 100,
+          thirst: 100,
+          healthCeiling: 90,
+        ),
+      );
+      pass(30);
+
+      expect(
+        player.stats.health,
+        90,
+      );
+    },
+  );
+
+  test(
+    'zero hunger costs 25 health a day and zero thirst costs 35',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 100,
+          hunger: 0,
+          thirst: 90,
+        ),
+      );
+      pass(60);
+      expect(
+        player.stats.health,
+        closeTo(
+          97.5,
+          0.001,
+        ),
+      );
+
+      player.setStats(
+        const PlayerStats(
+          health: 100,
+          hunger: 90,
+          thirst: 0,
+        ),
+      );
+      pass(60);
+      expect(
+        player.stats.health,
+        closeTo(
+          96.5,
+          0.001,
+        ),
+      );
+    },
+  );
+
+  test(
+    'hunger and thirst drop 1.5 times faster while health is below 30',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 20,
+          hunger: 40,
+          thirst: 40,
+        ),
+      );
+      pass(60);
+
+      expect(
+        player.stats.hunger,
+        closeTo(
+          34,
+          0.001,
+        ),
+      );
+      expect(
+        player.stats.thirst,
+        closeTo(
+          31,
+          0.001,
+        ),
+      );
+    },
+  );
+
+  test(
+    'hunger and thirst never go below zero',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 100,
+          hunger: 0.01,
+          thirst: 0.01,
+        ),
+      );
+      pass(3);
+
+      expect(
+        player.stats.hunger,
+        0,
+      );
+      expect(
+        player.stats.thirst,
+        0,
+      );
+    },
+  );
+
+  test(
+    'air pollution lowers the health ceiling at the end of the day',
+    () {
+      pollution.addAirPoints(8);
+      pass(GameDay.secondsPerDay);
+
+      expect(
+        player.stats.healthCeiling,
+        80,
+      );
+      expect(
+        player.stats.health,
+        80,
+      );
+    },
+  );
+
+  test(
+    'clean air keeps the health ceiling',
+    () {
+      pass(GameDay.secondsPerDay);
+
+      expect(
+        player.stats.healthCeiling,
+        100,
+      );
+    },
+  );
+
+  test(
+    'health reaching zero ends the level as died and stops the clock',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 0.01,
+          hunger: 0,
+          thirst: 0,
+        ),
+      );
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.died,
+      );
+
+      final seconds = day.day.seconds;
+      pass(5);
+
+      expect(
+        day.day.seconds,
+        seconds,
+      );
+    },
+  );
+
+  test(
+    'the end of the last day ends the level with no time left',
+    () {
+      day.setDay(
+        const GameDay(
+          number: 3,
+          seconds: GameDay.secondsPerDay - 1,
+        ),
+      );
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.noTimeLeft,
+      );
+      expect(
+        day.day.number,
+        3,
+      );
+    },
+  );
+
+  test(
+    'longer levels keep going after day three',
+    () {
+      day.setDay(
+        const GameDay(
+          number: 3,
+          seconds: GameDay.secondsPerDay - 1,
+        ),
+      );
+      passSecond(.level2);
+
+      expect(
+        day.outcome,
+        isNull,
+      );
+      expect(
+        day.day,
+        const GameDay(
+          number: 4,
+          seconds: 0,
+        ),
+      );
+    },
+  );
+}

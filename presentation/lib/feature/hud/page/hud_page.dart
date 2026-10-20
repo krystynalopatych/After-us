@@ -104,7 +104,7 @@ class _HudPageState extends State<HudPage> {
               height: _statHeight,
               child: StatContainer(
                 image: images.imgPlayerThirsty,
-                value: state.stats.thirst,
+                value: state.stats.thirst.round(),
                 valueAlignment: _thirstValueAlignment,
               ),
             ),
@@ -115,7 +115,7 @@ class _HudPageState extends State<HudPage> {
               height: _statHeight,
               child: StatContainer(
                 image: images.imgPlayerHp,
-                value: state.stats.health,
+                value: state.stats.health.round(),
                 valueAlignment: _healthValueAlignment,
               ),
             ),
@@ -126,7 +126,7 @@ class _HudPageState extends State<HudPage> {
               height: _statHeight,
               child: StatContainer(
                 image: images.imgPlayerHunger,
-                value: state.stats.hunger,
+                value: state.stats.hunger.round(),
                 valueAlignment: _hungerValueAlignment,
               ),
             ),

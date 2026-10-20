@@ -1,4 +1,5 @@
 import 'package:domain/construction/model/construction.dart';
+import 'package:domain/day/model/game_day.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/material/model/material_stock.dart';
@@ -12,7 +13,7 @@ final class GameSave extends Equatable {
   final GameLevel level;
   final GameLocation location;
   final DateTime savedAt;
-  final int day;
+  final GameDay day;
   final PlayerStats stats;
   final List<MaterialStock> materials;
   final List<InventoryStack> inventory;
@@ -37,7 +38,7 @@ final class GameSave extends Equatable {
     GameLevel? level,
     GameLocation? location,
     DateTime? savedAt,
-    int? day,
+    GameDay? day,
     PlayerStats? stats,
     List<MaterialStock>? materials,
     List<InventoryStack>? inventory,

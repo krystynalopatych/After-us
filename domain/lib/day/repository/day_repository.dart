@@ -1,11 +1,20 @@
+import 'package:domain/day/model/game_day.dart';
+import 'package:domain/day/model/level_outcome.dart';
+
 abstract interface class DayRepository {
-  int get day;
+  GameDay get day;
 
-  Stream<int> get dayStream;
+  Stream<GameDay> get dayStream;
 
-  void nextDay();
+  LevelOutcome? get outcome;
 
-  void restore(int day);
+  Stream<LevelOutcome?> get outcomeStream;
+
+  void setDay(GameDay day);
+
+  void setOutcome(LevelOutcome outcome);
+
+  void restore(GameDay day);
 
   void reset();
 }

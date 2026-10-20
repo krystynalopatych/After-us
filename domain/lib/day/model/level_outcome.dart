@@ -1,0 +1,4 @@
+enum LevelOutcome {
+  died,
+  noTimeLeft,
+}
