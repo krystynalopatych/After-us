@@ -1,10 +1,12 @@
 import 'package:domain/character/model/character_mood.dart';
+import 'package:domain/construction/model/construction.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
 import 'package:presentation/feature/character/bloc/character_bloc.dart';
+import 'package:presentation/feature/goal/bloc/goal_bloc.dart';
 import 'package:presentation/feature/load_game/bloc/load_game_bloc.dart';
 import 'package:presentation/feature/sky/bloc/sky_bloc.dart';
 import 'package:presentation/feature/start/bloc/start_bloc.dart';
@@ -222,6 +224,29 @@ void main() {
       expect(
         bloc.state,
         SkyState.clear,
+      );
+    },
+  );
+
+  test(
+    'GoalBloc starts with the built constructions and follows new ones',
+    () async {
+      deps.construction.build(.compostPit);
+      final bloc = GoalBloc()..add(const GoalStarted());
+      addTearDown(bloc.close);
+
+      expect(
+        bloc.state.built,
+        {Construction.compostPit},
+      );
+      await pumpEventQueue();
+
+      deps.construction.build(.waterFilter);
+      await pumpEventQueue();
+
+      expect(
+        bloc.state.built,
+        {Construction.compostPit, Construction.waterFilter},
       );
     },
   );

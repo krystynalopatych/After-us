@@ -1239,4 +1239,46 @@ void main() {
       );
     },
   );
+  testWidgets(
+    'The goal checklist ticks a construction when it is built',
+    (
+      WidgetTester tester,
+    ) async {
+      await pumpApp(tester);
+      await startLevel1(tester);
+
+      double tickOpacity(String goal) => tester
+          .widget<AnimatedOpacity>(
+            find.descendant(
+              of: find.ancestor(
+                of: find.text(goal),
+                matching: find.byType(Row),
+              ),
+              matching: find.byType(AnimatedOpacity),
+            ),
+          )
+          .opacity;
+
+      expect(
+        [
+          tickOpacity('Water filter'),
+          tickOpacity('Compost pit'),
+          tickOpacity('Rocket stove'),
+        ],
+        everyElement(lessThan(1)),
+      );
+
+      diContainer.get<ConstructionRepository>().build(.compostPit);
+      await pumpScene(tester);
+
+      expect(
+        tickOpacity('Compost pit'),
+        1,
+      );
+      expect(
+        tickOpacity('Water filter'),
+        lessThan(1),
+      );
+    },
+  );
 }

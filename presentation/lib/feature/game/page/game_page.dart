@@ -9,6 +9,7 @@ import 'package:presentation/feature/day/page/day_page.dart';
 import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
+import 'package:presentation/feature/goal/page/goal_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
@@ -133,6 +134,7 @@ class _GamePageState extends State<GamePage> {
               ),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
+              Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
               Positioned.fill(child: FeedbackPage.withBloc()),
             ],
           ),
