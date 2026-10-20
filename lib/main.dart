@@ -7,7 +7,10 @@ void main() {
   runApp(
     AppPage(
       createAppBloc: createAppBloc,
+      appRepository: createAppRepository(),
       characterRepository: createCharacterRepository(),
+      progressRepository: createProgressRepository(),
+      saveRepository: createSaveRepository(),
     ),
   );
 }
