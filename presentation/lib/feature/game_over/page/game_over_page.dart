@@ -50,7 +50,7 @@ class _GameOverPageState extends State<GameOverPage> {
                 children: [
                   Text(
                     _title(outcome),
-                    style: typography.banner.copyWith(color: colors.base.red),
+                    style: typography.banner.copyWith(color: outcome == .won ? colors.base.green : colors.base.red),
                   ),
                   if (outcome == .noTimeLeft)
                     Text(
@@ -67,6 +67,7 @@ class _GameOverPageState extends State<GameOverPage> {
   }
 
   static String _title(LevelOutcome outcome) => switch (outcome) {
+    .won => 'YOU SURVIVED',
     .died => 'YOU DIED',
     .noTimeLeft => 'YOU LOST',
   };

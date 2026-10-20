@@ -24,6 +24,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => PassSecondUseCase(
+        constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),

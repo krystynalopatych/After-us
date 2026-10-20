@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/repository/day_repository.dart';
@@ -18,11 +19,13 @@ final class PassSecondUseCase {
   static const _weakHealthLevel = 30.0;
   static const _weakDropMultiplier = 1.5;
 
+  final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
 
   const PassSecondUseCase({
+    required this._constructionRepository,
     required this._dayRepository,
     required this._playerRepository,
     required this._pollutionRepository,
@@ -39,7 +42,7 @@ final class PassSecondUseCase {
     if (day.isOver) {
       stats = _endOfDayStats(stats);
       if (day.number >= level.days) {
-        outcome = .noTimeLeft;
+        outcome = _constructionRepository.built.containsAll(level.goals) ? .won : .noTimeLeft;
       } else {
         day = GameDay(
           number: day.number + 1,

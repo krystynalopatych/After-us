@@ -1,3 +1,4 @@
+import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
@@ -5,19 +6,23 @@ import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/player/model/player_stats.dart';
+import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  late ConstructionRepositoryImpl constructions;
   late DayRepositoryImpl day;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
   late PassSecondUseCase passSecond;
 
   setUp(() {
+    constructions = ConstructionRepositoryImpl();
     day = DayRepositoryImpl();
     player = PlayerRepositoryImpl();
     pollution = PollutionRepositoryImpl();
     passSecond = PassSecondUseCase(
+      constructionRepository: constructions,
       dayRepository: day,
       playerRepository: player,
       pollutionRepository: pollution,
@@ -273,15 +278,23 @@ void main() {
     },
   );
 
+  void startLastSecond() => day.setDay(
+    const GameDay(
+      number: 3,
+      seconds: GameDay.secondsPerDay - 1,
+    ),
+  );
+
+  void buildAll() {
+    for (final construction in GameLevel.level1.goals) {
+      constructions.build(construction);
+    }
+  }
+
   test(
-    'the end of the last day ends the level with no time left',
+    'the end of the last day without constructions ends the level with no time left',
     () {
-      day.setDay(
-        const GameDay(
-          number: 3,
-          seconds: GameDay.secondsPerDay - 1,
-        ),
-      );
+      startLastSecond();
       pass();
 
       expect(
@@ -291,6 +304,74 @@ void main() {
       expect(
         day.day.number,
         3,
+      );
+    },
+  );
+
+  test(
+    'the end of the last day with only some constructions built is still a loss',
+    () {
+      constructions
+        ..build(.waterFilter)
+        ..build(.rocketStove);
+      startLastSecond();
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.noTimeLeft,
+      );
+    },
+  );
+
+  test(
+    'the end of the last day with every construction built wins the level',
+    () {
+      buildAll();
+      startLastSecond();
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.won,
+      );
+    },
+  );
+
+  test(
+    'building everything early does not end the level',
+    () {
+      buildAll();
+      pass(GameDay.secondsPerDay);
+
+      expect(
+        day.outcome,
+        isNull,
+      );
+      expect(
+        day.day.number,
+        2,
+      );
+    },
+  );
+
+  test(
+    'dying on the last second is a loss even with every construction built',
+    () {
+      buildAll();
+      player.setStats(
+        const PlayerStats(
+          health: 0.01,
+          hunger: 0,
+          thirst: 0,
+        ),
+      );
+      startLastSecond();
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.died,
       );
     },
   );
