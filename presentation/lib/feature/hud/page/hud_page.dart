@@ -31,6 +31,9 @@ class _HudPageState extends State<HudPage> {
   static const _hungerLeft = 572.0;
   static const _healthValueAlignment = Alignment(0.146, 0.068);
   static const _hungerValueAlignment = Alignment(0.199, 0.093);
+  static const _thirstLeft = 505.0;
+  static const _thirstTop = 822.0;
+  static const _thirstValueAlignment = Alignment(0.203, 0.088);
   static const _inventoryLeft = 718.0;
   static const _inventoryTop = 872.0;
   static const _inventoryWidth = 820.0;
@@ -69,6 +72,17 @@ class _HudPageState extends State<HudPage> {
                   count: stock.count,
                 ),
               ),
+            Positioned(
+              left: _thirstLeft,
+              top: _thirstTop,
+              width: _statWidth,
+              height: _statHeight,
+              child: StatContainer(
+                image: images.imgPlayerThirsty,
+                value: state.stats.thirst,
+                valueAlignment: _thirstValueAlignment,
+              ),
+            ),
             Positioned(
               left: _healthLeft,
               top: _statTop,

@@ -168,6 +168,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgForestIcon =>
       const AssetGenImage('resources/assets/images/img_forest_icon.png');
 
+  /// File path: resources/assets/images/img_forest_rectangle.png
+  AssetGenImage get imgForestRectangle =>
+      const AssetGenImage('resources/assets/images/img_forest_rectangle.png');
+
   /// File path: resources/assets/images/img_freezer_gorshok.png
   AssetGenImage get imgFreezerGorshok =>
       const AssetGenImage('resources/assets/images/img_freezer_gorshok.png');
@@ -336,6 +340,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgPlayerHunger =>
       const AssetGenImage('resources/assets/images/img_player_hunger.png');
 
+  /// File path: resources/assets/images/img_player_thirsty.png
+  AssetGenImage get imgPlayerThirsty =>
+      const AssetGenImage('resources/assets/images/img_player_thirsty.png');
+
   /// File path: resources/assets/images/img_prefilter.png
   AssetGenImage get imgPrefilter =>
       const AssetGenImage('resources/assets/images/img_prefilter.png');
@@ -450,6 +458,7 @@ class $ResourcesAssetsImagesGen {
     imgFilterRefresher,
     imgForest,
     imgForestIcon,
+    imgForestRectangle,
     imgFreezerGorshok,
     imgFullWaterFilter,
     imgGarage,
@@ -491,6 +500,7 @@ class $ResourcesAssetsImagesGen {
     imgPlasticBottle,
     imgPlayerHp,
     imgPlayerHunger,
+    imgPlayerThirsty,
     imgPrefilter,
     imgProvoda,
     imgResourseIcon,

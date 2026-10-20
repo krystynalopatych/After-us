@@ -176,7 +176,7 @@ void main() {
     expect(buttonImage(images.imgHouseRectangle), findsOneWidget);
     expect(find.byType(CharacterContainer), findsOneWidget);
     expect(find.text('100'), findsOneWidget);
-    expect(find.text('80'), findsOneWidget);
+    expect(find.text('80'), findsNWidgets(2));
     expect(buttonImage(images.imgInventory), findsOneWidget);
     expect(buttonImage(images.imgMap), findsNothing);
 
@@ -191,7 +191,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(buttonImage(images.imgMap), findsNothing);
-    expect(buttonImage(images.imgForest), findsOneWidget);
+    expect(buttonImage(images.imgForestRectangle), findsOneWidget);
     expect(buttonImage(images.imgHouseRectangle), findsNothing);
 
     for (final image in [images.imgMainCharacterHappy, images.imgMainCharacterSad, images.imgMainCharacter]) {

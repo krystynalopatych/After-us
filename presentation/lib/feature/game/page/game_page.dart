@@ -85,7 +85,7 @@ class _GamePageState extends State<GamePage> {
     final images = context.images;
     return switch (location) {
       .house => images.imgHouseRectangle,
-      .forest => images.imgForest,
+      .forest => images.imgForestRectangle,
       .lake => images.imgLakeRectangle,
       .dump => images.imgSvalka,
       .store => images.imgAbandonnedStore,
