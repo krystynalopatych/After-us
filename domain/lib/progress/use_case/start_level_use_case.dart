@@ -10,6 +10,8 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
+import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/station_repository.dart';
 
 final class StartLevelUseCase {
   final CharacterRepository _characterRepository;
@@ -22,6 +24,8 @@ final class StartLevelUseCase {
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
   final SaveRepository _saveRepository;
+  final SelectionRepository _selectionRepository;
+  final StationRepository _stationRepository;
 
   const StartLevelUseCase({
     required this._characterRepository,
@@ -34,10 +38,13 @@ final class StartLevelUseCase {
     required this._playerRepository,
     required this._pollutionRepository,
     required this._saveRepository,
+    required this._selectionRepository,
+    required this._stationRepository,
   });
 
   void call(GameLevel level) {
     _characterRepository.setMood(.normal);
+    _selectionRepository.reset();
     final save = _saveRepository.takeLoadedSave();
     if (save != null && save.level == level) {
       _restore(save);
@@ -54,6 +61,7 @@ final class StartLevelUseCase {
     _inventoryRepository.restore(save.inventory);
     _pickupRepository.restore(save.pickups);
     _constructionRepository.restore(save.constructions);
+    _stationRepository.restore(save.stations);
     _locationRepository.setLocation(save.location);
   }
 
@@ -65,6 +73,7 @@ final class StartLevelUseCase {
     _inventoryRepository.reset();
     _pickupRepository.startLevel(level);
     _constructionRepository.reset();
+    _stationRepository.reset();
     _locationRepository.setLocation(.house);
   }
 }

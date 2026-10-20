@@ -5,10 +5,19 @@ import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
+import 'package:domain/station/use_case/build_station_use_case.dart';
+import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:presentation/di/di_container.dart';
 
 void registerUseCases() {
   diContainer
+    ..registerFactory(
+      () => BuildStationUseCase(
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
+      ),
+    )
     ..registerFactory(
       () => KeepPickupUseCase(
         inventoryRepository: diContainer.get(),
@@ -40,6 +49,7 @@ void registerUseCases() {
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
         saveRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -54,6 +64,15 @@ void registerUseCases() {
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
         saveRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => StationChoicesUseCase(
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

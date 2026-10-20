@@ -11,6 +11,8 @@ import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
+import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
@@ -34,6 +36,8 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
+import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/station_repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,6 +49,7 @@ import 'package:presentation/feature/level_1/page/level_1_page.dart';
 import 'package:presentation/feature/level_2/page/level_2_page.dart';
 import 'package:presentation/feature/load_game/page/load_game_page.dart';
 import 'package:presentation/feature/start/page/start_page.dart';
+import 'package:presentation/feature/station/page/station_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 import 'helpers/test_dependencies.dart';
@@ -116,6 +121,8 @@ void main() {
       ..registerSingleton<PollutionRepository>(pollutionRepository ?? PollutionRepositoryImpl())
       ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
       ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl())
+      ..registerSingleton<SelectionRepository>(SelectionRepositoryImpl())
+      ..registerSingleton<StationRepository>(StationRepositoryImpl())
       ..registerSingleton<TickerRepository>(ManualTickerRepository());
     registerUseCases();
 
@@ -245,6 +252,7 @@ void main() {
             pickups: const [],
             pollution: const .clean(),
             constructions: const {},
+            stations: const {},
           ),
         );
       await pumpApp(
@@ -324,6 +332,7 @@ void main() {
               isSoilPolluted: false,
             ),
             constructions: const {},
+            stations: const {},
           ),
         );
       await pumpApp(
@@ -844,6 +853,106 @@ void main() {
       expect(
         pollutionRepository.pollution.airPoints,
         0,
+      );
+    },
+  );
+
+  testWidgets(
+    'Selected wood builds the campfire and the workbench at the house',
+    (
+      WidgetTester tester,
+    ) async {
+      final images = Assets.resources.assets.images;
+      const buildLine = 'you can build the following objects:';
+      final materialRepository = MaterialRepositoryImpl();
+      await pumpApp(
+        tester,
+        materialRepository: materialRepository,
+      );
+      await startLevel1(tester);
+      materialRepository
+        ..add(.wood)
+        ..add(.wood);
+      await pumpScene(tester);
+      final location = tester.getCenter(find.byType(StationPage));
+
+      await tester.tapAt(location);
+      await pumpScene(tester);
+      expect(
+        find.text(buildLine),
+        findsNothing,
+      );
+
+      await tester.tap(buttonImage(images.imgWood).first);
+      await pumpScene(tester);
+      await tester.tapAt(location);
+      await pumpScene(tester);
+      expect(
+        find.text(buildLine),
+        findsOneWidget,
+      );
+
+      await tester.tapAt(
+        const Offset(
+          380,
+          100,
+        ),
+      );
+      await pumpScene(tester);
+      expect(
+        find.text(buildLine),
+        findsNothing,
+      );
+
+      await tester.tapAt(location);
+      await pumpScene(tester);
+      await tapText(
+        tester,
+        'CAMPFIRE',
+      );
+      expect(
+        buttonImage(images.imgCampfire),
+        findsOneWidget,
+      );
+      expect(
+        materialRepository.count(.wood),
+        1,
+      );
+
+      await tester.tapAt(location);
+      await pumpScene(tester);
+      expect(
+        find.descendant(
+          of: find.byType(AnswerButtonContainer),
+          matching: buttonImage(images.imgDoneIcon),
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('CAMPFIRE'));
+      await pumpScene(tester);
+      expect(
+        find.text(buildLine),
+        findsOneWidget,
+      );
+
+      await tapText(
+        tester,
+        'WORKBENCH',
+      );
+      expect(
+        buttonImage(images.imgCraft),
+        findsOneWidget,
+      );
+      expect(
+        materialRepository.count(.wood),
+        0,
+      );
+
+      await tester.tapAt(location);
+      await pumpScene(tester);
+      expect(
+        find.text(buildLine),
+        findsNothing,
       );
     },
   );

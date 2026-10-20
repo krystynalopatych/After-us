@@ -7,6 +7,7 @@ import 'package:domain/pickup/model/pickup.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:equatable/equatable.dart';
 
 final class GameSave extends Equatable {
@@ -20,6 +21,7 @@ final class GameSave extends Equatable {
   final List<Pickup> pickups;
   final Pollution pollution;
   final Set<Construction> constructions;
+  final Set<Station> stations;
 
   const GameSave({
     required this.level,
@@ -32,6 +34,7 @@ final class GameSave extends Equatable {
     required this.pickups,
     required this.pollution,
     required this.constructions,
+    required this.stations,
   });
 
   GameSave copyWith({
@@ -45,6 +48,7 @@ final class GameSave extends Equatable {
     List<Pickup>? pickups,
     Pollution? pollution,
     Set<Construction>? constructions,
+    Set<Station>? stations,
   }) => GameSave(
     level: level ?? this.level,
     location: location ?? this.location,
@@ -56,6 +60,7 @@ final class GameSave extends Equatable {
     pickups: pickups ?? this.pickups,
     pollution: pollution ?? this.pollution,
     constructions: constructions ?? this.constructions,
+    stations: stations ?? this.stations,
   );
 
   @override
@@ -70,5 +75,6 @@ final class GameSave extends Equatable {
     pickups,
     pollution,
     constructions,
+    stations,
   ];
 }
