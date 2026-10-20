@@ -5,6 +5,7 @@ import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
+import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/di/di_container.dart';
@@ -16,11 +17,13 @@ class HudBloc extends Bloc<HudEvent, HudState> {
   final PlayerRepository _playerRepository;
   final MaterialRepository _materialRepository;
   final InventoryRepository _inventoryRepository;
+  final ConsumeUseCase _consumeUseCase;
 
   HudBloc()
     : _playerRepository = diContainer.get(),
       _materialRepository = diContainer.get(),
       _inventoryRepository = diContainer.get(),
+      _consumeUseCase = diContainer.get(),
       super(
         HudState(
           stats: diContainer.get<PlayerRepository>().stats,
@@ -73,10 +76,16 @@ class HudBloc extends Bloc<HudEvent, HudState> {
   void _onSlotTapped(
     HudSlotTapped event,
     Emitter<HudState> emit,
-  ) => emit(
-    state.copyWith(
-      selectedMaterial: () => null,
-      selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
-    ),
-  );
+  ) {
+    final item = state.inventory.elementAtOrNull(event.slot)?.item;
+    if (state.selectedSlot == event.slot && item != null && item.isConsumable) {
+      _consumeUseCase(item);
+    }
+    emit(
+      state.copyWith(
+        selectedMaterial: () => null,
+        selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
+      ),
+    );
+  }
 }

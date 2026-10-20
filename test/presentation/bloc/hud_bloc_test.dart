@@ -164,4 +164,65 @@ void main() {
       );
     },
   );
+
+  test(
+    'tapping a selected food eats it and clears the selection',
+    () async {
+      deps.player.setStats(
+        const .new(
+          health: 50,
+          hunger: 50,
+          thirst: 50,
+        ),
+      );
+      deps.inventory
+        ..add(.berries)
+        ..add(.berries);
+      await pumpEventQueue();
+
+      bloc.add(const HudSlotTapped(0));
+      await pumpEventQueue();
+      expect(
+        deps.inventory.count(.berries),
+        2,
+      );
+
+      bloc.add(const HudSlotTapped(0));
+      await pumpEventQueue();
+      expect(
+        deps.inventory.count(.berries),
+        1,
+      );
+      expect(
+        bloc.state.stats.hunger,
+        60,
+      );
+      expect(
+        bloc.state.selectedSlot,
+        isNull,
+      );
+    },
+  );
+
+  test(
+    'tapping a selected tool does not use it',
+    () async {
+      deps.inventory.add(.cookingPot);
+      await pumpEventQueue();
+
+      bloc
+        ..add(const HudSlotTapped(0))
+        ..add(const HudSlotTapped(0));
+      await pumpEventQueue();
+
+      expect(
+        deps.inventory.count(.cookingPot),
+        1,
+      );
+      expect(
+        bloc.state.selectedSlot,
+        isNull,
+      );
+    },
+  );
 }

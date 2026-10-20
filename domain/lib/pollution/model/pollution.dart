@@ -1,4 +1,5 @@
 import 'package:domain/pollution/model/air_quality.dart';
+import 'package:domain/pollution/model/pollution_zone.dart';
 import 'package:equatable/equatable.dart';
 
 final class Pollution extends Equatable {
@@ -20,6 +21,11 @@ final class Pollution extends Equatable {
   });
 
   const Pollution.clean() : airPoints = 0, isWaterPolluted = false, isSoilPolluted = false;
+
+  bool isPolluted(PollutionZone zone) => switch (zone) {
+    .water => isWaterPolluted,
+    .soil => isSoilPolluted,
+  };
 
   int get dailyHealthCeilingDrop => switch (airPoints) {
     >= _heavyAirPoints => _heavyCeilingDrop,

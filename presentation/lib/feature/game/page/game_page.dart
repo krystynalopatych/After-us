@@ -42,6 +42,12 @@ class _GamePageState extends State<GamePage> {
     680,
     1020,
   );
+  static const _lakeWaterRect = Rect.fromLTWH(
+    560,
+    _skyHeight + 340,
+    760,
+    380,
+  );
   static const _closeButtonOffset = 40.0;
   static const _closeButtonSize = 150.0;
   static const _mapIconWidth = 340.0;
@@ -107,6 +113,17 @@ class _GamePageState extends State<GamePage> {
                 height: SceneContainer.designSize.height,
                 child: CharacterPage.withBloc(),
               ),
+              if (state.location == .lake)
+                Positioned.fromRect(
+                  rect: _lakeWaterRect,
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      behavior: .opaque,
+                      onTap: () => _bloc.add(const GameLakeWaterTapped()),
+                    ),
+                  ),
+                ),
               Positioned.fill(child: HudPage.withBloc(onMapTap: () => _bloc.add(const GameMapTapped()))),
               Positioned.fill(
                 child: PickupPage.withBloc(

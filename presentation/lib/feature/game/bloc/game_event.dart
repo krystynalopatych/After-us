@@ -27,3 +27,7 @@ final class GameLocationSelected extends GameEvent {
   @override
   List<Object?> get props => [location];
 }
+
+final class GameLakeWaterTapped extends GameEvent {
+  const GameLakeWaterTapped();
+}

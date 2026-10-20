@@ -170,4 +170,24 @@ void main() {
       );
     },
   );
+
+  test(
+    'tapping the lake water fills a bottle when there is one',
+    () async {
+      bloc.add(const GameLakeWaterTapped());
+      await pumpEventQueue();
+      expect(
+        deps.inventory.count(.lakeWater),
+        0,
+      );
+
+      deps.inventory.add(.sodisBottle);
+      bloc.add(const GameLakeWaterTapped());
+      await pumpEventQueue();
+      expect(
+        deps.inventory.count(.lakeWater),
+        1,
+      );
+    },
+  );
 }

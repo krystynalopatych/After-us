@@ -1,8 +1,10 @@
 import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
+import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
@@ -10,6 +12,20 @@ import 'package:presentation/di/di_container.dart';
 
 void registerUseCases() {
   diContainer
+    ..registerFactory(
+      () => ConsumeUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        playerRepository: diContainer.get(),
+        pollutionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => FillBottleUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+      ),
+    )
     ..registerFactory(
       () => KeepPickupUseCase(
         inventoryRepository: diContainer.get(),

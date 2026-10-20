@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 final class PlayerStats extends Equatable {
   static const maxHealth = 100.0;
+  static const maxNeed = 100.0;
 
   final double health;
   final double hunger;

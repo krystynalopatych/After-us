@@ -191,6 +191,7 @@ class _HudPageState extends State<HudPage> {
       .algaeSoaked => images.imgSeaweedVymochenye,
       .berries => images.imgBerries,
       .cleanWater => images.imgBoiledWater,
+      .lakeWater => images.imgWaterSodis,
       .sodisBottle => images.imgWaterSodis,
       .prefilter => images.imgPrefilter,
       .cookingPot => images.imgCookingPot,

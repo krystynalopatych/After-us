@@ -895,7 +895,7 @@ void main() {
   );
 
   testWidgets(
-    'Collected items show their name on hover and highlight when tapped',
+    'Collected items show their name on hover, highlight when tapped and are eaten on the second tap',
     (
       WidgetTester tester,
     ) async {
@@ -946,8 +946,12 @@ void main() {
       await pumpScene(tester);
 
       expect(
-        tester.widget<SelectableContainer>(slot).isSelected,
-        isFalse,
+        slot,
+        findsNothing,
+      );
+      expect(
+        find.text('You ate berries. +10 hunger, +3 thirst.'),
+        findsOneWidget,
       );
     },
   );
