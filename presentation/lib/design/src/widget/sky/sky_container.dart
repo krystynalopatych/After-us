@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/design/src/widget/background/model/background_element.dart';
 import 'package:presentation/design/src/widget/sky/model/sky_state.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 final class SkyContainer extends StatefulWidget {
   final SkyState state;
+  final List<BackgroundElement> elements;
 
   const SkyContainer({
     super.key,
     required this.state,
+    this.elements = const [],
   });
 
   @override
@@ -52,6 +55,14 @@ class _SkyContainerState extends State<SkyContainer> with SingleTickerProviderSt
               isVisible: widget.state.isSkyDark,
               child: _images.imgSkyBlack.image(fit: .cover, alignment: .bottomCenter),
             ),
+            for (final element in widget.elements)
+              Positioned(
+                left: element.left,
+                top: element.top,
+                width: element.width,
+                height: element.height,
+                child: element.child,
+              ),
             for (final cloud in _clouds)
               AnimatedBuilder(
                 animation: _drift,

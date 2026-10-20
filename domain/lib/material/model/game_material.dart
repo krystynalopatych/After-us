@@ -2,6 +2,7 @@ enum GameMaterial {
   plastic,
   cloth,
   sand,
+  wood,
   metal,
   organics,
   cardboard,
@@ -9,4 +10,5 @@ enum GameMaterial {
   clay,
   oil,
   chlorine,
+  electronics,
 }

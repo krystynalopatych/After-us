@@ -8,6 +8,7 @@ import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
+import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
@@ -29,6 +30,7 @@ class _GamePageState extends State<GamePage> {
   static const _skyHeight = 450.0;
   static const _locationHeight = 1280.0;
   static const _sceneSize = Size(1920, _skyHeight + _locationHeight);
+  static const _sunLightRect = Rect.fromLTWH(583, _skyHeight, 680, 1020);
   static const _closeButtonOffset = 40.0;
   static const _closeButtonSize = 150.0;
   static const _mapIconWidth = 340.0;
@@ -56,7 +58,7 @@ class _GamePageState extends State<GamePage> {
           SceneContainer(
             size: _sceneSize,
             children: [
-              Positioned(left: 0, top: 0, right: 0, height: _skyHeight, child: SkyPage.withBloc()),
+              Positioned(left: 0, top: 0, right: 0, height: _skyHeight, child: SkyPage.withBloc(hasSun: state.location == .lake)),
               Positioned(
                 left: 0,
                 right: 0,
@@ -64,6 +66,9 @@ class _GamePageState extends State<GamePage> {
                 height: _locationHeight,
                 child: BackgroundContainer(image: _locationBackground(state.location)),
               ),
+              if (state.location == .lake)
+                Positioned.fromRect(rect: _sunLightRect, child: context.images.imgSunLight.image(fit: .contain)),
+              Positioned(left: 0, right: 0, bottom: 0, height: _locationHeight, child: PickupPage.withBloc()),
               Positioned(
                 left: 0,
                 right: 0,

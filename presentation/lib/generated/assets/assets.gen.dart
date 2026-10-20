@@ -429,6 +429,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgWaterSodis =>
       const AssetGenImage('resources/assets/images/img_water_sodis.png');
 
+  /// File path: resources/assets/images/img_wood.png
+  AssetGenImage get imgWood =>
+      const AssetGenImage('resources/assets/images/img_wood.png');
+
   /// File path: resources/assets/images/img_zapyska.png
   AssetGenImage get imgZapyska =>
       const AssetGenImage('resources/assets/images/img_zapyska.png');
@@ -538,6 +542,7 @@ class $ResourcesAssetsImagesGen {
     imgSvalka,
     imgSvalkaIcon,
     imgWaterSodis,
+    imgWood,
     imgZapyska,
     imgZapyskaStory,
   ];

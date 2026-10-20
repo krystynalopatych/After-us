@@ -1,3 +1,4 @@
+import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ class HudPage extends StatefulWidget {
 
 class _HudPageState extends State<HudPage> {
   static const _materialOffset = 20.0;
-  static const _materialSize = 140.0;
+  static const _materialSize = 160.0;
   static const _materialSpacing = 10.0;
   static const _statWidth = 150.0;
   static const _statHeight = 141.0;
@@ -34,9 +35,14 @@ class _HudPageState extends State<HudPage> {
   static const _thirstLeft = 706.0;
   static const _thirstValueAlignment = Alignment(0.203, 0.088);
   static const _inventoryLeft = 852.0;
-  static const _inventoryTop = 1522.0;
-  static const _inventoryWidth = 820.0;
-  static const _inventoryHeight = 273.0;
+  static const _inventoryTop = 1509.0;
+  static const _inventoryWidth = 900.0;
+  static const _inventoryHeight = 300.0;
+  static const _inventoryImageWidth = 2172.0;
+  static const _slotFirstCenter = 420.0;
+  static const _slotPitch = 148.7;
+  static const _slotCenterY = 365.0;
+  static const _slotSize = 120.0;
   static const _mapLeft = 1760.0;
   static const _mapTop = 1560.0;
   static const _mapSize = 150.0;
@@ -111,6 +117,17 @@ class _HudPageState extends State<HudPage> {
               height: _inventoryHeight,
               child: images.imgInventory12.image(fit: .contain),
             ),
+            for (final (index, stack) in state.inventory.indexed)
+              Positioned(
+                left: _inventoryLeft + (_slotFirstCenter + index * _slotPitch - _slotSize / 2) * _inventoryScale,
+                top: _inventoryTop + (_slotCenterY - _slotSize / 2) * _inventoryScale,
+                width: _slotSize * _inventoryScale,
+                height: _slotSize * _inventoryScale,
+                child: InventorySlotContainer(
+                  image: _inventoryImage(context, stack.item),
+                  count: stack.count,
+                ),
+              ),
             Positioned(
               left: _mapLeft,
               top: _mapTop,
@@ -127,12 +144,24 @@ class _HudPageState extends State<HudPage> {
     );
   }
 
+  static double get _inventoryScale => _inventoryWidth / _inventoryImageWidth;
+
+  static AssetGenImage _inventoryImage(BuildContext context, InventoryItem item) {
+    final images = context.images;
+    return switch (item) {
+      .cattailRoot => images.imgKoreniKamyshaSyrye,
+      .algae => images.imgSeaweedNEVymochenye,
+      .berries => images.imgBerries,
+    };
+  }
+
   static AssetGenImage _materialImage(BuildContext context, GameMaterial material) {
     final images = context.images;
     return switch (material) {
       .plastic => images.imgPlasticBottle,
       .cloth => images.imgFabric,
       .sand => images.imgSand,
+      .wood => images.imgWood,
       .metal => images.imgMetal,
       .organics => images.imgOrganic,
       .cardboard => images.imgCardboard,
@@ -140,6 +169,7 @@ class _HudPageState extends State<HudPage> {
       .clay => images.imgClay,
       .oil => images.imgOil,
       .chlorine => images.imgChlorine,
+      .electronics => images.imgProvoda,
     };
   }
 }
