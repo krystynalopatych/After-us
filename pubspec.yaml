@@ -37,6 +37,16 @@ flutter:
   assets:
     - resources/assets/images/
 
+  fonts:
+    - family: PixelifySans
+      fonts:
+        - asset: resources/fonts/PixelifySans-Regular.ttf
+          weight: 400
+        - asset: resources/fonts/PixelifySans-SemiBold.ttf
+          weight: 600
+        - asset: resources/fonts/PixelifySans-Bold.ttf
+          weight: 700
+
 flutter_gen:
   output: presentation/lib/generated/assets/
   line_length: 80
