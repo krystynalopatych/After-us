@@ -15,14 +15,17 @@ final class SceneContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: DesignSystemTheme.of(context).colors.base.black,
-      child: Center(
-        child: FittedBox(
-          child: SizedBox.fromSize(
-            size: size,
-            child: ClipRect(
-              child: Stack(children: children),
+    return Material(
+      type: .transparency,
+      child: ColoredBox(
+        color: DesignSystemTheme.of(context).colors.base.black,
+        child: Center(
+          child: FittedBox(
+            child: SizedBox.fromSize(
+              size: size,
+              child: ClipRect(
+                child: Stack(children: children),
+              ),
             ),
           ),
         ),

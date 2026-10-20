@@ -1,6 +1,6 @@
 enum GameMaterial {
-  plastic,
-  cloth,
+  plastic(airPoints: 3),
+  cloth(airPoints: 2),
   sand,
   wood,
   metal,
@@ -8,7 +8,11 @@ enum GameMaterial {
   cardboard,
   seeds,
   clay,
-  oil,
+  oil(airPoints: 3),
   chlorine,
-  electronics,
+  electronics(airPoints: 5);
+
+  final int airPoints;
+
+  const GameMaterial({this.airPoints = 1});
 }

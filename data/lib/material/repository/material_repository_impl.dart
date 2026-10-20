@@ -24,6 +24,14 @@ final class MaterialRepositoryImpl implements MaterialRepository {
   }
 
   @override
+  void restore(List<MaterialStock> stocks) {
+    _counts
+      ..clear()
+      ..addEntries([for (final stock in stocks) MapEntry(stock.material, stock.count)]);
+    _stocksController.add(this.stocks);
+  }
+
+  @override
   void reset() {
     _counts.clear();
     _stocksController.add(stocks);

@@ -8,5 +8,7 @@ abstract interface class MaterialRepository {
 
   void add(GameMaterial material);
 
+  void restore(List<MaterialStock> stocks);
+
   void reset();
 }

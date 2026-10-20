@@ -73,13 +73,16 @@ class _LoadGamePageState extends State<LoadGamePage> {
     final (colors, typography) = context.colorsTypography;
 
     return TapBuilder(
-      onTap: () => AppRoute.fromLevel(save.level).go(context),
+      onTap: () {
+        _bloc.add(LoadGameSaveTapped(save));
+        AppRoute.fromLevel(save.level).go(context);
+      },
       builder: (context, isPressed, isHovered) => Padding(
         padding: _rowPadding,
         child: Text(
           'Level ${save.level.index + 1} · ${_locationTitle(save.location)} · ${_formatDate(save.savedAt)}',
           textAlign: .center,
-          style: typography.title.copyWith(
+          style: typography.headline.copyWith(
             color: isPressed || isHovered ? colors.base.orange : colors.base.white,
           ),
         ),

@@ -14,6 +14,12 @@ final class PlayerRepositoryImpl implements PlayerRepository {
   Stream<PlayerStats> get statsStream => _statsController.stream;
 
   @override
+  void setStats(PlayerStats stats) {
+    _stats = stats;
+    _statsController.add(stats);
+  }
+
+  @override
   void reset() {
     _stats = const .initial();
     _statsController.add(_stats);

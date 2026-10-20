@@ -7,3 +7,9 @@ sealed class LoadGameEvent {
 final class LoadGameStarted extends LoadGameEvent {
   const LoadGameStarted();
 }
+
+final class LoadGameSaveTapped extends LoadGameEvent {
+  final GameSave save;
+
+  const LoadGameSaveTapped(this.save);
+}

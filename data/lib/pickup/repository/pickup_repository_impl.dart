@@ -78,4 +78,12 @@ final class PickupRepositoryImpl implements PickupRepository {
     _pickups.removeWhere((item) => item.id == pickup.id);
     _pickupsController.add(pickups);
   }
+
+  @override
+  void restore(List<Pickup> pickups) {
+    _pickups
+      ..clear()
+      ..addAll(pickups);
+    _pickupsController.add(this.pickups);
+  }
 }

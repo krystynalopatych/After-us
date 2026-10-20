@@ -11,5 +11,6 @@ class LoadGameBloc extends Bloc<LoadGameEvent, LoadGameState> {
 
   LoadGameBloc() : _saveRepository = diContainer.get(), super(const LoadGameState()) {
     on<LoadGameStarted>((event, emit) => emit(LoadGameState(saves: _saveRepository.saves)));
+    on<LoadGameSaveTapped>((event, emit) => _saveRepository.load(event.save));
   }
 }

@@ -8,5 +8,7 @@ abstract interface class InventoryRepository {
 
   bool add(InventoryItem item);
 
+  void restore(List<InventoryStack> stacks);
+
   void reset();
 }

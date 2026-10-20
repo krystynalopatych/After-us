@@ -40,6 +40,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgAbandonnedStore =>
       const AssetGenImage('resources/assets/images/img_abandonned_store.png');
 
+  /// File path: resources/assets/images/img_answer_block.png
+  AssetGenImage get imgAnswerBlock =>
+      const AssetGenImage('resources/assets/images/img_answer_block.png');
+
   /// File path: resources/assets/images/img_ashes.png
   AssetGenImage get imgAshes =>
       const AssetGenImage('resources/assets/images/img_ashes.png');
@@ -300,6 +304,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgMapIconPixel =>
       const AssetGenImage('resources/assets/images/img_map_icon_pixel.png');
 
+  /// File path: resources/assets/images/img_message_block.png
+  AssetGenImage get imgMessageBlock =>
+      const AssetGenImage('resources/assets/images/img_message_block.png');
+
   /// File path: resources/assets/images/img_metal.png
   AssetGenImage get imgMetal =>
       const AssetGenImage('resources/assets/images/img_metal.png');
@@ -446,6 +454,7 @@ class $ResourcesAssetsImagesGen {
     background,
     imgSeeds,
     imgAbandonnedStore,
+    imgAnswerBlock,
     imgAshes,
     imgBerries,
     imgBoiledWater,
@@ -510,6 +519,7 @@ class $ResourcesAssetsImagesGen {
     imgMainCharacterSad,
     imgMap,
     imgMapIconPixel,
+    imgMessageBlock,
     imgMetal,
     imgMiceliumRoof,
     imgMiceliy,

@@ -32,6 +32,14 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   }
 
   @override
+  void restore(List<InventoryStack> stacks) {
+    _stacks
+      ..clear()
+      ..addAll(stacks);
+    _stacksController.add(this.stacks);
+  }
+
+  @override
   void reset() {
     _stacks.clear();
     _stacksController.add(stacks);

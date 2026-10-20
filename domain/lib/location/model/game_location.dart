@@ -1,8 +1,12 @@
 enum GameLocation {
   forest,
   lake,
-  garage,
+  garage(isFar: true),
   house,
-  store,
-  dump,
+  store(isFar: true),
+  dump(isFar: true);
+
+  final bool isFar;
+
+  const GameLocation({this.isFar = false});
 }

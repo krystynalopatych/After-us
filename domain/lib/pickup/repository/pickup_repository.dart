@@ -9,4 +9,6 @@ abstract interface class PickupRepository {
   void startLevel(GameLevel level);
 
   void collect(Pickup pickup);
+
+  void restore(List<Pickup> pickups);
 }

@@ -5,5 +5,7 @@ abstract interface class PlayerRepository {
 
   Stream<PlayerStats> get statsStream;
 
+  void setStats(PlayerStats stats);
+
   void reset();
 }

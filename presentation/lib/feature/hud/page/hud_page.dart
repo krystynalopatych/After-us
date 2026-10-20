@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/item_title_extension.dart';
 import 'package:presentation/feature/hud/bloc/hud_bloc.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
@@ -71,10 +72,17 @@ class _HudPageState extends State<HudPage> {
                 top: _materialOffset,
                 width: _materialSize,
                 height: _materialSize,
-                child: MaterialContainer(
-                  frame: images.imgResourseIcon,
-                  image: _materialImage(context, stock.material),
-                  count: stock.count,
+                child: SelectableContainer(
+                  glowImage: images.imgResourseIcon,
+                  label: stock.material.title,
+                  isSelected: state.selectedMaterial == stock.material,
+                  isLabelBelow: true,
+                  onTap: () => _bloc.add(HudMaterialTapped(stock.material)),
+                  child: MaterialContainer(
+                    frame: images.imgResourseIcon,
+                    image: _materialImage(context, stock.material),
+                    count: stock.count,
+                  ),
                 ),
               ),
             Positioned(
@@ -123,9 +131,16 @@ class _HudPageState extends State<HudPage> {
                 top: _inventoryTop + (_slotCenterY - _slotSize / 2) * _inventoryScale,
                 width: _slotSize * _inventoryScale,
                 height: _slotSize * _inventoryScale,
-                child: InventorySlotContainer(
-                  image: _inventoryImage(context, stack.item),
-                  count: stack.count,
+                child: SelectableContainer(
+                  glowImage: _inventoryImage(context, stack.item),
+                  label: stack.item.title,
+                  isSelected: state.selectedSlot == index,
+                  isLabelBelow: false,
+                  onTap: () => _bloc.add(HudSlotTapped(index)),
+                  child: InventorySlotContainer(
+                    image: _inventoryImage(context, stack.item),
+                    count: stack.count,
+                  ),
                 ),
               ),
             Positioned(

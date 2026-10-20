@@ -1,5 +1,5 @@
-import 'package:domain/air/model/air_quality.dart';
-import 'package:domain/air/repository/air_repository.dart';
+import 'package:domain/pollution/model/air_quality.dart';
+import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/src/widget/sky/model/sky_state.dart';
 import 'package:presentation/di/di_container.dart';
@@ -7,19 +7,19 @@ import 'package:presentation/di/di_container.dart';
 part 'sky_event.dart';
 
 class SkyBloc extends Bloc<SkyEvent, SkyState> {
-  final AirRepository _airRepository;
+  final PollutionRepository _pollutionRepository;
 
   SkyBloc()
-    : _airRepository = diContainer.get(),
-      super(_toState(diContainer.get<AirRepository>().quality)) {
+    : _pollutionRepository = diContainer.get(),
+      super(_toState(diContainer.get<PollutionRepository>().pollution.airQuality)) {
     on<SkyStarted>(_onStarted);
   }
 
   Future<void> _onStarted(SkyStarted event, Emitter<SkyState> emit) {
-    emit(_toState(_airRepository.quality));
+    emit(_toState(_pollutionRepository.pollution.airQuality));
     return emit.forEach(
-      _airRepository.qualityStream,
-      onData: _toState,
+      _pollutionRepository.pollutionStream,
+      onData: (pollution) => _toState(pollution.airQuality),
     );
   }
 

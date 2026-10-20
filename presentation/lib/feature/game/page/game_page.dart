@@ -68,7 +68,6 @@ class _GamePageState extends State<GamePage> {
               ),
               if (state.location == .lake)
                 Positioned.fromRect(rect: _sunLightRect, child: context.images.imgSunLight.image(fit: .contain)),
-              Positioned(left: 0, right: 0, bottom: 0, height: _locationHeight, child: PickupPage.withBloc()),
               Positioned(
                 left: 0,
                 right: 0,
@@ -77,6 +76,7 @@ class _GamePageState extends State<GamePage> {
                 child: CharacterPage.withBloc(),
               ),
               Positioned.fill(child: HudPage.withBloc(onMapTap: () => _bloc.add(const GameMapTapped()))),
+              Positioned.fill(child: PickupPage.withBloc(locationTop: _skyHeight)),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
             ],
           ),

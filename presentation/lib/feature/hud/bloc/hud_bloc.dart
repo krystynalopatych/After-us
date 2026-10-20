@@ -1,5 +1,6 @@
 import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
+import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
@@ -27,6 +28,8 @@ class HudBloc extends Bloc<HudEvent, HudState> {
         ),
       ) {
     on<HudStarted>(_onStarted);
+    on<HudMaterialTapped>(_onMaterialTapped);
+    on<HudSlotTapped>(_onSlotTapped);
   }
 
   Future<void> _onStarted(HudStarted event, Emitter<HudState> emit) {
@@ -40,16 +43,52 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     return Future.wait([
       emit.forEach(
         _playerRepository.statsStream,
-        onData: (stats) => HudState(stats: stats, stocks: state.stocks, inventory: state.inventory),
+        onData: (stats) => HudState(
+          stats: stats,
+          stocks: state.stocks,
+          inventory: state.inventory,
+          selectedMaterial: state.selectedMaterial,
+          selectedSlot: state.selectedSlot,
+        ),
       ),
       emit.forEach(
         _materialRepository.stocksStream,
-        onData: (stocks) => HudState(stats: state.stats, stocks: stocks, inventory: state.inventory),
+        onData: (stocks) => HudState(
+          stats: state.stats,
+          stocks: stocks,
+          inventory: state.inventory,
+          selectedMaterial: state.selectedMaterial,
+          selectedSlot: state.selectedSlot,
+        ),
       ),
       emit.forEach(
         _inventoryRepository.stacksStream,
-        onData: (inventory) => HudState(stats: state.stats, stocks: state.stocks, inventory: inventory),
+        onData: (inventory) => HudState(
+          stats: state.stats,
+          stocks: state.stocks,
+          inventory: inventory,
+          selectedMaterial: state.selectedMaterial,
+          selectedSlot: state.selectedSlot,
+        ),
       ),
     ]);
   }
+
+  void _onMaterialTapped(HudMaterialTapped event, Emitter<HudState> emit) => emit(
+    HudState(
+      stats: state.stats,
+      stocks: state.stocks,
+      inventory: state.inventory,
+      selectedMaterial: state.selectedMaterial == event.material ? null : event.material,
+    ),
+  );
+
+  void _onSlotTapped(HudSlotTapped event, Emitter<HudState> emit) => emit(
+    HudState(
+      stats: state.stats,
+      stocks: state.stocks,
+      inventory: state.inventory,
+      selectedSlot: state.selectedSlot == event.slot ? null : event.slot,
+    ),
+  );
 }

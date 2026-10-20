@@ -4,4 +4,8 @@ abstract interface class SaveRepository {
   List<GameSave> get saves;
 
   void addSave(GameSave save);
+
+  void load(GameSave save);
+
+  GameSave? takeLoadedSave();
 }
