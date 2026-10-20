@@ -19,7 +19,14 @@ final class TravelUseCase {
     final from = _locationRepository.location;
     if (from != destination && (from.isFar || destination.isFar)) {
       final stats = _playerRepository.stats;
-      _playerRepository.setStats(stats.copyWith(thirst: max(0, stats.thirst - _farTripThirst)));
+      _playerRepository.setStats(
+        stats.copyWith(
+          thirst: max(
+            0,
+            stats.thirst - _farTripThirst,
+          ),
+        ),
+      );
     }
     _locationRepository.setLocation(destination);
   }

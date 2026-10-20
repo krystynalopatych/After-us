@@ -107,7 +107,10 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  static Widget _panelButton({required double top, required Widget child}) => Positioned(
+  static Widget _panelButton({
+    required double top,
+    required Widget child,
+  }) => Positioned(
     left: (_panelWidth - _buttonSize) / 2,
     top: top,
     width: _buttonSize,

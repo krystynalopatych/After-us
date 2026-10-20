@@ -17,8 +17,16 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     on<MenuSaveTapped>(_onSaveTapped);
   }
 
-  void _onSaveTapped(MenuSaveTapped event, Emitter<MenuState> emit) {
+  void _onSaveTapped(
+    MenuSaveTapped event,
+    Emitter<MenuState> emit,
+  ) {
     _saveGameUseCase(event.level);
-    emit(state.copyWith(isOpen: true, isSaved: true));
+    emit(
+      state.copyWith(
+        isOpen: true,
+        isSaved: true,
+      ),
+    );
   }
 }

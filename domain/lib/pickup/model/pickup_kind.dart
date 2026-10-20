@@ -15,5 +15,8 @@ enum PickupKind {
   final GameMaterial? material;
   final InventoryItem? food;
 
-  const PickupKind({this.material, this.food});
+  const PickupKind({
+    this.material,
+    this.food,
+  });
 }

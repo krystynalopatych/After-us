@@ -6,7 +6,10 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 final class AnswerButtonContainer extends StatelessWidget {
   static const _animationDuration = Duration(milliseconds: 120);
   static const _pressedScale = 0.92;
-  static const _textPadding = EdgeInsets.symmetric(horizontal: 40, vertical: 32);
+  static const _textPadding = EdgeInsets.symmetric(
+    horizontal: 40,
+    vertical: 32,
+  );
 
   final String text;
   final VoidCallback onTap;

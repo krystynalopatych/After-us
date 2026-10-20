@@ -29,16 +29,36 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   static const _skyHeight = 450.0;
   static const _locationHeight = 1280.0;
-  static const _sceneSize = Size(1920, _skyHeight + _locationHeight);
-  static const _sunLightRect = Rect.fromLTWH(583, _skyHeight, 680, 1020);
+  static const _sceneSize = Size(
+    1920,
+    _skyHeight + _locationHeight,
+  );
+  static const _sunLightRect = Rect.fromLTWH(
+    583,
+    _skyHeight,
+    680,
+    1020,
+  );
   static const _closeButtonOffset = 40.0;
   static const _closeButtonSize = 150.0;
   static const _mapIconWidth = 340.0;
   static const _mapIconHeight = 311.0;
-  static const _houseSpot = Offset(240, 0);
-  static const _lakeSpot = Offset(1450, 94);
-  static const _forestSpot = Offset(200, 484);
-  static const _farSpot = Offset(1330, 704);
+  static const _houseSpot = Offset(
+    240,
+    0,
+  );
+  static const _lakeSpot = Offset(
+    1450,
+    94,
+  );
+  static const _forestSpot = Offset(
+    200,
+    484,
+  );
+  static const _farSpot = Offset(
+    1330,
+    704,
+  );
 
   late final GameBloc _bloc;
 
@@ -58,7 +78,13 @@ class _GamePageState extends State<GamePage> {
           SceneContainer(
             size: _sceneSize,
             children: [
-              Positioned(left: 0, top: 0, right: 0, height: _skyHeight, child: SkyPage.withBloc(hasSun: state.location == .lake)),
+              Positioned(
+                left: 0,
+                top: 0,
+                right: 0,
+                height: _skyHeight,
+                child: SkyPage.withBloc(hasSun: state.location == .lake),
+              ),
               Positioned(
                 left: 0,
                 right: 0,
@@ -67,7 +93,10 @@ class _GamePageState extends State<GamePage> {
                 child: BackgroundContainer(image: _locationBackground(state.location)),
               ),
               if (state.location == .lake)
-                Positioned.fromRect(rect: _sunLightRect, child: context.images.imgSunLight.image(fit: .contain)),
+                Positioned.fromRect(
+                  rect: _sunLightRect,
+                  child: context.images.imgSunLight.image(fit: .contain),
+                ),
               Positioned(
                 left: 0,
                 right: 0,
@@ -76,7 +105,12 @@ class _GamePageState extends State<GamePage> {
                 child: CharacterPage.withBloc(),
               ),
               Positioned.fill(child: HudPage.withBloc(onMapTap: () => _bloc.add(const GameMapTapped()))),
-              Positioned.fill(child: PickupPage.withBloc(level: widget.level, locationTop: _skyHeight)),
+              Positioned.fill(
+                child: PickupPage.withBloc(
+                  level: widget.level,
+                  locationTop: _skyHeight,
+                ),
+              ),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
             ],
           ),

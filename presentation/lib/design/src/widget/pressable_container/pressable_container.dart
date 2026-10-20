@@ -50,7 +50,10 @@ final class PressableContainer extends StatelessWidget {
               opacity: isPressed || isHovered ? 1 : 0,
               duration: _animationDuration,
               child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: _glowBlurSigma, sigmaY: _glowBlurSigma),
+                imageFilter: ImageFilter.blur(
+                  sigmaX: _glowBlurSigma,
+                  sigmaY: _glowBlurSigma,
+                ),
                 child: image.image(
                   fit: .contain,
                   color: highlightColor ?? colors.base.white,

@@ -23,6 +23,5 @@ final class DesignSystemTheme extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(DesignSystemTheme oldWidget) =>
-      data != oldWidget.data || brightness != oldWidget.brightness;
+  bool updateShouldNotify(DesignSystemTheme oldWidget) => data != oldWidget.data || brightness != oldWidget.brightness;
 }

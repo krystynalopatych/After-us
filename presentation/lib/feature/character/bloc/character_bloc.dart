@@ -16,7 +16,10 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
     on<CharacterStarted>(_onStarted);
   }
 
-  Future<void> _onStarted(CharacterStarted event, Emitter<CharacterState> emit) {
+  Future<void> _onStarted(
+    CharacterStarted event,
+    Emitter<CharacterState> emit,
+  ) {
     return emit.forEach(
       _characterRepository.moodStream,
       onData: _toState,

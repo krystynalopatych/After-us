@@ -21,14 +21,31 @@ class PickupBloc extends Bloc<PickupEvent, PickupState> {
       _throwPickupUseCase = diContainer.get(),
       super(const PickupState()) {
     on<PickupStarted>(_onStarted);
-    on<PickupTapped>((event, emit) => emit(state.copyWith(found: () => event.pickup, step: .choice)));
+    on<PickupTapped>(
+      (event, emit) => emit(
+        state.copyWith(
+          found: () => event.pickup,
+          step: .choice,
+        ),
+      ),
+    );
     on<PickupKeepTapped>(_onKeepTapped);
     on<PickupThrowTapped>((event, emit) => emit(state.copyWith(step: .throwTarget)));
     on<PickupThrowTargetTapped>(_onThrowTargetTapped);
-    on<PickupDismissed>((event, emit) => emit(state.copyWith(found: () => null, step: .choice)));
+    on<PickupDismissed>(
+      (event, emit) => emit(
+        state.copyWith(
+          found: () => null,
+          step: .choice,
+        ),
+      ),
+    );
   }
 
-  Future<void> _onStarted(PickupStarted event, Emitter<PickupState> emit) {
+  Future<void> _onStarted(
+    PickupStarted event,
+    Emitter<PickupState> emit,
+  ) {
     emit(state.copyWith(pickups: _locationPickupsUseCase.pickups));
     return emit.forEach(
       _locationPickupsUseCase.pickupsStream,
@@ -36,24 +53,43 @@ class PickupBloc extends Bloc<PickupEvent, PickupState> {
     );
   }
 
-  void _onKeepTapped(PickupKeepTapped event, Emitter<PickupState> emit) {
+  void _onKeepTapped(
+    PickupKeepTapped event,
+    Emitter<PickupState> emit,
+  ) {
     final pickup = state.found;
     if (pickup == null) {
       return;
     }
     if (_keepPickupUseCase(pickup)) {
-      emit(state.copyWith(found: () => null, step: .choice));
+      emit(
+        state.copyWith(
+          found: () => null,
+          step: .choice,
+        ),
+      );
     } else {
       emit(state.copyWith(step: .inventoryFull));
     }
   }
 
-  void _onThrowTargetTapped(PickupThrowTargetTapped event, Emitter<PickupState> emit) {
+  void _onThrowTargetTapped(
+    PickupThrowTargetTapped event,
+    Emitter<PickupState> emit,
+  ) {
     final pickup = state.found;
     if (pickup == null) {
       return;
     }
-    emit(state.copyWith(found: () => null, step: .choice));
-    _throwPickupUseCase(pickup, event.target);
+    emit(
+      state.copyWith(
+        found: () => null,
+        step: .choice,
+      ),
+    );
+    _throwPickupUseCase(
+      pickup,
+      event.target,
+    );
   }
 }

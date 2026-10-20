@@ -22,7 +22,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameLocationSelected>(_onLocationSelected);
   }
 
-  Future<void> _onStarted(GameStarted event, Emitter<GameState> emit) {
+  Future<void> _onStarted(
+    GameStarted event,
+    Emitter<GameState> emit,
+  ) {
     emit(state.copyWith(location: _locationRepository.location));
     return emit.forEach(
       _locationRepository.locationStream,
@@ -30,7 +33,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
   }
 
-  void _onLocationSelected(GameLocationSelected event, Emitter<GameState> emit) {
+  void _onLocationSelected(
+    GameLocationSelected event,
+    Emitter<GameState> emit,
+  ) {
     emit(state.copyWith(isMapOpen: false));
     _travelUseCase(event.location);
   }

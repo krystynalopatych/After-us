@@ -5,3 +5,7 @@ analyzer:
     - build/**
     - web/**
     - "**/*.gen.dart"
+
+formatter:
+  page_width: 120
+  trailing_commas: preserve

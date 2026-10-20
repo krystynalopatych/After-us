@@ -33,7 +33,10 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     on<HudSlotTapped>(_onSlotTapped);
   }
 
-  Future<void> _onStarted(HudStarted event, Emitter<HudState> emit) {
+  Future<void> _onStarted(
+    HudStarted event,
+    Emitter<HudState> emit,
+  ) {
     emit(
       state.copyWith(
         stats: _playerRepository.stats,
@@ -57,14 +60,20 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     ]);
   }
 
-  void _onMaterialTapped(HudMaterialTapped event, Emitter<HudState> emit) => emit(
+  void _onMaterialTapped(
+    HudMaterialTapped event,
+    Emitter<HudState> emit,
+  ) => emit(
     state.copyWith(
       selectedMaterial: () => state.selectedMaterial == event.material ? null : event.material,
       selectedSlot: () => null,
     ),
   );
 
-  void _onSlotTapped(HudSlotTapped event, Emitter<HudState> emit) => emit(
+  void _onSlotTapped(
+    HudSlotTapped event,
+    Emitter<HudState> emit,
+  ) => emit(
     state.copyWith(
       selectedMaterial: () => null,
       selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,

@@ -67,7 +67,12 @@ final class PickupRepositoryImpl implements PickupRepository {
     _pickups
       ..clear()
       ..addAll([
-        for (final (index, (location, kind)) in layout.indexed) Pickup(id: index, location: location, kind: kind),
+        for (final (index, (location, kind)) in layout.indexed)
+          Pickup(
+            id: index,
+            location: location,
+            kind: kind,
+          ),
       ]);
     _pickupsController.add(pickups);
   }

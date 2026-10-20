@@ -36,6 +36,7 @@ presentation/lib/
   feature/<name>/
     bloc/<name>_bloc.dart              + <name>_event.dart, <name>_state.dart (part files)
     page/<name>_page.dart
+    model/<name>_config.dart           fixed presentation data (e.g. Level1Config pickup spots)
   design/
     design_src.dart                    the only barrel file
     src/theme/...
@@ -74,7 +75,10 @@ lib/di/
 - Every model with fields extends `Equatable` and overrides `props`.
 - Every model with fields has `copyWith`. A nullable field that must be clearable takes a function:
   ```dart
-  FeedbackMessage copyWith({String? text, String? Function()? heroLine}) => FeedbackMessage(
+  FeedbackMessage copyWith({
+    String? text,
+    String? Function()? heroLine,
+  }) => FeedbackMessage(
     text: text ?? this.text,
     heroLine: heroLine != null ? heroLine() : this.heroLine,
   );
@@ -177,6 +181,21 @@ lib/di/
 - Layout numbers are `static const _name` at the top of the `State` class. No magic numbers inline.
 - Asset/title lookups are `static` exhaustive switches at the bottom of the page.
 
+### Config
+- Fixed presentation data that is not a single layout number (positions per level, long lists of values) goes into a config class, not into the page.
+- File: `feature/<name>/model/<name>_config.dart`, an `abstract final class <Name>Config` with `static const` fields:
+  ```dart
+  abstract final class Level1Config {
+    static const pickupSpots = <Offset>[
+      Offset(
+        700,
+        560,
+      ),
+    ];
+  }
+  ```
+- Pickup screen positions live in `Level1Config.pickupSpots`, indexed by pickup id (= order of the data layout in `PickupRepositoryImpl`). Moving or reordering a pickup means changing both lists in the same order.
+
 ### Scenes
 - Every screen is a `Stack`: pictures at the bottom (background, then character), UI on top (tap areas, buttons, dialogs).
 - Design size is 1920×1080. `AppPage` wraps everything in `SceneContainer` (16:9, black bars).
@@ -213,6 +232,19 @@ lib/di/
 ## 8. Clean code
 
 - **No comments.** No `//`, `///` or `#` in code or YAML. Names explain the code. Generated files are exempt.
+- **Trailing commas.** Every declaration with 2+ parameters and every call with 2+ arguments gets a trailing comma, so each parameter/argument sits on its own line. This covers methods, functions, constructors, constructor calls (`Offset(...)`, `Size(...)`), `copyWith`, widgets and `max(...)`. Closure parameters (`(event, emit) =>`, `(context, state) =>`) stay inline.
+  ```dart
+  void call(
+    Pickup pickup,
+    GameLocation target,
+  ) { ... }
+
+  _throwPickupUseCase(
+    pickup,
+    event.target,
+  );
+  ```
+- **Formatting.** `analysis_options.yaml` sets `page_width: 120` and `trailing_commas: preserve`. Run `dart format .` before committing; it keeps the trailing commas and splits the lists.
 - `final class` by default. Everything is `final` / `const` where possible.
 - Private by default (`_name`). Only expose what other files use.
 - Exhaustive `switch` expressions over enums. No `default` that hides a new enum value.
@@ -222,7 +254,7 @@ lib/di/
 - One responsibility per class, short methods.
 - Names: `<Feature>Repository`, `<Feature>RepositoryImpl`, `<Action>UseCase`, `<Name>Bloc/Event/State`, `<Name>Page`, `<Name>Container`. Booleans read as questions: `isMapOpen`, `isFar`, `hasSun`.
 - No debug code, `print`, or leftover test buttons in merged code.
-- `flutter analyze` must report no issues (`flutter_lints`).
+- `flutter analyze` must report no issues (`flutter_lints`), and `dart format --set-exit-if-changed .` must report 0 changed files.
 
 ---
 

@@ -12,7 +12,10 @@ final class ThrowPickupUseCase {
     required this._pollutionRepository,
   });
 
-  void call(Pickup pickup, GameLocation target) {
+  void call(
+    Pickup pickup,
+    GameLocation target,
+  ) {
     if (pickup.kind.material case final material?) {
       switch (target) {
         case .lake:

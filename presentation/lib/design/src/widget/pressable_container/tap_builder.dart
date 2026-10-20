@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-typedef TapWidgetBuilder = Widget Function(BuildContext context, bool isPressed, bool isHovered);
+typedef TapWidgetBuilder = Widget Function(
+  BuildContext context,
+  bool isPressed,
+  bool isHovered,
+);
 
 final class TapBuilder extends StatefulWidget {
   final VoidCallback onTap;
@@ -32,7 +36,11 @@ class _TapBuilderState extends State<TapBuilder> {
         onTapUp: (_) => setState(() => _isPressed = false),
         onTapCancel: () => setState(() => _isPressed = false),
         onTap: widget.onTap,
-        child: widget.builder(context, _isPressed, _isHovered),
+        child: widget.builder(
+          context,
+          _isPressed,
+          _isHovered,
+        ),
       ),
     );
   }

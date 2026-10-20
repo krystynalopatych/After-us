@@ -25,11 +25,26 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     on<StartBackTapped>(_onBackTapped);
   }
 
-  void _onNewGameTapped(StartNewGameTapped event, Emitter<StartState> emit) {
+  void _onNewGameTapped(
+    StartNewGameTapped event,
+    Emitter<StartState> emit,
+  ) {
     _progressRepository.reset();
-    emit(state.copyWith(isLevelSelection: true, unlockedLevel: _progressRepository.unlockedLevel));
+    emit(
+      state.copyWith(
+        isLevelSelection: true,
+        unlockedLevel: _progressRepository.unlockedLevel,
+      ),
+    );
   }
 
-  void _onBackTapped(StartBackTapped event, Emitter<StartState> emit) =>
-      emit(state.copyWith(isLevelSelection: false, unlockedLevel: _progressRepository.unlockedLevel));
+  void _onBackTapped(
+    StartBackTapped event,
+    Emitter<StartState> emit,
+  ) => emit(
+    state.copyWith(
+      isLevelSelection: false,
+      unlockedLevel: _progressRepository.unlockedLevel,
+    ),
+  );
 }

@@ -56,7 +56,14 @@ class _StartPageState extends State<StartPage> {
 
     return [
       for (final (index, (image, onTap)) in buttons.indexed)
-        _button(index, _menuButtonWidth, PressableContainer(image: image, onTap: onTap)),
+        _button(
+          index,
+          _menuButtonWidth,
+          PressableContainer(
+            image: image,
+            onTap: onTap,
+          ),
+        ),
     ];
   }
 
@@ -92,7 +99,11 @@ class _StartPageState extends State<StartPage> {
     ];
   }
 
-  BackgroundElement _button(int index, double width, Widget child) => BackgroundElement(
+  BackgroundElement _button(
+    int index,
+    double width,
+    Widget child,
+  ) => BackgroundElement(
     left: (SceneContainer.designSize.width - width) / 2,
     top: _buttonTops[index],
     width: width,

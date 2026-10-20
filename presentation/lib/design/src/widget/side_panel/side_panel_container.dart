@@ -26,7 +26,12 @@ final class SidePanelContainer extends StatelessWidget {
         width: width,
         height: double.infinity,
         child: AnimatedSlide(
-          offset: isOpen ? Offset.zero : const Offset(1, 0),
+          offset: isOpen
+              ? Offset.zero
+              : const Offset(
+                  1,
+                  0,
+                ),
           duration: _animationDuration,
           curve: Curves.easeOut,
           child: ColoredBox(

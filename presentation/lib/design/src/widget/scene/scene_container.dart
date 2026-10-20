@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:presentation/design/src/theme/design_system_theme.dart';
 
 final class SceneContainer extends StatelessWidget {
-  static const designSize = Size(1920, 1080);
+  static const designSize = Size(
+    1920,
+    1080,
+  );
 
   final Size size;
   final List<Widget> children;

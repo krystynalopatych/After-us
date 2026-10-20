@@ -11,7 +11,10 @@ final class MaterialRepositoryImpl implements MaterialRepository {
   @override
   List<MaterialStock> get stocks => [
     for (final MapEntry(key: material, value: count) in _counts.entries)
-      MaterialStock(material: material, count: count),
+      MaterialStock(
+        material: material,
+        count: count,
+      ),
   ];
 
   @override
@@ -22,12 +25,19 @@ final class MaterialRepositoryImpl implements MaterialRepository {
 
   @override
   void add(GameMaterial material) {
-    _counts.update(material, (count) => count + 1, ifAbsent: () => 1);
+    _counts.update(
+      material,
+      (count) => count + 1,
+      ifAbsent: () => 1,
+    );
     _stocksController.add(stocks);
   }
 
   @override
-  bool remove(GameMaterial material, int count) {
+  bool remove(
+    GameMaterial material,
+    int count,
+  ) {
     final left = this.count(material) - count;
     if (left < 0) {
       return false;
@@ -45,7 +55,13 @@ final class MaterialRepositoryImpl implements MaterialRepository {
   void restore(List<MaterialStock> stocks) {
     _counts
       ..clear()
-      ..addEntries([for (final stock in stocks) MapEntry(stock.material, stock.count)]);
+      ..addEntries([
+        for (final stock in stocks)
+          MapEntry(
+            stock.material,
+            stock.count,
+          ),
+      ]);
     _stocksController.add(this.stocks);
   }
 

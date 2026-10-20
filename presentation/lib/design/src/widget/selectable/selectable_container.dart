@@ -10,7 +10,10 @@ final class SelectableContainer extends StatelessWidget {
   static const _glowScale = 1.35;
   static const _labelOpacity = 0.8;
   static const _labelRadius = BorderRadius.all(Radius.circular(8));
-  static const _labelPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 6);
+  static const _labelPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 6,
+  );
 
   final AssetGenImage glowImage;
   final String label;
@@ -43,7 +46,10 @@ final class SelectableContainer extends StatelessWidget {
             Transform.scale(
               scale: _glowScale,
               child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: _glowBlurSigma, sigmaY: _glowBlurSigma),
+                imageFilter: ImageFilter.blur(
+                  sigmaX: _glowBlurSigma,
+                  sigmaY: _glowBlurSigma,
+                ),
                 child: glowImage.image(
                   fit: .contain,
                   color: theme.colors.base.yellow,
@@ -57,7 +63,10 @@ final class SelectableContainer extends StatelessWidget {
               child: Align(
                 alignment: isLabelBelow ? .bottomCenter : .topCenter,
                 child: FractionalTranslation(
-                  translation: Offset(0, isLabelBelow ? 1 : -1),
+                  translation: Offset(
+                    0,
+                    isLabelBelow ? 1 : -1,
+                  ),
                   child: OverflowBox(
                     maxWidth: double.infinity,
                     maxHeight: double.infinity,

@@ -100,7 +100,10 @@ class _LoadGamePageState extends State<LoadGamePage> {
   };
 
   static String _formatDate(DateTime date) {
-    String twoDigits(int value) => value.toString().padLeft(2, '0');
+    String twoDigits(int value) => value.toString().padLeft(
+      2,
+      '0',
+    );
     return '${twoDigits(date.day)}.${twoDigits(date.month)}.${date.year} '
         '${twoDigits(date.hour)}:${twoDigits(date.minute)}';
   }

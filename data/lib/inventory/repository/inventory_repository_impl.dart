@@ -18,8 +18,12 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   Stream<List<InventoryStack>> get stacksStream => _stacksController.stream;
 
   @override
-  int count(InventoryItem item) =>
-      _stacks.where((stack) => stack.item == item).fold(0, (sum, stack) => sum + stack.count);
+  int count(InventoryItem item) => _stacks
+      .where((stack) => stack.item == item)
+      .fold(
+        0,
+        (sum, stack) => sum + stack.count,
+      );
 
   @override
   bool add(InventoryItem item) {
@@ -27,7 +31,12 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     if (index != -1) {
       _stacks[index] = _stacks[index].copyWith(count: _stacks[index].count + 1);
     } else if (_stacks.length < _slotCount) {
-      _stacks.add(InventoryStack(item: item, count: 1));
+      _stacks.add(
+        InventoryStack(
+          item: item,
+          count: 1,
+        ),
+      );
     } else {
       return false;
     }

@@ -16,7 +16,10 @@ class SkyBloc extends Bloc<SkyEvent, SkyState> {
     on<SkyStarted>(_onStarted);
   }
 
-  Future<void> _onStarted(SkyStarted event, Emitter<SkyState> emit) {
+  Future<void> _onStarted(
+    SkyStarted event,
+    Emitter<SkyState> emit,
+  ) {
     emit(_toState(_pollutionRepository.pollution.airQuality));
     return emit.forEach(
       _pollutionRepository.pollutionStream,

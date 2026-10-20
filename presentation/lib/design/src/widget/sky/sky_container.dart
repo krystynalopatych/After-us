@@ -34,7 +34,10 @@ class _SkyContainerState extends State<SkyContainer> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    _drift = AnimationController(vsync: this, duration: _driftDuration)..repeat();
+    _drift = AnimationController(
+      vsync: this,
+      duration: _driftDuration,
+    )..repeat();
   }
 
   @override
@@ -50,10 +53,16 @@ class _SkyContainerState extends State<SkyContainer> with SingleTickerProviderSt
         builder: (context, constraints) => Stack(
           fit: .expand,
           children: [
-            _images.imgSkyBlue.image(fit: .cover, alignment: .bottomCenter),
+            _images.imgSkyBlue.image(
+              fit: .cover,
+              alignment: .bottomCenter,
+            ),
             _fade(
               isVisible: widget.state.isSkyDark,
-              child: _images.imgSkyBlack.image(fit: .cover, alignment: .bottomCenter),
+              child: _images.imgSkyBlack.image(
+                fit: .cover,
+                alignment: .bottomCenter,
+              ),
             ),
             for (final element in widget.elements)
               Positioned(
@@ -103,7 +112,10 @@ class _SkyContainerState extends State<SkyContainer> with SingleTickerProviderSt
     );
   }
 
-  static Widget _fade({required bool isVisible, required Widget child}) => AnimatedOpacity(
+  static Widget _fade({
+    required bool isVisible,
+    required Widget child,
+  }) => AnimatedOpacity(
     opacity: isVisible ? 1 : 0,
     duration: _changeDuration,
     curve: Curves.easeInOut,

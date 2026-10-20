@@ -19,5 +19,8 @@ enum AppRoute {
     .level3 => level3,
   };
 
-  void go(BuildContext context) => Router.neglect(context, () => context.goNamed(name));
+  void go(BuildContext context) => Router.neglect(
+    context,
+    () => context.goNamed(name),
+  );
 }

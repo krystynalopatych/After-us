@@ -10,7 +10,10 @@ abstract interface class MaterialRepository {
 
   void add(GameMaterial material);
 
-  bool remove(GameMaterial material, int count);
+  bool remove(
+    GameMaterial material,
+    int count,
+  );
 
   void restore(List<MaterialStock> stocks);
 

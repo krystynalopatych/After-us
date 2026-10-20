@@ -20,15 +20,36 @@ abstract final class AppRouter {
         return null;
       },
       routes: [
-        _route(AppRoute.start, (_, _) => StartPage.withBloc()),
-        _route(AppRoute.loadGame, (_, _) => LoadGamePage.withBloc()),
-        _route(AppRoute.level1, (_, _) => Level1Page.withBloc()),
-        _route(AppRoute.level2, (_, _) => Level2Page.withBloc()),
-        _route(AppRoute.level3, (_, _) => Level3Page.withBloc()),
+        _route(
+          AppRoute.start,
+          (_, _) => StartPage.withBloc(),
+        ),
+        _route(
+          AppRoute.loadGame,
+          (_, _) => LoadGamePage.withBloc(),
+        ),
+        _route(
+          AppRoute.level1,
+          (_, _) => Level1Page.withBloc(),
+        ),
+        _route(
+          AppRoute.level2,
+          (_, _) => Level2Page.withBloc(),
+        ),
+        _route(
+          AppRoute.level3,
+          (_, _) => Level3Page.withBloc(),
+        ),
       ],
     );
   }
 
-  static GoRoute _route(AppRoute route, GoRouterWidgetBuilder builder) =>
-      GoRoute(path: route.path, name: route.name, builder: builder);
+  static GoRoute _route(
+    AppRoute route,
+    GoRouterWidgetBuilder builder,
+  ) => GoRoute(
+    path: route.path,
+    name: route.name,
+    builder: builder,
+  );
 }

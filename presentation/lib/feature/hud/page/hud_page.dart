@@ -31,10 +31,19 @@ class _HudPageState extends State<HudPage> {
   static const _statTop = 1588.0;
   static const _healthLeft = 438.0;
   static const _hungerLeft = 572.0;
-  static const _healthValueAlignment = Alignment(0.146, 0.068);
-  static const _hungerValueAlignment = Alignment(0.199, 0.093);
+  static const _healthValueAlignment = Alignment(
+    0.146,
+    0.068,
+  );
+  static const _hungerValueAlignment = Alignment(
+    0.199,
+    0.093,
+  );
   static const _thirstLeft = 706.0;
-  static const _thirstValueAlignment = Alignment(0.203, 0.088);
+  static const _thirstValueAlignment = Alignment(
+    0.203,
+    0.088,
+  );
   static const _inventoryLeft = 852.0;
   static const _inventoryTop = 1509.0;
   static const _inventoryWidth = 900.0;
@@ -80,7 +89,10 @@ class _HudPageState extends State<HudPage> {
                   onTap: () => _bloc.add(HudMaterialTapped(stock.material)),
                   child: MaterialContainer(
                     frame: images.imgResourseIcon,
-                    image: _materialImage(context, stock.material),
+                    image: _materialImage(
+                      context,
+                      stock.material,
+                    ),
                     count: stock.count,
                   ),
                 ),
@@ -132,13 +144,19 @@ class _HudPageState extends State<HudPage> {
                 width: _slotSize * _inventoryScale,
                 height: _slotSize * _inventoryScale,
                 child: SelectableContainer(
-                  glowImage: _inventoryImage(context, stack.item),
+                  glowImage: _inventoryImage(
+                    context,
+                    stack.item,
+                  ),
                   label: stack.item.title,
                   isSelected: state.selectedSlot == index,
                   isLabelBelow: false,
                   onTap: () => _bloc.add(HudSlotTapped(index)),
                   child: InventorySlotContainer(
-                    image: _inventoryImage(context, stack.item),
+                    image: _inventoryImage(
+                      context,
+                      stack.item,
+                    ),
                     count: stack.count,
                   ),
                 ),
@@ -161,7 +179,10 @@ class _HudPageState extends State<HudPage> {
 
   static double get _inventoryScale => _inventoryWidth / _inventoryImageWidth;
 
-  static AssetGenImage _inventoryImage(BuildContext context, InventoryItem item) {
+  static AssetGenImage _inventoryImage(
+    BuildContext context,
+    InventoryItem item,
+  ) {
     final images = context.images;
     return switch (item) {
       .cattailRoot => images.imgKoreniKamyshaSyrye,
@@ -178,7 +199,10 @@ class _HudPageState extends State<HudPage> {
     };
   }
 
-  static AssetGenImage _materialImage(BuildContext context, GameMaterial material) {
+  static AssetGenImage _materialImage(
+    BuildContext context,
+    GameMaterial material,
+  ) {
     final images = context.images;
     return switch (material) {
       .plastic => images.imgPlasticBottle,

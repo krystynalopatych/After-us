@@ -3,9 +3,15 @@ import 'package:presentation/design/src/theme/design_system_theme.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 final class MaterialContainer extends StatelessWidget {
-  static const _itemAlignment = Alignment(0.085, -0.234);
+  static const _itemAlignment = Alignment(
+    0.085,
+    -0.234,
+  );
   static const _itemSizeFactor = 0.45;
-  static const _countCenter = Offset(0.799, 0.622);
+  static const _countCenter = Offset(
+    0.799,
+    0.622,
+  );
   static const _countSizeFactor = 0.11;
   static const _countHeightBehavior = TextHeightBehavior(
     applyHeightToFirstAscent: false,
@@ -45,7 +51,10 @@ final class MaterialContainer extends StatelessWidget {
             ),
             Positioned.fromRect(
               rect: Rect.fromCenter(
-                center: Offset(_countCenter.dx * size.width, _countCenter.dy * size.height),
+                center: Offset(
+                  _countCenter.dx * size.width,
+                  _countCenter.dy * size.height,
+                ),
                 width: _countSizeFactor * size.width,
                 height: _countSizeFactor * size.height,
               ),
@@ -54,7 +63,10 @@ final class MaterialContainer extends StatelessWidget {
                 child: Text(
                   '$count',
                   textHeightBehavior: _countHeightBehavior,
-                  style: theme.typography.title.copyWith(color: theme.colors.base.black, height: 1),
+                  style: theme.typography.title.copyWith(
+                    color: theme.colors.base.black,
+                    height: 1,
+                  ),
                 ),
               ),
             ),
