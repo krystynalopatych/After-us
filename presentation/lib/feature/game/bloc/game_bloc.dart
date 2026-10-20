@@ -14,6 +14,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       super(GameState(location: diContainer.get<LocationRepository>().location)) {
     on<GameStarted>(_onStarted);
     on<GameMapTapped>((event, emit) => emit(GameState(location: state.location, isMapOpen: true)));
+    on<GameMapClosed>((event, emit) => emit(GameState(location: state.location)));
     on<GameLocationSelected>(_onLocationSelected);
   }
 

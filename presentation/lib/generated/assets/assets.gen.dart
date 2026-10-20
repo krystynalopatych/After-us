@@ -64,6 +64,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgButtonBack =>
       const AssetGenImage('resources/assets/images/img_button_back.png');
 
+  /// File path: resources/assets/images/img_button_close.png
+  AssetGenImage get imgButtonClose =>
+      const AssetGenImage('resources/assets/images/img_button_close.png');
+
   /// File path: resources/assets/images/img_button_exit.png
   AssetGenImage get imgButtonExit =>
       const AssetGenImage('resources/assets/images/img_button_exit.png');
@@ -83,6 +87,10 @@ class $ResourcesAssetsImagesGen {
   /// File path: resources/assets/images/img_button_load_game.png
   AssetGenImage get imgButtonLoadGame =>
       const AssetGenImage('resources/assets/images/img_button_load_game.png');
+
+  /// File path: resources/assets/images/img_button_menu.png
+  AssetGenImage get imgButtonMenu =>
+      const AssetGenImage('resources/assets/images/img_button_menu.png');
 
   /// File path: resources/assets/images/img_button_new_game.png
   AssetGenImage get imgButtonNewGame =>
@@ -148,9 +156,17 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgDialogue =>
       const AssetGenImage('resources/assets/images/img_dialogue.png');
 
+  /// File path: resources/assets/images/img_done_icon.png
+  AssetGenImage get imgDoneIcon =>
+      const AssetGenImage('resources/assets/images/img_done_icon.png');
+
   /// File path: resources/assets/images/img_eco_brickc.png
   AssetGenImage get imgEcoBrickc =>
       const AssetGenImage('resources/assets/images/img_eco_brickc.png');
+
+  /// File path: resources/assets/images/img_exit_icon.png
+  AssetGenImage get imgExitIcon =>
+      const AssetGenImage('resources/assets/images/img_exit_icon.png');
 
   /// File path: resources/assets/images/img_fabric.png
   AssetGenImage get imgFabric =>
@@ -159,10 +175,6 @@ class $ResourcesAssetsImagesGen {
   /// File path: resources/assets/images/img_filter_refresher.png
   AssetGenImage get imgFilterRefresher =>
       const AssetGenImage('resources/assets/images/img_filter_refresher.png');
-
-  /// File path: resources/assets/images/img_forest.png
-  AssetGenImage get imgForest =>
-      const AssetGenImage('resources/assets/images/img_forest.png');
 
   /// File path: resources/assets/images/img_forest_icon.png
   AssetGenImage get imgForestIcon =>
@@ -364,6 +376,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgSand =>
       const AssetGenImage('resources/assets/images/img_sand.png');
 
+  /// File path: resources/assets/images/img_save_icon.png
+  AssetGenImage get imgSaveIcon =>
+      const AssetGenImage('resources/assets/images/img_save_icon.png');
+
   /// File path: resources/assets/images/img_seaweed_NE_vymochenye.png
   AssetGenImage get imgSeaweedNEVymochenye => const AssetGenImage(
     'resources/assets/images/img_seaweed_NE_vymochenye.png',
@@ -432,11 +448,13 @@ class $ResourcesAssetsImagesGen {
     imgBookIcon,
     imgBushBerriespng,
     imgButtonBack,
+    imgButtonClose,
     imgButtonExit,
     imgButtonLevel1,
     imgButtonLevel2,
     imgButtonLevel3,
     imgButtonLoadGame,
+    imgButtonMenu,
     imgButtonNewGame,
     imgButtonSaveGame,
     imgCampfire,
@@ -453,10 +471,11 @@ class $ResourcesAssetsImagesGen {
     imgCraftBook,
     imgCraftingProcess,
     imgDialogue,
+    imgDoneIcon,
     imgEcoBrickc,
+    imgExitIcon,
     imgFabric,
     imgFilterRefresher,
-    imgForest,
     imgForestIcon,
     imgForestRectangle,
     imgFreezerGorshok,
@@ -506,6 +525,7 @@ class $ResourcesAssetsImagesGen {
     imgResourseIcon,
     imgRocketFire,
     imgSand,
+    imgSaveIcon,
     imgSeaweedNEVymochenye,
     imgSeaweedVymochenye,
     imgShelter,

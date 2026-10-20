@@ -8,6 +8,7 @@ import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:domain/air/repository/air_repository.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/location/model/game_location.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
@@ -216,6 +217,59 @@ void main() {
       await pumpScene(tester);
       expect(buttonImage(image), findsOneWidget);
     }
+  });
+
+  testWidgets('Close button on the map returns to the location', (
+    WidgetTester tester,
+  ) async {
+    final images = Assets.resources.assets.images;
+    await pumpApp(tester);
+
+    await tester.tap(buttonImage(images.imgButtonNewGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(images.imgButtonLevel1).last);
+    await pumpScene(tester);
+    await tester.tap(buttonImage(images.imgMapIconPixel).last);
+    await pumpScene(tester);
+
+    expect(buttonImage(images.imgMap), findsOneWidget);
+
+    await tester.tap(buttonImage(images.imgButtonClose).last);
+    await pumpScene(tester);
+
+    expect(buttonImage(images.imgMap), findsNothing);
+    expect(buttonImage(images.imgHouseRectangle), findsOneWidget);
+  });
+
+  testWidgets('Menu panel saves the game and exits to the main menu', (
+    WidgetTester tester,
+  ) async {
+    final images = Assets.resources.assets.images;
+    final saveRepository = SaveRepositoryImpl();
+    await pumpApp(tester, saveRepository: saveRepository);
+
+    await tester.tap(buttonImage(images.imgButtonNewGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(images.imgButtonLevel1).last);
+    await pumpScene(tester);
+
+    expect(opacityOf(tester, images.imgDoneIcon), 0);
+
+    await tester.tap(buttonImage(images.imgButtonMenu).last);
+    await pumpScene(tester);
+    await tester.tap(buttonImage(images.imgSaveIcon).last);
+    await pumpScene(tester);
+
+    expect(saveRepository.saves, hasLength(1));
+    expect(saveRepository.saves.single.level, GameLevel.level1);
+    expect(saveRepository.saves.single.location, GameLocation.house);
+    expect(opacityOf(tester, images.imgDoneIcon), 1);
+
+    await tester.tap(buttonImage(images.imgExitIcon).last);
+    await pumpScene(tester);
+
+    expect(find.byType(StartPage), findsOneWidget);
+    expect(buttonImage(images.imgButtonNewGame), findsNWidgets(2));
   });
 
   testWidgets('Sky and clouds darken smoothly as air pollution grows', (

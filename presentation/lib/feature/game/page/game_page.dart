@@ -7,6 +7,7 @@ import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
+import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
@@ -28,6 +29,8 @@ class _GamePageState extends State<GamePage> {
   static const _skyHeight = 450.0;
   static const _locationHeight = 1280.0;
   static const _sceneSize = Size(1920, _skyHeight + _locationHeight);
+  static const _closeButtonOffset = 40.0;
+  static const _closeButtonSize = 150.0;
   static const _mapIconWidth = 340.0;
   static const _mapIconHeight = 311.0;
   static const _houseSpot = Offset(240, 0);
@@ -69,6 +72,7 @@ class _GamePageState extends State<GamePage> {
                 child: CharacterPage.withBloc(),
               ),
               Positioned.fill(child: HudPage.withBloc(onMapTap: () => _bloc.add(const GameMapTapped()))),
+              Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
             ],
           ),
           if (state.isMapOpen) _map(),
@@ -92,6 +96,16 @@ class _GamePageState extends State<GamePage> {
               onTap: () => _bloc.add(GameLocationSelected(location)),
             ),
           ),
+        BackgroundElement(
+          left: _closeButtonOffset,
+          top: _closeButtonOffset,
+          width: _closeButtonSize,
+          height: _closeButtonSize,
+          child: PressableContainer(
+            image: context.images.imgButtonClose,
+            onTap: () => _bloc.add(const GameMapClosed()),
+          ),
+        ),
       ],
     );
   }
