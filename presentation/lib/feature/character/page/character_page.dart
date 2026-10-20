@@ -4,11 +4,13 @@ import 'package:presentation/design/design_src.dart';
 import 'package:presentation/feature/character/bloc/character_bloc.dart';
 
 class CharacterPage extends StatefulWidget {
-  const CharacterPage._();
+  final VoidCallback onTap;
 
-  static Widget withBloc() => BlocProvider(
+  const CharacterPage._({required this.onTap});
+
+  static Widget withBloc({required VoidCallback onTap}) => BlocProvider(
     create: (_) => CharacterBloc()..add(const CharacterStarted()),
-    child: const CharacterPage._(),
+    child: CharacterPage._(onTap: onTap),
   );
 
   @override
@@ -28,7 +30,10 @@ class _CharacterPageState extends State<CharacterPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CharacterBloc, CharacterState>(
       bloc: _bloc,
-      builder: (context, state) => CharacterContainer(state: state),
+      builder: (context, state) => CharacterContainer(
+        state: state,
+        onTap: widget.onTap,
+      ),
     );
   }
 }

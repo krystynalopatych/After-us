@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +12,22 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 
 class HudPage extends StatefulWidget {
   final VoidCallback onMapTap;
+  final Stream<void> characterTaps;
 
-  const HudPage._({required this.onMapTap});
+  const HudPage._({
+    required this.onMapTap,
+    required this.characterTaps,
+  });
 
-  static Widget withBloc({required VoidCallback onMapTap}) => BlocProvider(
+  static Widget withBloc({
+    required VoidCallback onMapTap,
+    required Stream<void> characterTaps,
+  }) => BlocProvider(
     create: (_) => HudBloc()..add(const HudStarted()),
-    child: HudPage._(onMapTap: onMapTap),
+    child: HudPage._(
+      onMapTap: onMapTap,
+      characterTaps: characterTaps,
+    ),
   );
 
   @override
@@ -58,11 +70,19 @@ class _HudPageState extends State<HudPage> {
   static const _mapSize = 150.0;
 
   late final HudBloc _bloc;
+  late final StreamSubscription<void> _characterTapsSubscription;
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read();
+    _characterTapsSubscription = widget.characterTaps.listen((_) => _bloc.add(const HudCharacterTapped()));
+  }
+
+  @override
+  void dispose() {
+    _characterTapsSubscription.cancel();
+    super.dispose();
   }
 
   @override

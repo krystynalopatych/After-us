@@ -166,7 +166,7 @@ void main() {
   );
 
   test(
-    'tapping a selected food eats it and clears the selection',
+    'tapping the character eats the selected food and clears the selection',
     () async {
       deps.player.setStats(
         const .new(
@@ -180,14 +180,17 @@ void main() {
         ..add(.berries);
       await pumpEventQueue();
 
-      bloc.add(const HudSlotTapped(0));
+      bloc
+        ..add(const HudSlotTapped(0))
+        ..add(const HudSlotTapped(0))
+        ..add(const HudSlotTapped(0));
       await pumpEventQueue();
       expect(
         deps.inventory.count(.berries),
         2,
       );
 
-      bloc.add(const HudSlotTapped(0));
+      bloc.add(const HudCharacterTapped());
       await pumpEventQueue();
       expect(
         deps.inventory.count(.berries),
@@ -205,23 +208,35 @@ void main() {
   );
 
   test(
-    'tapping a selected tool does not use it',
+    'tapping the character with a tool, a material or nothing selected does nothing',
     () async {
-      deps.inventory.add(.cookingPot);
+      deps.inventory
+        ..add(.berries)
+        ..add(.cookingPot);
       await pumpEventQueue();
 
+      bloc.add(const HudCharacterTapped());
+      await pumpEventQueue();
       bloc
-        ..add(const HudSlotTapped(0))
-        ..add(const HudSlotTapped(0));
+        ..add(const HudSlotTapped(1))
+        ..add(const HudCharacterTapped());
+      await pumpEventQueue();
+      bloc
+        ..add(const HudMaterialTapped(.wood))
+        ..add(const HudCharacterTapped());
       await pumpEventQueue();
 
+      expect(
+        deps.inventory.count(.berries),
+        1,
+      );
       expect(
         deps.inventory.count(.cookingPot),
         1,
       );
       expect(
-        bloc.state.selectedSlot,
-        isNull,
+        bloc.state.selectedMaterial,
+        GameMaterial.wood,
       );
     },
   );

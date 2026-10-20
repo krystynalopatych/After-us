@@ -911,7 +911,7 @@ void main() {
   );
 
   testWidgets(
-    'Collected items show their name on hover, highlight when tapped and are eaten on the second tap',
+    'Collected items show their name on hover, highlight when tapped and are eaten by tapping the hero',
     (
       WidgetTester tester,
     ) async {
@@ -959,6 +959,21 @@ void main() {
       );
 
       await tester.tap(slot);
+      await pumpScene(tester);
+
+      expect(
+        tester.widget<SelectableContainer>(slot).isSelected,
+        isFalse,
+      );
+
+      await tester.tap(slot);
+      await pumpScene(tester);
+      await tester.tap(
+        find.descendant(
+          of: find.byType(CharacterContainer),
+          matching: find.byType(TapBuilder),
+        ),
+      );
       await pumpScene(tester);
 
       expect(

@@ -34,6 +34,7 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     on<HudStarted>(_onStarted);
     on<HudMaterialTapped>(_onMaterialTapped);
     on<HudSlotTapped>(_onSlotTapped);
+    on<HudCharacterTapped>(_onCharacterTapped);
   }
 
   Future<void> _onStarted(
@@ -76,16 +77,25 @@ class HudBloc extends Bloc<HudEvent, HudState> {
   void _onSlotTapped(
     HudSlotTapped event,
     Emitter<HudState> emit,
+  ) => emit(
+    state.copyWith(
+      selectedMaterial: () => null,
+      selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
+    ),
+  );
+
+  void _onCharacterTapped(
+    HudCharacterTapped event,
+    Emitter<HudState> emit,
   ) {
-    final item = state.inventory.elementAtOrNull(event.slot)?.item;
-    if (state.selectedSlot == event.slot && item != null && item.isConsumable) {
-      _consumeUseCase(item);
+    final item = switch (state.selectedSlot) {
+      final slot? => state.inventory.elementAtOrNull(slot)?.item,
+      null => null,
+    };
+    if (item == null || !item.isConsumable) {
+      return;
     }
-    emit(
-      state.copyWith(
-        selectedMaterial: () => null,
-        selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
-      ),
-    );
+    _consumeUseCase(item);
+    emit(state.copyWith(selectedSlot: () => null));
   }
 }

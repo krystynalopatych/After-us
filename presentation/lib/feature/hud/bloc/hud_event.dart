@@ -28,3 +28,7 @@ final class HudSlotTapped extends HudEvent {
   @override
   List<Object?> get props => [slot];
 }
+
+final class HudCharacterTapped extends HudEvent {
+  const HudCharacterTapped();
+}

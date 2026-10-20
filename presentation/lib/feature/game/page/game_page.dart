@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter/material.dart';
@@ -72,11 +74,18 @@ class _GamePageState extends State<GamePage> {
 
   late final GameBloc _bloc;
   var _isPrecached = false;
+  final _characterTaps = StreamController<void>.broadcast();
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read();
+  }
+
+  @override
+  void dispose() {
+    _characterTaps.close();
+    super.dispose();
   }
 
   @override
@@ -136,7 +145,7 @@ class _GamePageState extends State<GamePage> {
                 right: 0,
                 bottom: 0,
                 height: SceneContainer.designSize.height,
-                child: CharacterPage.withBloc(),
+                child: CharacterPage.withBloc(onTap: () => _characterTaps.add(null)),
               ),
               if (state.location == .lake)
                 Positioned.fromRect(
@@ -149,7 +158,12 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 ),
-              Positioned.fill(child: HudPage.withBloc(onMapTap: () => _bloc.add(const GameMapTapped()))),
+              Positioned.fill(
+                child: HudPage.withBloc(
+                  onMapTap: () => _bloc.add(const GameMapTapped()),
+                  characterTaps: _characterTaps.stream,
+                ),
+              ),
               Positioned.fill(
                 child: PickupPage.withBloc(
                   level: widget.level,
