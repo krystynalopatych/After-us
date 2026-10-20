@@ -6,6 +6,7 @@ import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
+import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/di/di_container.dart';
@@ -18,17 +19,21 @@ class HudBloc extends Bloc<HudEvent, HudState> {
   final MaterialRepository _materialRepository;
   final InventoryRepository _inventoryRepository;
   final ConsumeUseCase _consumeUseCase;
+  final SelectionRepository _selectionRepository;
 
   HudBloc()
     : _playerRepository = diContainer.get(),
       _materialRepository = diContainer.get(),
       _inventoryRepository = diContainer.get(),
       _consumeUseCase = diContainer.get(),
+      _selectionRepository = diContainer.get(),
       super(
         HudState(
           stats: diContainer.get<PlayerRepository>().stats,
           stocks: diContainer.get<MaterialRepository>().stocks,
           inventory: diContainer.get<InventoryRepository>().stacks,
+          selectedMaterial: diContainer.get<SelectionRepository>().selection.material,
+          selectedSlot: diContainer.get<SelectionRepository>().selection.slot,
         ),
       ) {
     on<HudStarted>(_onStarted);
@@ -45,6 +50,8 @@ class HudBloc extends Bloc<HudEvent, HudState> {
         stats: _playerRepository.stats,
         stocks: _materialRepository.stocks,
         inventory: _inventoryRepository.stacks,
+        selectedMaterial: () => _selectionRepository.selection.material,
+        selectedSlot: () => _selectionRepository.selection.slot,
       ),
     );
     return Future.wait([
@@ -60,18 +67,20 @@ class HudBloc extends Bloc<HudEvent, HudState> {
         _inventoryRepository.stacksStream,
         onData: (inventory) => state.copyWith(inventory: inventory),
       ),
+      emit.forEach(
+        _selectionRepository.selectionStream,
+        onData: (selection) => state.copyWith(
+          selectedMaterial: () => selection.material,
+          selectedSlot: () => selection.slot,
+        ),
+      ),
     ]);
   }
 
   void _onMaterialTapped(
     HudMaterialTapped event,
     Emitter<HudState> emit,
-  ) => emit(
-    state.copyWith(
-      selectedMaterial: () => state.selectedMaterial == event.material ? null : event.material,
-      selectedSlot: () => null,
-    ),
-  );
+  ) => _selectionRepository.selectMaterial(state.selectedMaterial == event.material ? null : event.material);
 
   void _onSlotTapped(
     HudSlotTapped event,
@@ -81,11 +90,6 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     if (state.selectedSlot == event.slot && item != null && item.isConsumable) {
       _consumeUseCase(item);
     }
-    emit(
-      state.copyWith(
-        selectedMaterial: () => null,
-        selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
-      ),
-    );
+    _selectionRepository.selectSlot(state.selectedSlot == event.slot ? null : event.slot);
   }
 }

@@ -13,6 +13,7 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_dependencies.dart';
@@ -35,6 +36,8 @@ void main() {
       playerRepository: deps.player,
       pollutionRepository: deps.pollution,
       saveRepository: deps.save,
+      selectionRepository: deps.selection,
+      stationRepository: deps.station,
     );
     saveGame = SaveGameUseCase(
       constructionRepository: deps.construction,
@@ -46,6 +49,7 @@ void main() {
       playerRepository: deps.player,
       pollutionRepository: deps.pollution,
       saveRepository: deps.save,
+      stationRepository: deps.station,
     );
   });
 
@@ -92,6 +96,7 @@ void main() {
       isSoilPolluted: true,
     ),
     constructions: const {.waterFilter},
+    stations: const {.workbench},
   );
 
   group(
@@ -104,6 +109,8 @@ void main() {
           deps.day.setOutcome(.died);
           deps.material.add(.metal);
           deps.construction.build(.compostPit);
+          deps.station.build(.campfire);
+          deps.selection.selectMaterial(.wood);
           deps.location.setLocation(.dump);
 
           startLevel(.level1);
@@ -127,6 +134,14 @@ void main() {
           expect(
             deps.construction.built,
             isEmpty,
+          );
+          expect(
+            deps.station.built,
+            isEmpty,
+          );
+          expect(
+            deps.selection.selection.material,
+            isNull,
           );
           expect(
             deps.location.location,
@@ -176,6 +191,10 @@ void main() {
           expect(
             deps.construction.built,
             {Construction.waterFilter},
+          );
+          expect(
+            deps.station.built,
+            {Station.workbench},
           );
           expect(
             deps.location.location,
@@ -230,6 +249,7 @@ void main() {
       deps.pickup.startLevel(.level1);
       deps.pollution.addAirPoints(2);
       deps.construction.build(.rocketStove);
+      deps.station.build(.campfire);
 
       saveGame(.level1);
 
@@ -272,6 +292,10 @@ void main() {
       expect(
         saved.constructions,
         {Construction.rocketStove},
+      );
+      expect(
+        saved.stations,
+        {Station.campfire},
       );
     },
   );

@@ -2,18 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:presentation/design/src/theme/design_system_theme.dart';
+import 'package:presentation/design/src/widget/label/label_container.dart';
 import 'package:presentation/design/src/widget/pressable_container/tap_builder.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 final class SelectableContainer extends StatelessWidget {
   static const _glowBlurSigma = 6.0;
   static const _glowScale = 1.35;
-  static const _labelOpacity = 0.8;
-  static const _labelRadius = BorderRadius.all(Radius.circular(8));
-  static const _labelPadding = EdgeInsets.symmetric(
-    horizontal: 12,
-    vertical: 6,
-  );
 
   final AssetGenImage glowImage;
   final String label;
@@ -71,19 +66,7 @@ final class SelectableContainer extends StatelessWidget {
                     maxWidth: double.infinity,
                     maxHeight: double.infinity,
                     fit: .deferToChild,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: theme.colors.base.black.withValues(alpha: _labelOpacity),
-                        borderRadius: _labelRadius,
-                      ),
-                      child: Padding(
-                        padding: _labelPadding,
-                        child: Text(
-                          label,
-                          style: theme.typography.headline.copyWith(color: theme.colors.base.white),
-                        ),
-                      ),
-                    ),
+                    child: LabelContainer(text: label),
                   ),
                 ),
               ),
