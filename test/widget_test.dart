@@ -180,7 +180,7 @@ void main() {
     expect(buttonImage(images.imgInventory), findsOneWidget);
     expect(buttonImage(images.imgMap), findsNothing);
 
-    await tester.tap(buttonImage(images.imgMapIcon).last);
+    await tester.tap(buttonImage(images.imgMapIconPixel).last);
     await tester.pumpAndSettle();
 
     expect(buttonImage(images.imgMap), findsOneWidget);

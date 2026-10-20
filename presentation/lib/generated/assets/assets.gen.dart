@@ -284,9 +284,9 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgMap =>
       const AssetGenImage('resources/assets/images/img_map.png');
 
-  /// File path: resources/assets/images/img_map_icon.png
-  AssetGenImage get imgMapIcon =>
-      const AssetGenImage('resources/assets/images/img_map_icon.png');
+  /// File path: resources/assets/images/img_map_icon_pixel.png
+  AssetGenImage get imgMapIconPixel =>
+      const AssetGenImage('resources/assets/images/img_map_icon_pixel.png');
 
   /// File path: resources/assets/images/img_metal.png
   AssetGenImage get imgMetal =>
@@ -486,7 +486,7 @@ class $ResourcesAssetsImagesGen {
     imgMainCharacterHappy,
     imgMainCharacterSad,
     imgMap,
-    imgMapIcon,
+    imgMapIconPixel,
     imgMetal,
     imgMiceliumRoof,
     imgMiceliy,

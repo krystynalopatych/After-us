@@ -31,10 +31,9 @@ class _HudPageState extends State<HudPage> {
   static const _hungerLeft = 572.0;
   static const _healthValueAlignment = Alignment(0.146, 0.068);
   static const _hungerValueAlignment = Alignment(0.199, 0.093);
-  static const _thirstLeft = 505.0;
-  static const _thirstTop = 822.0;
+  static const _thirstLeft = 706.0;
   static const _thirstValueAlignment = Alignment(0.203, 0.088);
-  static const _inventoryLeft = 718.0;
+  static const _inventoryLeft = 852.0;
   static const _inventoryTop = 872.0;
   static const _inventoryWidth = 820.0;
   static const _inventoryHeight = 273.0;
@@ -74,7 +73,7 @@ class _HudPageState extends State<HudPage> {
               ),
             Positioned(
               left: _thirstLeft,
-              top: _thirstTop,
+              top: _statTop,
               width: _statWidth,
               height: _statHeight,
               child: StatContainer(
@@ -118,7 +117,7 @@ class _HudPageState extends State<HudPage> {
               width: _mapSize,
               height: _mapSize,
               child: PressableContainer(
-                image: images.imgMapIcon,
+                image: images.imgMapIconPixel,
                 onTap: widget.onMapTap,
               ),
             ),
