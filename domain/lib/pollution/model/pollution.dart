@@ -1,6 +1,7 @@
 import 'package:domain/pollution/model/air_quality.dart';
+import 'package:equatable/equatable.dart';
 
-final class Pollution {
+final class Pollution extends Equatable {
   static const _smokyAirPoints = 1;
   static const _pollutedAirPoints = 4;
 
@@ -21,4 +22,17 @@ final class Pollution {
     >= _smokyAirPoints => .smoky,
     _ => .clean,
   };
+
+  Pollution copyWith({
+    int? airPoints,
+    bool? isWaterPolluted,
+    bool? isSoilPolluted,
+  }) => Pollution(
+    airPoints: airPoints ?? this.airPoints,
+    isWaterPolluted: isWaterPolluted ?? this.isWaterPolluted,
+    isSoilPolluted: isSoilPolluted ?? this.isSoilPolluted,
+  );
+
+  @override
+  List<Object?> get props => [airPoints, isWaterPolluted, isSoilPolluted];
 }

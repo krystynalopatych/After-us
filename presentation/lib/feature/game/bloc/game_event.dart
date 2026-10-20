@@ -1,7 +1,10 @@
 part of 'game_bloc.dart';
 
-sealed class GameEvent {
+sealed class GameEvent extends Equatable {
   const GameEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 final class GameStarted extends GameEvent {
@@ -20,4 +23,7 @@ final class GameLocationSelected extends GameEvent {
   final GameLocation location;
 
   const GameLocationSelected(this.location);
+
+  @override
+  List<Object?> get props => [location];
 }

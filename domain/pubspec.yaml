@@ -7,3 +7,7 @@ environment:
   sdk: ^3.13.5
 
 resolution: workspace
+
+dependencies:
+  async: ^2.13.1
+  equatable: ^3.0.0

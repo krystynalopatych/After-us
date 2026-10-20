@@ -1,7 +1,10 @@
 part of 'menu_bloc.dart';
 
-sealed class MenuEvent {
+sealed class MenuEvent extends Equatable {
   const MenuEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 final class MenuStarted extends MenuEvent {
@@ -20,4 +23,7 @@ final class MenuSaveTapped extends MenuEvent {
   final GameLevel level;
 
   const MenuSaveTapped(this.level);
+
+  @override
+  List<Object?> get props => [level];
 }

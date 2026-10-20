@@ -28,10 +28,7 @@ class _CharacterPageState extends State<CharacterPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CharacterBloc, CharacterState>(
       bloc: _bloc,
-      builder: (context, state) => CharacterContainer(
-        state: state,
-        onTap: () => _bloc.add(const CharacterTapped()),
-      ),
+      builder: (context, state) => CharacterContainer(state: state),
     );
   }
 }

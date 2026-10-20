@@ -1,4 +1,8 @@
+import 'package:after_us_game/di/use_case_injection.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
+import 'package:data/construction/repository/construction_repository_impl.dart';
+import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
@@ -9,6 +13,9 @@ import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/construction/repository/construction_repository.dart';
+import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -92,6 +99,9 @@ void main() {
     diContainer
       ..registerSingleton<AppRepository>(appRepository ?? _FakeAppRepository())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
+      ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
+      ..registerSingleton<DayRepository>(DayRepositoryImpl())
+      ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
       ..registerSingleton<InventoryRepository>(inventoryRepository ?? InventoryRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
       ..registerSingleton<MaterialRepository>(materialRepository ?? MaterialRepositoryImpl())
@@ -100,6 +110,7 @@ void main() {
       ..registerSingleton<PollutionRepository>(pollutionRepository ?? PollutionRepositoryImpl())
       ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
       ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl());
+    registerUseCases();
 
     await tester.pumpWidget(const AppPage(createAppBloc: AppBloc.new));
     await tester.pumpAndSettle();
@@ -161,11 +172,13 @@ void main() {
           level: GameLevel.level2,
           location: .lake,
           savedAt: DateTime(2026, 10, 20, 14, 5),
+          day: 1,
           stats: const .initial(),
           materials: const [],
           inventory: const [],
           pickups: const [],
           pollution: const .clean(),
+          constructions: const {},
         ),
       );
     await pumpApp(tester, saveRepository: saveRepository);
@@ -196,11 +209,13 @@ void main() {
           level: GameLevel.level1,
           location: .forest,
           savedAt: DateTime(2026, 10, 20, 16, 30),
+          day: 1,
           stats: const PlayerStats(health: 90, hunger: 55, thirst: 45),
           materials: const [MaterialStock(material: .wood, count: 3)],
           inventory: const [InventoryStack(item: .berries, count: 2)],
           pickups: const [],
           pollution: const Pollution(airPoints: 2, isWaterPolluted: true, isSoilPolluted: false),
+          constructions: const {},
         ),
       );
     await pumpApp(
@@ -289,12 +304,6 @@ void main() {
     expect(buttonImage(images.imgMap), findsNothing);
     expect(buttonImage(images.imgForestRectangle), findsOneWidget);
     expect(buttonImage(images.imgHouseRectangle), findsNothing);
-
-    for (final image in [images.imgMainCharacterHappy, images.imgMainCharacterSad, images.imgMainCharacter]) {
-      tester.widget<CharacterContainer>(find.byType(CharacterContainer)).onTap();
-      await pumpScene(tester);
-      expect(buttonImage(image), findsOneWidget);
-    }
   });
 
   testWidgets('Close button on the map returns to the location', (

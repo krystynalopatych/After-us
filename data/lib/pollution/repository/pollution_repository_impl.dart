@@ -14,31 +14,13 @@ final class PollutionRepositoryImpl implements PollutionRepository {
   Stream<Pollution> get pollutionStream => _pollutionController.stream;
 
   @override
-  void addAirPoints(int points) => _update(
-    Pollution(
-      airPoints: _pollution.airPoints + points,
-      isWaterPolluted: _pollution.isWaterPolluted,
-      isSoilPolluted: _pollution.isSoilPolluted,
-    ),
-  );
+  void addAirPoints(int points) => _update(_pollution.copyWith(airPoints: _pollution.airPoints + points));
 
   @override
-  void polluteWater() => _update(
-    Pollution(
-      airPoints: _pollution.airPoints,
-      isWaterPolluted: true,
-      isSoilPolluted: _pollution.isSoilPolluted,
-    ),
-  );
+  void polluteWater() => _update(_pollution.copyWith(isWaterPolluted: true));
 
   @override
-  void polluteSoil() => _update(
-    Pollution(
-      airPoints: _pollution.airPoints,
-      isWaterPolluted: _pollution.isWaterPolluted,
-      isSoilPolluted: true,
-    ),
-  );
+  void polluteSoil() => _update(_pollution.copyWith(isSoilPolluted: true));
 
   @override
   void restore(Pollution pollution) => _update(pollution);

@@ -1,5 +1,6 @@
 import 'package:domain/character/model/character_mood.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/src/widget/character/model/character_state.dart';
 import 'package:presentation/di/di_container.dart';
@@ -13,7 +14,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
     : _characterRepository = diContainer.get(),
       super(_toState(diContainer.get<CharacterRepository>().mood)) {
     on<CharacterStarted>(_onStarted);
-    on<CharacterTapped>((event, emit) => _characterRepository.setMood(_nextMood(_characterRepository.mood)));
   }
 
   Future<void> _onStarted(CharacterStarted event, Emitter<CharacterState> emit) {
@@ -22,12 +22,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       onData: _toState,
     );
   }
-
-  static CharacterMood _nextMood(CharacterMood mood) => switch (mood) {
-    .normal => .happy,
-    .happy => .sad,
-    .sad => .normal,
-  };
 
   static CharacterState _toState(CharacterMood mood) => switch (mood) {
     .normal => .normal,

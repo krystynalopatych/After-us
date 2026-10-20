@@ -25,7 +25,7 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   bool add(InventoryItem item) {
     final index = _stacks.indexWhere((stack) => stack.item == item && stack.count < _stackSize);
     if (index != -1) {
-      _stacks[index] = InventoryStack(item: item, count: _stacks[index].count + 1);
+      _stacks[index] = _stacks[index].copyWith(count: _stacks[index].count + 1);
     } else if (_stacks.length < _slotCount) {
       _stacks.add(InventoryStack(item: item, count: 1));
     } else {
@@ -41,9 +41,9 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     if (index == -1) {
       return false;
     }
-    final count = _stacks[index].count;
-    if (count > 1) {
-      _stacks[index] = InventoryStack(item: item, count: count - 1);
+    final stack = _stacks[index];
+    if (stack.count > 1) {
+      _stacks[index] = stack.copyWith(count: stack.count - 1);
     } else {
       _stacks.removeAt(index);
     }

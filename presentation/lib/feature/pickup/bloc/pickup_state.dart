@@ -6,7 +6,7 @@ enum PickupStep {
   inventoryFull,
 }
 
-final class PickupState {
+final class PickupState extends Equatable {
   final List<Pickup> pickups;
   final Pickup? found;
   final PickupStep step;
@@ -16,4 +16,17 @@ final class PickupState {
     this.found,
     this.step = .choice,
   });
+
+  PickupState copyWith({
+    List<Pickup>? pickups,
+    Pickup? Function()? found,
+    PickupStep? step,
+  }) => PickupState(
+    pickups: pickups ?? this.pickups,
+    found: found != null ? found() : this.found,
+    step: step ?? this.step,
+  );
+
+  @override
+  List<Object?> get props => [pickups, found, step];
 }

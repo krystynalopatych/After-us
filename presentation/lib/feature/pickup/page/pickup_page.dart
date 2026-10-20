@@ -1,6 +1,7 @@
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/pickup/model/pickup.dart';
 import 'package:domain/pickup/model/pickup_kind.dart';
+import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
@@ -10,13 +11,14 @@ import 'package:presentation/feature/pickup/bloc/pickup_bloc.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 class PickupPage extends StatefulWidget {
+  final GameLevel level;
   final double locationTop;
 
-  const PickupPage._({required this.locationTop});
+  const PickupPage._({required this.level, required this.locationTop});
 
-  static Widget withBloc({required double locationTop}) => BlocProvider(
+  static Widget withBloc({required GameLevel level, required double locationTop}) => BlocProvider(
     create: (_) => PickupBloc()..add(const PickupStarted()),
-    child: PickupPage._(locationTop: locationTop),
+    child: PickupPage._(level: level, locationTop: locationTop),
   );
 
   @override
@@ -33,6 +35,47 @@ class _PickupPageState extends State<PickupPage> {
   static const _threeActionSize = Size(250, 150);
   static const _okActionSize = Size(250, 150);
   static const _throwTargets = [GameLocation.lake, GameLocation.dump, GameLocation.forest];
+  static const _level1Spots = <Offset>[
+    Offset(700, 560),
+    Offset(180, 600),
+    Offset(820, 160),
+    Offset(1050, 900),
+    Offset(520, 300),
+    Offset(760, 200),
+    Offset(1100, 260),
+    Offset(1380, 420),
+    Offset(600, 700),
+    Offset(1250, 760),
+    Offset(900, 520),
+    Offset(1500, 620),
+    Offset(560, 900),
+    Offset(340, 480),
+    Offset(1560, 280),
+    Offset(1500, 960),
+    Offset(1700, 760),
+    Offset(480, 850),
+    Offset(600, 950),
+    Offset(1320, 900),
+    Offset(180, 420),
+    Offset(400, 170),
+    Offset(1560, 240),
+    Offset(1600, 520),
+    Offset(340, 700),
+    Offset(200, 600),
+    Offset(1300, 780),
+    Offset(1460, 760),
+    Offset(900, 400),
+    Offset(600, 900),
+    Offset(1100, 300),
+    Offset(480, 800),
+    Offset(520, 330),
+    Offset(820, 240),
+    Offset(1000, 560),
+    Offset(700, 720),
+    Offset(1180, 760),
+    Offset(760, 500),
+    Offset(1240, 640),
+  ];
 
   late final PickupBloc _bloc;
 
@@ -51,8 +94,8 @@ class _PickupPageState extends State<PickupPage> {
         children: [
           for (final pickup in state.pickups)
             Positioned(
-              left: pickup.left,
-              top: widget.locationTop + pickup.top,
+              left: _spot(pickup).dx,
+              top: widget.locationTop + _spot(pickup).dy,
               width: _size(pickup.kind).width,
               height: _size(pickup.kind).height,
               child: PressableContainer(
@@ -108,6 +151,11 @@ class _PickupPageState extends State<PickupPage> {
         AnswerButtonContainer(text: 'OK', onTap: () => _bloc.add(const PickupDismissed())),
       ],
     ),
+  };
+
+  Offset _spot(Pickup pickup) => switch (widget.level) {
+    .level1 => _level1Spots[pickup.id],
+    .level2 || .level3 => Offset.zero,
   };
 
   static String _targetTitle(GameLocation target) => switch (target) {

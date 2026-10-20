@@ -5,6 +5,7 @@ import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/di/di_container.dart';
 
@@ -34,7 +35,7 @@ class HudBloc extends Bloc<HudEvent, HudState> {
 
   Future<void> _onStarted(HudStarted event, Emitter<HudState> emit) {
     emit(
-      HudState(
+      state.copyWith(
         stats: _playerRepository.stats,
         stocks: _materialRepository.stocks,
         inventory: _inventoryRepository.stacks,
@@ -43,52 +44,30 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     return Future.wait([
       emit.forEach(
         _playerRepository.statsStream,
-        onData: (stats) => HudState(
-          stats: stats,
-          stocks: state.stocks,
-          inventory: state.inventory,
-          selectedMaterial: state.selectedMaterial,
-          selectedSlot: state.selectedSlot,
-        ),
+        onData: (stats) => state.copyWith(stats: stats),
       ),
       emit.forEach(
         _materialRepository.stocksStream,
-        onData: (stocks) => HudState(
-          stats: state.stats,
-          stocks: stocks,
-          inventory: state.inventory,
-          selectedMaterial: state.selectedMaterial,
-          selectedSlot: state.selectedSlot,
-        ),
+        onData: (stocks) => state.copyWith(stocks: stocks),
       ),
       emit.forEach(
         _inventoryRepository.stacksStream,
-        onData: (inventory) => HudState(
-          stats: state.stats,
-          stocks: state.stocks,
-          inventory: inventory,
-          selectedMaterial: state.selectedMaterial,
-          selectedSlot: state.selectedSlot,
-        ),
+        onData: (inventory) => state.copyWith(inventory: inventory),
       ),
     ]);
   }
 
   void _onMaterialTapped(HudMaterialTapped event, Emitter<HudState> emit) => emit(
-    HudState(
-      stats: state.stats,
-      stocks: state.stocks,
-      inventory: state.inventory,
-      selectedMaterial: state.selectedMaterial == event.material ? null : event.material,
+    state.copyWith(
+      selectedMaterial: () => state.selectedMaterial == event.material ? null : event.material,
+      selectedSlot: () => null,
     ),
   );
 
   void _onSlotTapped(HudSlotTapped event, Emitter<HudState> emit) => emit(
-    HudState(
-      stats: state.stats,
-      stocks: state.stocks,
-      inventory: state.inventory,
-      selectedSlot: state.selectedSlot == event.slot ? null : event.slot,
+    state.copyWith(
+      selectedMaterial: () => null,
+      selectedSlot: () => state.selectedSlot == event.slot ? null : event.slot,
     ),
   );
 }

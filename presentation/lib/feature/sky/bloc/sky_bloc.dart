@@ -1,5 +1,6 @@
 import 'package:domain/pollution/model/air_quality.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/src/widget/sky/model/sky_state.dart';
 import 'package:presentation/di/di_container.dart';
