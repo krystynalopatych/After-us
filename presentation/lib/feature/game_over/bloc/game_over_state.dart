@@ -1,18 +1,18 @@
 part of 'game_over_bloc.dart';
 
 final class GameOverState extends Equatable {
-  final LevelOutcome? outcome;
+  final LevelResult? result;
 
   const GameOverState({
-    this.outcome,
+    this.result,
   });
 
   GameOverState copyWith({
-    LevelOutcome? Function()? outcome,
+    LevelResult? Function()? result,
   }) => GameOverState(
-    outcome: outcome != null ? outcome() : this.outcome,
+    result: result != null ? result() : this.result,
   );
 
   @override
-  List<Object?> get props => [outcome];
+  List<Object?> get props => [result];
 }

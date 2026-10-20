@@ -120,7 +120,7 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
           if (state.isMapOpen) _map(),
-          GameOverPage.withBloc(),
+          GameOverPage.withBloc(level: widget.level),
         ],
       ),
     );

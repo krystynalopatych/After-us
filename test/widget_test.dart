@@ -1177,4 +1177,62 @@ void main() {
       );
     },
   );
+  testWidgets(
+    'Game over shows the reason, retry restarts the level and menu returns to the start screen',
+    (
+      WidgetTester tester,
+    ) async {
+      await pumpApp(tester);
+      await startLevel1(tester);
+
+      diContainer.get<ConstructionRepository>().build(.compostPit);
+      diContainer.get<DayRepository>().setOutcome(.noTimeLeft);
+      await pumpScene(tester);
+
+      expect(
+        find.text('YOU LOST'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('You did not finish the water filter and the rocket stove.'),
+        findsOneWidget,
+      );
+
+      await tapText(
+        tester,
+        'RETRY',
+      );
+
+      expect(
+        find.text('YOU LOST'),
+        findsNothing,
+      );
+      expect(
+        diContainer.get<ConstructionRepository>().built,
+        isEmpty,
+      );
+      expect(
+        find.byType(Level1Page),
+        findsOneWidget,
+      );
+
+      diContainer.get<DayRepository>().setOutcome(.won);
+      await pumpScene(tester);
+
+      expect(
+        find.text('YOU SURVIVED'),
+        findsOneWidget,
+      );
+
+      await tapText(
+        tester,
+        'MENU',
+      );
+
+      expect(
+        find.byType(StartPage),
+        findsOneWidget,
+      );
+    },
+  );
 }

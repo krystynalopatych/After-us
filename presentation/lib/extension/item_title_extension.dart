@@ -1,6 +1,15 @@
+import 'package:domain/construction/model/construction.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/pickup/model/pickup_kind.dart';
+
+extension ConstructionTitleExtension on Construction {
+  String get title => switch (this) {
+    .waterFilter => 'Water filter',
+    .compostPit => 'Compost pit',
+    .rocketStove => 'Rocket stove',
+  };
+}
 
 extension GameMaterialTitleExtension on GameMaterial {
   String get title => switch (this) {

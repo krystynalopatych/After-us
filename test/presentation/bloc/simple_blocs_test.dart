@@ -1,12 +1,10 @@
 import 'package:domain/character/model/character_mood.dart';
-import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
 import 'package:presentation/feature/character/bloc/character_bloc.dart';
-import 'package:presentation/feature/game_over/bloc/game_over_bloc.dart';
 import 'package:presentation/feature/load_game/bloc/load_game_bloc.dart';
 import 'package:presentation/feature/sky/bloc/sky_bloc.dart';
 import 'package:presentation/feature/start/bloc/start_bloc.dart';
@@ -224,34 +222,6 @@ void main() {
       expect(
         bloc.state,
         SkyState.clear,
-      );
-    },
-  );
-
-  test(
-    'GameOverBloc shows the stored outcome and follows its changes',
-    () async {
-      final bloc = GameOverBloc()..add(const GameOverStarted());
-      addTearDown(bloc.close);
-      await pumpEventQueue();
-
-      expect(
-        bloc.state.outcome,
-        isNull,
-      );
-
-      deps.day.setOutcome(.died);
-      await pumpEventQueue();
-      expect(
-        bloc.state.outcome,
-        LevelOutcome.died,
-      );
-
-      deps.day.reset();
-      await pumpEventQueue();
-      expect(
-        bloc.state.outcome,
-        isNull,
       );
     },
   );

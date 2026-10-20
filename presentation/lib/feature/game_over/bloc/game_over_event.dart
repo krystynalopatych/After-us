@@ -10,3 +10,7 @@ sealed class GameOverEvent extends Equatable {
 final class GameOverStarted extends GameOverEvent {
   const GameOverStarted();
 }
+
+final class GameOverRetryTapped extends GameOverEvent {
+  const GameOverRetryTapped();
+}
