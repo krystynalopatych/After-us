@@ -10,7 +10,8 @@ enum GameMaterial {
   clay,
   oil(airPoints: 3),
   chlorine,
-  electronics(airPoints: 5);
+  electronics(airPoints: 5),
+  charcoal;
 
   final int airPoints;
 

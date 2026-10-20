@@ -165,8 +165,16 @@ class _HudPageState extends State<HudPage> {
     final images = context.images;
     return switch (item) {
       .cattailRoot => images.imgKoreniKamyshaSyrye,
+      .cattailRootCooked => images.imgKoreniKamyshaSvarenye,
       .algae => images.imgSeaweedNEVymochenye,
+      .algaeSoaked => images.imgSeaweedVymochenye,
       .berries => images.imgBerries,
+      .cleanWater => images.imgBoiledWater,
+      .sodisBottle => images.imgWaterSodis,
+      .prefilter => images.imgPrefilter,
+      .cookingPot => images.imgCookingPot,
+      .rocketStove => images.imgRocketFire,
+      .waterFilter => images.imgFullWaterFilter,
     };
   }
 
@@ -185,6 +193,7 @@ class _HudPageState extends State<HudPage> {
       .oil => images.imgOil,
       .chlorine => images.imgChlorine,
       .electronics => images.imgProvoda,
+      .charcoal => images.imgCoal,
     };
   }
 }

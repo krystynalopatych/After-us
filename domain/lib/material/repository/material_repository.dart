@@ -6,7 +6,11 @@ abstract interface class MaterialRepository {
 
   Stream<List<MaterialStock>> get stocksStream;
 
+  int count(GameMaterial material);
+
   void add(GameMaterial material);
+
+  bool remove(GameMaterial material, int count);
 
   void restore(List<MaterialStock> stocks);
 

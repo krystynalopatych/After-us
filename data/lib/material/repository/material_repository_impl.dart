@@ -18,9 +18,27 @@ final class MaterialRepositoryImpl implements MaterialRepository {
   Stream<List<MaterialStock>> get stocksStream => _stocksController.stream;
 
   @override
+  int count(GameMaterial material) => _counts[material] ?? 0;
+
+  @override
   void add(GameMaterial material) {
     _counts.update(material, (count) => count + 1, ifAbsent: () => 1);
     _stocksController.add(stocks);
+  }
+
+  @override
+  bool remove(GameMaterial material, int count) {
+    final left = this.count(material) - count;
+    if (left < 0) {
+      return false;
+    }
+    if (left == 0) {
+      _counts.remove(material);
+    } else {
+      _counts[material] = left;
+    }
+    _stocksController.add(stocks);
+    return true;
   }
 
   @override

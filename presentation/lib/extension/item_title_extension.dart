@@ -16,14 +16,23 @@ extension GameMaterialTitleExtension on GameMaterial {
     .oil => 'Oil',
     .chlorine => 'Chlorine',
     .electronics => 'Electronics',
+    .charcoal => 'Charcoal',
   };
 }
 
 extension InventoryItemTitleExtension on InventoryItem {
   String get title => switch (this) {
     .cattailRoot => 'Cattail roots',
+    .cattailRootCooked => 'Cooked cattail roots',
     .algae => 'Algae',
+    .algaeSoaked => 'Soaked algae',
     .berries => 'Berries',
+    .cleanWater => 'Clean water',
+    .sodisBottle => 'SODIS bottle',
+    .prefilter => 'Cloth prefilter',
+    .cookingPot => 'Cooking pot',
+    .rocketStove => 'Rocket stove',
+    .waterFilter => 'Water filter',
   };
 }
 
