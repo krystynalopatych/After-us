@@ -18,10 +18,12 @@ final class ThrowPickupUseCase {
   ) {
     if (pickup.kind.material case final material?) {
       switch (target) {
-        case .lake:
+        case .lake when material.pollutesWater:
           _pollutionRepository.polluteWater();
-        case .forest:
+        case .forest when material.pollutesSoil:
           _pollutionRepository.polluteSoil();
+        case .lake || .forest:
+          break;
         case .dump || .house || .store || .garage:
           _pollutionRepository.addAirPoints(material.airPoints);
       }

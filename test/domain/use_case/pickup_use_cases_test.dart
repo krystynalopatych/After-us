@@ -157,8 +157,14 @@ void main() {
       );
 
       test(
-        'a material thrown in the forest pollutes the soil',
+        'sand, wood, cloth and organics do not pollute the lake and plastic does not pollute the soil',
         () {
+          for (final kind in [PickupKind.sand, PickupKind.wood, PickupKind.cloth, PickupKind.organics]) {
+            throwAway(
+              firstOf(kind),
+              .lake,
+            );
+          }
           throwAway(
             firstOf(.plastic),
             .forest,
@@ -166,7 +172,7 @@ void main() {
 
           expect(
             pollution.pollution.isSoilPolluted,
-            isTrue,
+            isFalse,
           );
           expect(
             pollution.pollution.isWaterPolluted,

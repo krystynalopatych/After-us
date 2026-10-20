@@ -144,6 +144,20 @@ void main() {
   );
 
   test(
+    'GameMaterial pollutes water and soil only for the listed materials',
+    () {
+      expect(
+        GameMaterial.values.where((material) => material.pollutesWater),
+        [GameMaterial.plastic, GameMaterial.metal, GameMaterial.oil, GameMaterial.chlorine, GameMaterial.electronics],
+      );
+      expect(
+        GameMaterial.values.where((material) => material.pollutesSoil),
+        [GameMaterial.oil, GameMaterial.chlorine, GameMaterial.electronics],
+      );
+    },
+  );
+
+  test(
     'GameLocation marks only the far zones as far',
     () {
       expect(

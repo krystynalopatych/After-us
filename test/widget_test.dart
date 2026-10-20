@@ -791,7 +791,7 @@ void main() {
   );
 
   testWidgets(
-    'Throwing a material into the lake or the forest pollutes water or soil',
+    'Throwing plastic into the lake pollutes the water, wood pollutes nothing',
     (
       WidgetTester tester,
     ) async {
@@ -820,7 +820,7 @@ void main() {
 
       expect(
         pollutionRepository.pollution.isWaterPolluted,
-        isTrue,
+        isFalse,
       );
       expect(
         pollutionRepository.pollution.isSoilPolluted,
@@ -840,11 +840,27 @@ void main() {
 
       expect(
         pollutionRepository.pollution.isSoilPolluted,
-        isTrue,
+        isFalse,
       );
       expect(
         pollutionRepository.pollution.airPoints,
         0,
+      );
+
+      await tester.tap(buttonImage(images.imgPlasticBottle).first);
+      await pumpScene(tester);
+      await tapText(
+        tester,
+        'THROW AWAY',
+      );
+      await tapText(
+        tester,
+        'LAKE',
+      );
+
+      expect(
+        pollutionRepository.pollution.isWaterPolluted,
+        isTrue,
       );
     },
   );
@@ -1181,6 +1197,7 @@ void main() {
       );
     },
   );
+
   testWidgets(
     'Game over shows the reason, retry restarts the level and menu returns to the start screen',
     (
@@ -1239,6 +1256,7 @@ void main() {
       );
     },
   );
+
   testWidgets(
     'The goal checklist ticks a construction when it is built',
     (

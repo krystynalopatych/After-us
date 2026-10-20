@@ -213,7 +213,7 @@ void main() {
   );
 
   test(
-    'a material thrown in the forest pollutes the soil',
+    'plastic thrown in the forest pollutes nothing',
     () async {
       await send(PickupTapped(firstOf(.plastic)));
       await send(const PickupThrowTapped());
@@ -221,7 +221,7 @@ void main() {
 
       expect(
         deps.pollution.pollution.isSoilPolluted,
-        isTrue,
+        isFalse,
       );
       expect(
         deps.pollution.pollution.isWaterPolluted,
