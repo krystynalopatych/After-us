@@ -190,4 +190,26 @@ void main() {
       );
     },
   );
+
+  test(
+    'choosing a location never shows the old location with the map closed',
+    () async {
+      bloc.add(const GameMapTapped());
+      await pumpEventQueue();
+      final states = <GameState>[];
+      final subscription = bloc.stream.listen(states.add);
+      addTearDown(subscription.cancel);
+
+      await travel(.lake);
+
+      expect(
+        states.first,
+        const GameState(location: .lake),
+      );
+      expect(
+        states.where((state) => !state.isMapOpen && state.location == .house),
+        isEmpty,
+      );
+    },
+  );
 }

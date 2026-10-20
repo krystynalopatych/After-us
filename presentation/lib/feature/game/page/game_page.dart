@@ -71,11 +71,35 @@ class _GamePageState extends State<GamePage> {
   );
 
   late final GameBloc _bloc;
+  var _isPrecached = false;
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isPrecached) {
+      return;
+    }
+    _isPrecached = true;
+    for (final image in [
+      context.images.imgMap,
+      context.images.imgButtonClose,
+      context.images.imgSunLight,
+      for (final location in widget.level.locations) ...[
+        _locationBackground(location),
+        _locationIcon(location),
+      ],
+    ]) {
+      precacheImage(
+        image.provider(),
+        context,
+      );
+    }
   }
 
   @override

@@ -41,7 +41,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     GameLocationSelected event,
     Emitter<GameState> emit,
   ) {
-    emit(state.copyWith(isMapOpen: false));
     _travelUseCase(event.location);
+    emit(
+      state.copyWith(
+        location: _locationRepository.location,
+        isMapOpen: false,
+      ),
+    );
   }
 }
