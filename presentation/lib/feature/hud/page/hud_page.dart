@@ -26,7 +26,7 @@ class _HudPageState extends State<HudPage> {
   static const _materialSpacing = 10.0;
   static const _statWidth = 150.0;
   static const _statHeight = 141.0;
-  static const _statTop = 938.0;
+  static const _statTop = 1588.0;
   static const _healthLeft = 438.0;
   static const _hungerLeft = 572.0;
   static const _healthValueAlignment = Alignment(0.146, 0.068);
@@ -34,11 +34,11 @@ class _HudPageState extends State<HudPage> {
   static const _thirstLeft = 706.0;
   static const _thirstValueAlignment = Alignment(0.203, 0.088);
   static const _inventoryLeft = 852.0;
-  static const _inventoryTop = 872.0;
+  static const _inventoryTop = 1522.0;
   static const _inventoryWidth = 820.0;
   static const _inventoryHeight = 273.0;
   static const _mapLeft = 1760.0;
-  static const _mapTop = 910.0;
+  static const _mapTop = 1560.0;
   static const _mapSize = 150.0;
 
   late final HudBloc _bloc;
@@ -109,7 +109,7 @@ class _HudPageState extends State<HudPage> {
               top: _inventoryTop,
               width: _inventoryWidth,
               height: _inventoryHeight,
-              child: images.imgInventory.image(fit: .contain),
+              child: images.imgInventory12.image(fit: .contain),
             ),
             Positioned(
               left: _mapLeft,

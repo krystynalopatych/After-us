@@ -1,3 +1,4 @@
+import 'package:data/air/repository/air_repository_impl.dart';
 import 'package:data/app/repository/app_repository_impl.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
@@ -5,6 +6,7 @@ import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
+import 'package:domain/air/repository/air_repository.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
@@ -19,6 +21,7 @@ AppBloc createAppBloc() => AppBloc();
 
 void registerDependencies() {
   diContainer
+    ..registerSingleton<AirRepository>(AirRepositoryImpl())
     ..registerSingleton<AppRepository>(AppRepositoryImpl())
     ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
     ..registerSingleton<LocationRepository>(LocationRepositoryImpl())

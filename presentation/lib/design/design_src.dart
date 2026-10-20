@@ -10,4 +10,6 @@ export 'src/widget/material/material_container.dart';
 export 'src/widget/pressable_container/pressable_container.dart';
 export 'src/widget/pressable_container/tap_builder.dart';
 export 'src/widget/scene/scene_container.dart';
+export 'src/widget/sky/model/sky_state.dart';
+export 'src/widget/sky/sky_container.dart';
 export 'src/widget/stat/stat_container.dart';

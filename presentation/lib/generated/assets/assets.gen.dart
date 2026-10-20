@@ -216,9 +216,9 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgHouseRectangle =>
       const AssetGenImage('resources/assets/images/img_house_rectangle.png');
 
-  /// File path: resources/assets/images/img_inventory.png
-  AssetGenImage get imgInventory =>
-      const AssetGenImage('resources/assets/images/img_inventory.png');
+  /// File path: resources/assets/images/img_inventory_12.png
+  AssetGenImage get imgInventory12 =>
+      const AssetGenImage('resources/assets/images/img_inventory_12.png');
 
   /// File path: resources/assets/images/img_kamysh.png
   AssetGenImage get imgKamysh =>
@@ -470,7 +470,7 @@ class $ResourcesAssetsImagesGen {
     imgHomeIcon,
     imgHouse,
     imgHouseRectangle,
-    imgInventory,
+    imgInventory12,
     imgKamysh,
     imgKompost,
     imgKoreniKamyshaSvarenye,

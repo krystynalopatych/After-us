@@ -1,9 +1,11 @@
+import 'package:data/air/repository/air_repository_impl.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
+import 'package:domain/air/repository/air_repository.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
@@ -37,8 +39,22 @@ void main() {
     (widget) => widget is Image && (widget.image as AssetImage).assetName == image.path,
   );
 
+  Future<void> pumpScene(WidgetTester tester) async {
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+  }
+
+  Finder fadeOf(AssetGenImage image) => find.ancestor(
+    of: buttonImage(image).first,
+    matching: find.byType(AnimatedOpacity),
+  );
+
+  double opacityOf(WidgetTester tester, AssetGenImage image) =>
+      tester.widget<AnimatedOpacity>(fadeOf(image).first).opacity;
+
   Future<void> pumpApp(
     WidgetTester tester, {
+    AirRepository? airRepository,
     AppRepository? appRepository,
     SaveRepository? saveRepository,
   }) async {
@@ -47,6 +63,7 @@ void main() {
 
     await diContainer.reset();
     diContainer
+      ..registerSingleton<AirRepository>(airRepository ?? AirRepositoryImpl())
       ..registerSingleton<AppRepository>(appRepository ?? _FakeAppRepository())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
@@ -102,7 +119,7 @@ void main() {
     expect(find.byType(StartPage), findsOneWidget);
 
     await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonLevel1).last);
-    await tester.pumpAndSettle();
+    await pumpScene(tester);
     expect(find.byType(Level1Page), findsOneWidget);
   });
 
@@ -126,7 +143,7 @@ void main() {
     expect(find.text('Level 2 · Lake · 20.10.2026 14:05'), findsOneWidget);
 
     await tester.tap(find.text('Level 2 · Lake · 20.10.2026 14:05'));
-    await tester.pumpAndSettle();
+    await pumpScene(tester);
 
     expect(find.byType(Level2Page), findsOneWidget);
   });
@@ -170,25 +187,25 @@ void main() {
     await tester.tap(buttonImage(images.imgButtonNewGame).last);
     await tester.pumpAndSettle();
     await tester.tap(buttonImage(images.imgButtonLevel1).last);
-    await tester.pumpAndSettle();
+    await pumpScene(tester);
 
     expect(find.byType(Level1Page), findsOneWidget);
     expect(buttonImage(images.imgHouseRectangle), findsOneWidget);
     expect(find.byType(CharacterContainer), findsOneWidget);
     expect(find.text('100'), findsOneWidget);
     expect(find.text('80'), findsNWidgets(2));
-    expect(buttonImage(images.imgInventory), findsOneWidget);
+    expect(buttonImage(images.imgInventory12), findsOneWidget);
     expect(buttonImage(images.imgMap), findsNothing);
 
     await tester.tap(buttonImage(images.imgMapIconPixel).last);
-    await tester.pumpAndSettle();
+    await pumpScene(tester);
 
     expect(buttonImage(images.imgMap), findsOneWidget);
     expect(buttonImage(images.imgSvalkaIcon), findsNWidgets(2));
     expect(buttonImage(images.imgStoreIcon), findsNothing);
 
     await tester.tap(buttonImage(images.imgForestIcon).last);
-    await tester.pumpAndSettle();
+    await pumpScene(tester);
 
     expect(buttonImage(images.imgMap), findsNothing);
     expect(buttonImage(images.imgForestRectangle), findsOneWidget);
@@ -196,9 +213,40 @@ void main() {
 
     for (final image in [images.imgMainCharacterHappy, images.imgMainCharacterSad, images.imgMainCharacter]) {
       tester.widget<CharacterContainer>(find.byType(CharacterContainer)).onTap();
-      await tester.pumpAndSettle();
+      await pumpScene(tester);
       expect(buttonImage(image), findsOneWidget);
     }
+  });
+
+  testWidgets('Sky and clouds darken smoothly as air pollution grows', (
+    WidgetTester tester,
+  ) async {
+    final images = Assets.resources.assets.images;
+    final airRepository = AirRepositoryImpl()..addPoints(5);
+    await pumpApp(tester, airRepository: airRepository);
+
+    await tester.tap(buttonImage(images.imgButtonNewGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(images.imgButtonLevel1).last);
+    await pumpScene(tester);
+
+    expect(airRepository.points, 0);
+    expect(opacityOf(tester, images.imgSkyBlack), 0);
+    expect(opacityOf(tester, images.imgClaudBlack), 0);
+    expect(opacityOf(tester, images.imgClaudBlue), 1);
+
+    airRepository.addPoints(1);
+    await pumpScene(tester);
+
+    expect(opacityOf(tester, images.imgSkyBlack), 0);
+    expect(opacityOf(tester, images.imgClaudBlack), 1);
+    expect(opacityOf(tester, images.imgClaudBlue), 0);
+
+    airRepository.addPoints(3);
+    await pumpScene(tester);
+
+    expect(opacityOf(tester, images.imgSkyBlack), 1);
+    expect(opacityOf(tester, images.imgClaudBlack), 1);
   });
 
   testWidgets('Opening a level URL directly redirects to the start screen', (
