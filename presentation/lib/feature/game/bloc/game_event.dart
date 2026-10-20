@@ -19,6 +19,14 @@ final class GameMapClosed extends GameEvent {
   const GameMapClosed();
 }
 
+final class GameLocationTapped extends GameEvent {
+  const GameLocationTapped();
+}
+
+final class GameBuildClosed extends GameEvent {
+  const GameBuildClosed();
+}
+
 final class GameLocationSelected extends GameEvent {
   final GameLocation location;
 

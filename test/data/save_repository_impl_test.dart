@@ -24,6 +24,7 @@ void main() {
     pickups: const [],
     pollution: const .clean(),
     constructions: const {},
+    stations: const {},
   );
 
   test(

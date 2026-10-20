@@ -16,6 +16,8 @@ import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
+import 'package:presentation/feature/station/page/station_build_page.dart';
+import 'package:presentation/feature/station/page/station_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 class GamePage extends StatefulWidget {
@@ -133,7 +135,12 @@ class _GamePageState extends State<GamePage> {
                 right: 0,
                 bottom: 0,
                 height: _locationHeight,
-                child: BackgroundContainer(image: _locationBackground(state.location)),
+                child: state.location == .house
+                    ? StationPage.withBloc(
+                        background: _locationBackground(state.location),
+                        onLocationTap: () => _bloc.add(const GameLocationTapped()),
+                      )
+                    : BackgroundContainer(image: _locationBackground(state.location)),
               ),
               if (state.location == .lake)
                 Positioned.fromRect(
@@ -170,6 +177,8 @@ class _GamePageState extends State<GamePage> {
                   locationTop: _skyHeight,
                 ),
               ),
+              if (state.isBuildOpen)
+                Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),

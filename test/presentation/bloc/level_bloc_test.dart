@@ -9,6 +9,7 @@ import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/level_1/bloc/level_1_bloc.dart';
 import 'package:presentation/feature/level_2/bloc/level_2_bloc.dart';
@@ -67,6 +68,7 @@ void main() {
       isSoilPolluted: true,
     ),
     constructions: const {.waterFilter},
+    stations: const {.campfire},
   );
 
   void dirtyEverything() {
@@ -92,6 +94,7 @@ void main() {
       ..addAirPoints(8)
       ..polluteWater();
     deps.construction.build(.compostPit);
+    deps.station.build(.workbench);
     deps.location.setLocation(.dump);
   }
 
@@ -138,6 +141,10 @@ void main() {
     );
     expect(
       deps.construction.built,
+      isEmpty,
+    );
+    expect(
+      deps.station.built,
       isEmpty,
     );
     expect(
@@ -198,6 +205,10 @@ void main() {
     expect(
       deps.construction.built,
       {Construction.waterFilter},
+    );
+    expect(
+      deps.station.built,
+      {Station.campfire},
     );
     expect(
       deps.location.location,

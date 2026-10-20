@@ -9,6 +9,7 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
+import 'package:domain/station/repository/station_repository.dart';
 
 final class SaveGameUseCase {
   final ConstructionRepository _constructionRepository;
@@ -20,6 +21,7 @@ final class SaveGameUseCase {
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
   final SaveRepository _saveRepository;
+  final StationRepository _stationRepository;
 
   const SaveGameUseCase({
     required this._constructionRepository,
@@ -31,6 +33,7 @@ final class SaveGameUseCase {
     required this._playerRepository,
     required this._pollutionRepository,
     required this._saveRepository,
+    required this._stationRepository,
   });
 
   void call(GameLevel level) => _saveRepository.addSave(
@@ -45,6 +48,7 @@ final class SaveGameUseCase {
       pickups: _pickupRepository.pickups,
       pollution: _pollutionRepository.pollution,
       constructions: _constructionRepository.built,
+      stations: _stationRepository.built,
     ),
   );
 }

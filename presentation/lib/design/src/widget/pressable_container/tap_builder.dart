@@ -9,11 +9,13 @@ typedef TapWidgetBuilder = Widget Function(
 final class TapBuilder extends StatefulWidget {
   final VoidCallback onTap;
   final TapWidgetBuilder builder;
+  final bool isEnabled;
 
   const TapBuilder({
     super.key,
     required this.onTap,
     required this.builder,
+    this.isEnabled = true,
   });
 
   @override
@@ -27,15 +29,15 @@ class _TapBuilderState extends State<TapBuilder> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: widget.isEnabled ? SystemMouseCursors.click : MouseCursor.defer,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
         behavior: .opaque,
-        onTapDown: (_) => setState(() => _isPressed = true),
-        onTapUp: (_) => setState(() => _isPressed = false),
-        onTapCancel: () => setState(() => _isPressed = false),
-        onTap: widget.onTap,
+        onTapDown: widget.isEnabled ? (_) => setState(() => _isPressed = true) : null,
+        onTapUp: widget.isEnabled ? (_) => setState(() => _isPressed = false) : null,
+        onTapCancel: widget.isEnabled ? () => setState(() => _isPressed = false) : null,
+        onTap: widget.isEnabled ? widget.onTap : null,
         child: widget.builder(
           context,
           _isPressed,

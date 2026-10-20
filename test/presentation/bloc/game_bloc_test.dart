@@ -60,6 +60,41 @@ void main() {
   );
 
   test(
+    'tapping the location opens the build dialog only for a material that builds a station',
+    () async {
+      bloc.add(const GameLocationTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBuildOpen,
+        isFalse,
+      );
+
+      deps.selection.selectMaterial(.plastic);
+      bloc.add(const GameLocationTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBuildOpen,
+        isFalse,
+      );
+
+      deps.selection.selectMaterial(.wood);
+      bloc.add(const GameLocationTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBuildOpen,
+        isTrue,
+      );
+
+      bloc.add(const GameBuildClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBuildOpen,
+        isFalse,
+      );
+    },
+  );
+
+  test(
     'choosing a location closes the map and moves the player',
     () async {
       bloc.add(const GameMapTapped());

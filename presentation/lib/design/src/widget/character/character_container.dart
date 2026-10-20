@@ -20,9 +20,12 @@ final class CharacterContainer extends StatelessWidget {
       alignment: .bottomLeft,
       child: FractionallySizedBox(
         heightFactor: _heightFactor,
-        child: TapBuilder(
-          onTap: onTap,
-          builder: (context, isPressed, isHovered) => state.image.image(fit: .contain),
+        child: AspectRatio(
+          aspectRatio: state.aspectRatio,
+          child: TapBuilder(
+            onTap: onTap,
+            builder: (context, isPressed, isHovered) => state.image.image(fit: .contain),
+          ),
         ),
       ),
     );

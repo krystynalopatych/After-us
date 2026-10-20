@@ -7,6 +7,7 @@ export 'src/widget/background/model/background_element.dart';
 export 'src/widget/character/character_container.dart';
 export 'src/widget/character/model/character_state.dart';
 export 'src/widget/inventory/inventory_slot_container.dart';
+export 'src/widget/label/label_container.dart';
 export 'src/widget/material/material_container.dart';
 export 'src/widget/message/answer_button_container.dart';
 export 'src/widget/message/hero_line_container.dart';
