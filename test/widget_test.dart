@@ -16,6 +16,7 @@ import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
+import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
@@ -1131,6 +1132,47 @@ void main() {
       );
       expect(
         find.byType(Level2Page),
+        findsNothing,
+      );
+    },
+  );
+
+  testWidgets(
+    'Feedback shows the top message and the hero line, then hides them',
+    (
+      WidgetTester tester,
+    ) async {
+      await pumpApp(tester);
+      await startLevel1(tester);
+
+      diContainer.get<FeedbackRepository>().show(
+        const FeedbackMessage(
+          text: 'You built a rocket stove.',
+          heroLine: 'Less wood, less smoke.',
+          mood: .happy,
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(
+        find.text('You built a rocket stove.'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('Less wood, less smoke.'),
+        findsOneWidget,
+      );
+
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(
+        find.text('You built a rocket stove.'),
+        findsNothing,
+      );
+      expect(
+        find.byType(HeroLineContainer),
         findsNothing,
       );
     },

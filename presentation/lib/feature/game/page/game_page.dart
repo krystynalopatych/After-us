@@ -6,6 +6,7 @@ import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
+import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
@@ -115,6 +116,7 @@ class _GamePageState extends State<GamePage> {
               ),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
+              Positioned.fill(child: FeedbackPage.withBloc()),
             ],
           ),
           if (state.isMapOpen) _map(),
