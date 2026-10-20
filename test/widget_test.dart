@@ -9,14 +9,14 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 import 'package:after_us_game/di/injection.dart';
 
 void main() {
-  Finder characterImage(AssetGenImage image) => find.descendant(
-    of: find.byType(CharacterContainer),
+  Finder buttonImage(AssetGenImage image) => find.descendant(
+    of: find.byType(PressableContainer),
     matching: find.byWidgetPredicate(
       (widget) => widget is Image && (widget.image as AssetImage).assetName == image.path,
     ),
   );
 
-  testWidgets('Start screen opens a level, which changes the character mood', (
+  testWidgets('Start screen shows menu buttons without the character', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
@@ -32,14 +32,15 @@ void main() {
 
     expect(find.byType(StartPage), findsOneWidget);
     expect(find.byType(PressableContainer), findsNWidgets(3));
-    expect(characterImage(Assets.resources.assets.images.imgMainCharacter), findsOneWidget);
+    expect(buttonImage(Assets.resources.assets.images.imgButtonNewGame), findsNWidgets(2));
+    expect(buttonImage(Assets.resources.assets.images.imgButtonLoadGame), findsNWidgets(2));
+    expect(buttonImage(Assets.resources.assets.images.imgButtonExit), findsNWidgets(2));
+    expect(find.byType(CharacterContainer), findsNothing);
 
-    await tester.tap(find.byType(PressableContainer).at(1));
+    await tester.tap(find.byType(PressableContainer).first);
     await tester.pumpAndSettle();
 
-    expect(find.byType(Level2Page), findsOneWidget);
-    expect(find.byType(StartPage), findsNothing);
-    expect(characterImage(Assets.resources.assets.images.imgMainCharacterSad), findsOneWidget);
+    expect(find.byType(StartPage), findsOneWidget);
   });
 
   testWidgets('Opening a level URL directly redirects to the start screen', (
