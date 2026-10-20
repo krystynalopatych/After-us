@@ -17,6 +17,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     on<StartStarted>((event, emit) => _characterRepository.setMood(.normal));
     on<StartNewGameTapped>(_onNewGameTapped);
     on<StartExitTapped>((event, emit) => _appRepository.exit());
+    on<StartBackTapped>((event, emit) => emit(StartState(unlockedLevel: _progressRepository.unlockedLevel)));
   }
 
   void _onNewGameTapped(StartNewGameTapped event, Emitter<StartState> emit) {

@@ -13,6 +13,9 @@ class LoadGamePage extends StatelessWidget {
   static const _listTop = 330.0;
   static const _listHeight = 690.0;
   static const _rowPadding = EdgeInsets.symmetric(vertical: 12);
+  static const _backButtonOffset = 40.0;
+  static const _backButtonWidth = 240.0;
+  static const _backButtonHeight = 160.0;
 
   const LoadGamePage({super.key});
 
@@ -25,6 +28,16 @@ class LoadGamePage extends StatelessWidget {
         builder: (context, state) => BackgroundContainer(
           image: context.images.imgLogoPage,
           elements: [
+            BackgroundElement(
+              left: _backButtonOffset,
+              top: _backButtonOffset,
+              width: _backButtonWidth,
+              height: _backButtonHeight,
+              child: PressableContainer(
+                image: context.images.imgButtonBack,
+                onTap: () => AppRoute.start.go(context),
+              ),
+            ),
             BackgroundElement(
               left: (SceneContainer.designSize.width - _listWidth) / 2,
               top: _listTop,

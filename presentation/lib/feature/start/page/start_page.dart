@@ -14,6 +14,9 @@ class StartPage extends StatelessWidget {
   static const _menuButtonWidth = 690.0;
   static const _buttonHeight = 230.0;
   static const _levelButtonWidth = 230.0;
+  static const _backButtonOffset = 40.0;
+  static const _backButtonWidth = 240.0;
+  static const _backButtonHeight = 160.0;
 
   const StartPage({super.key});
 
@@ -59,6 +62,16 @@ class StartPage extends StatelessWidget {
     ];
 
     return [
+      BackgroundElement(
+        left: _backButtonOffset,
+        top: _backButtonOffset,
+        width: _backButtonWidth,
+        height: _backButtonHeight,
+        child: PressableContainer(
+          image: images.imgButtonBack,
+          onTap: () => context.read<StartBloc>().add(const StartBackTapped()),
+        ),
+      ),
       for (final (index, (image, level)) in buttons.indexed)
         _button(
           index,

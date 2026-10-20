@@ -83,8 +83,8 @@ void main() {
 
     expect(find.byType(StartPage), findsOneWidget);
     expect(buttonImage(Assets.resources.assets.images.imgButtonNewGame), findsNothing);
-    expect(find.byType(PressableContainer), findsNWidgets(3));
-    expect(find.byType(TapBuilder), findsOneWidget);
+    expect(find.byType(PressableContainer), findsNWidgets(4));
+    expect(find.byType(TapBuilder), findsNWidgets(2));
 
     await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonLevel2));
     await tester.pumpAndSettle();
@@ -118,6 +118,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Level2Page), findsOneWidget);
+  });
+
+  testWidgets('Back button on level selection returns to the main menu', (
+    WidgetTester tester,
+  ) async {
+    await pumpApp(tester);
+
+    await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonNewGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonBack).last);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(StartPage), findsOneWidget);
+    expect(buttonImage(Assets.resources.assets.images.imgButtonNewGame), findsNWidgets(2));
+    expect(buttonImage(Assets.resources.assets.images.imgButtonBack), findsNothing);
+  });
+
+  testWidgets('Back button on load game returns to the main menu', (
+    WidgetTester tester,
+  ) async {
+    await pumpApp(tester);
+
+    await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonLoadGame).last);
+    await tester.pumpAndSettle();
+    await tester.tap(buttonImage(Assets.resources.assets.images.imgButtonBack).last);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LoadGamePage), findsNothing);
+    expect(find.byType(StartPage), findsOneWidget);
+    expect(buttonImage(Assets.resources.assets.images.imgButtonNewGame), findsNWidgets(2));
   });
 
   testWidgets('Opening a level URL directly redirects to the start screen', (

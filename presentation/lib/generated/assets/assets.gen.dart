@@ -60,6 +60,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgBushBerriespng =>
       const AssetGenImage('resources/assets/images/img_bush_berriespng.png');
 
+  /// File path: resources/assets/images/img_button_back.png
+  AssetGenImage get imgButtonBack =>
+      const AssetGenImage('resources/assets/images/img_button_back.png');
+
   /// File path: resources/assets/images/img_button_exit.png
   AssetGenImage get imgButtonExit =>
       const AssetGenImage('resources/assets/images/img_button_exit.png');
@@ -431,6 +435,7 @@ class $ResourcesAssetsImagesGen {
     imgBoiledWater,
     imgBookIcon,
     imgBushBerriespng,
+    imgButtonBack,
     imgButtonExit,
     imgButtonLevel1,
     imgButtonLevel2,

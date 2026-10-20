@@ -15,3 +15,7 @@ final class StartNewGameTapped extends StartEvent {
 final class StartExitTapped extends StartEvent {
   const StartExitTapped();
 }
+
+final class StartBackTapped extends StartEvent {
+  const StartBackTapped();
+}
