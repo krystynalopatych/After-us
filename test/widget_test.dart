@@ -1282,7 +1282,7 @@ void main() {
   );
 
   testWidgets(
-    'Feedback shows the top message and the hero line, then hides them',
+    'Feedback shows the top message without the hero line, then hides it',
     (
       WidgetTester tester,
     ) async {
@@ -1304,8 +1304,8 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.text('Less wood, less smoke.'),
-        findsOneWidget,
+        find.byType(HeroLineContainer),
+        findsNothing,
       );
 
       await tester.pump(const Duration(seconds: 3));
@@ -1313,10 +1313,6 @@ void main() {
 
       expect(
         find.text('YOU BUILT A ROCKET STOVE.'),
-        findsNothing,
-      );
-      expect(
-        find.byType(HeroLineContainer),
         findsNothing,
       );
     },

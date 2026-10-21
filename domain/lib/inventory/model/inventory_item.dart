@@ -1,3 +1,4 @@
+import 'package:domain/material/model/game_material.dart';
 import 'package:domain/pollution/model/pollution_zone.dart';
 
 enum InventoryItem {
@@ -28,6 +29,12 @@ enum InventoryItem {
     health: -15,
     zone: .water,
   ),
+  lakeWaterBottle(
+    thirst: 20,
+    health: -15,
+    zone: .water,
+    container: .plastic,
+  ),
   sodisBottle,
   prefilter,
   cookingPot,
@@ -38,12 +45,14 @@ enum InventoryItem {
   final double thirst;
   final double health;
   final PollutionZone? zone;
+  final GameMaterial? container;
 
   const InventoryItem({
     this.hunger = 0,
     this.thirst = 0,
     this.health = 0,
     this.zone,
+    this.container,
   });
 
   bool get isConsumable => hunger > 0 || thirst > 0;

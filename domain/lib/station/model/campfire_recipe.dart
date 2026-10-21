@@ -7,6 +7,11 @@ enum CampfireRecipe {
     output: .cleanWater,
     outputCount: 2,
   ),
+  boilBottledWater(
+    input: .lakeWaterBottle,
+    output: .cleanWater,
+    outputCount: 2,
+  ),
   cookCattailRoot(
     input: .cattailRoot,
     output: .cattailRootCooked,

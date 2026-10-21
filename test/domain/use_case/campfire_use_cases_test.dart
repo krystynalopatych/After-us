@@ -315,6 +315,32 @@ void main() {
       );
 
       test(
+        'boiling lake water from a plastic bottle gives the plastic back',
+        () {
+          deps.inventory
+            ..add(.cookingPot)
+            ..add(.lakeWaterBottle);
+          addWood(1);
+
+          expect(
+            cookOnCampfire(
+              .boilBottledWater,
+              .wood,
+            ),
+            isTrue,
+          );
+          expect(
+            deps.inventory.count(.cleanWater),
+            2,
+          );
+          expect(
+            deps.material.count(.plastic),
+            1,
+          );
+        },
+      );
+
+      test(
         'cooks one cattail root into one cooked root',
         () {
           deps.inventory

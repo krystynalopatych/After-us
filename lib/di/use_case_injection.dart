@@ -42,6 +42,7 @@ void registerUseCases() {
       () => ConsumeUseCase(
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
       ),
@@ -59,6 +60,8 @@ void registerUseCases() {
       () => FillBottleUseCase(
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

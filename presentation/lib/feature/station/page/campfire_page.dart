@@ -108,6 +108,7 @@ class _CampfirePageState extends State<CampfirePage> {
     final images = context.images;
     return switch (recipe) {
       .boilWater => images.imgWaterSodis,
+      .boilBottledWater => images.imgPlasticBottle,
       .cookCattailRoot => images.imgKoreniKamyshaSyrye,
       .makeCharcoal => images.imgWood,
     };

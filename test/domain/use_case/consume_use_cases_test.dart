@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
+import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
+import 'package:data/selection/repository/selection_repository_impl.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
+import 'package:domain/material/model/game_material.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +17,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late FeedbackRepositoryImpl feedback;
   late InventoryRepositoryImpl inventory;
+  late MaterialRepositoryImpl material;
+  late SelectionRepositoryImpl selection;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
   late List<FeedbackMessage> messages;
@@ -22,6 +27,8 @@ void main() {
   setUp(() {
     feedback = FeedbackRepositoryImpl();
     inventory = InventoryRepositoryImpl();
+    material = MaterialRepositoryImpl();
+    selection = SelectionRepositoryImpl();
     player = PlayerRepositoryImpl()
       ..setStats(
         const .new(
@@ -46,9 +53,32 @@ void main() {
         () => consume = ConsumeUseCase(
           feedbackRepository: feedback,
           inventoryRepository: inventory,
+          materialRepository: material,
           playerRepository: player,
           pollutionRepository: pollution,
         ),
+      );
+
+      test(
+        'drinking lake water from a plastic bottle gives the plastic back',
+        () async {
+          inventory.add(.lakeWaterBottle);
+
+          expect(
+            consume(.lakeWaterBottle),
+            isTrue,
+          );
+          await pumpEventQueue();
+
+          expect(
+            material.count(.plastic),
+            1,
+          );
+          expect(
+            messages.single.text,
+            'You drank lake water +20 thirst −15 health +1 plastic',
+          );
+        },
       );
 
       test(
@@ -62,6 +92,7 @@ void main() {
             InventoryItem.cattailRootCooked: (70.0, 50.0, 50.0),
             InventoryItem.cleanWater: (50.0, 85.0, 50.0),
             InventoryItem.lakeWater: (50.0, 70.0, 35.0),
+            InventoryItem.lakeWaterBottle: (50.0, 70.0, 35.0),
           };
           for (final MapEntry(key: item, value: (hunger, thirst, health)) in expected.entries) {
             player.setStats(
@@ -267,11 +298,13 @@ void main() {
         () => fill = FillBottleUseCase(
           feedbackRepository: feedback,
           inventoryRepository: inventory,
+          materialRepository: material,
+          selectionRepository: selection,
         ),
       );
 
       test(
-        'needs a SODIS bottle',
+        'needs a SODIS bottle or a selected plastic bottle',
         () async {
           expect(
             fill(),
@@ -285,7 +318,7 @@ void main() {
           );
           expect(
             messages.single.text,
-            'You need a SODIS bottle to carry lake water',
+            'You need a bottle to carry lake water',
           );
         },
       );
@@ -316,6 +349,50 @@ void main() {
           expect(
             messages.last.text,
             'You filled a bottle with lake water',
+          );
+        },
+      );
+
+      test(
+        'fills a selected plastic bottle and takes the plastic from the counter',
+        () async {
+          material
+            ..add(.plastic)
+            ..add(.plastic);
+          selection.selectMaterial(.plastic);
+
+          expect(
+            fill(),
+            isTrue,
+          );
+          await pumpEventQueue();
+
+          expect(
+            inventory.count(.lakeWaterBottle),
+            1,
+          );
+          expect(
+            material.count(.plastic),
+            1,
+          );
+          expect(
+            selection.selection.material,
+            GameMaterial.plastic,
+          );
+          expect(
+            messages.single.text,
+            'You filled a plastic bottle with lake water',
+          );
+
+          fill();
+
+          expect(
+            material.count(.plastic),
+            0,
+          );
+          expect(
+            selection.selection.material,
+            isNull,
           );
         },
       );

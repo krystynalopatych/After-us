@@ -2,6 +2,7 @@ import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
+import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/model/pollution_zone.dart';
@@ -12,12 +13,14 @@ final class ConsumeUseCase {
 
   final FeedbackRepository _feedbackRepository;
   final InventoryRepository _inventoryRepository;
+  final MaterialRepository _materialRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
 
   const ConsumeUseCase({
     required this._feedbackRepository,
     required this._inventoryRepository,
+    required this._materialRepository,
     required this._playerRepository,
     required this._pollutionRepository,
   });
@@ -34,6 +37,9 @@ final class ConsumeUseCase {
     final hunger = item.hunger * factor;
     final thirst = item.thirst * factor;
     final health = item.health - (pollutedZone?.healthPenalty ?? 0);
+    if (item.container case final container?) {
+      _materialRepository.add(container);
+    }
     final stats = _playerRepository.stats;
     _playerRepository.setStats(
       stats.copyWith(
@@ -59,6 +65,7 @@ final class ConsumeUseCase {
           if (hunger > 0) '+${_format(hunger)} hunger',
           if (thirst > 0) '+${_format(thirst)} thirst',
           if (health < 0) '−${_format(-health)} health',
+          if (item.container case final container?) '+1 ${container.name}',
         ],
       ),
     );
@@ -110,7 +117,7 @@ final class ConsumeUseCase {
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
     .cleanWater => 'clean water',
-    .lakeWater => 'lake water',
+    .lakeWater || .lakeWaterBottle => 'lake water',
     .sodisBottle => 'a SODIS bottle',
     .prefilter => 'a cloth prefilter',
     .cookingPot => 'a cooking pot',

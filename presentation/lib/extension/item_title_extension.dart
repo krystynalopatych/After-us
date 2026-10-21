@@ -38,6 +38,7 @@ extension InventoryItemTitleExtension on InventoryItem {
     .berries => 'Berries',
     .cleanWater => 'Clean water',
     .lakeWater => 'Lake water',
+    .lakeWaterBottle => 'Lake water in a bottle',
     .sodisBottle => 'SODIS bottle',
     .prefilter => 'Cloth prefilter',
     .cookingPot => 'Cooking pot',
