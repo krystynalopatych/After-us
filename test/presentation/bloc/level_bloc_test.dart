@@ -225,12 +225,20 @@ void main() {
           dirtyEverything();
           final bloc = Level1Bloc()..add(const Level1Started());
           addTearDown(bloc.close);
+          expect(
+            bloc.state.isStarted,
+            isFalse,
+          );
           await pumpEventQueue();
 
           expectFreshLevel(.level1);
           expect(
             deps.pickup.pickups,
             hasLength(39),
+          );
+          expect(
+            bloc.state.isStarted,
+            isTrue,
           );
         },
       );

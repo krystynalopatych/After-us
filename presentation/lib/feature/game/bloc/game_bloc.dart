@@ -35,18 +35,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _travelUseCase = diContainer.get(),
       super(GameState(location: diContainer.get<LocationRepository>().location)) {
     on<GameStarted>(_onStarted);
-    on<GameMapTapped>(
-      (event, emit) => _setMapOpen(
-        emit,
-        true,
-      ),
-    );
-    on<GameMapClosed>(
-      (event, emit) => _setMapOpen(
-        emit,
-        false,
-      ),
-    );
+    on<GameMapTapped>(_onMapTapped);
+    on<GameMapClosed>(_onMapClosed);
     on<GameLocationSelected>(_onLocationSelected);
     on<GameLakeWaterTapped>(_onLakeWaterTapped);
     on<GameWaterChoiceClosed>((event, emit) => emit(state.copyWith(waterChoice: () => null)));
@@ -74,22 +64,37 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     GameLocationSelected event,
     Emitter<GameState> emit,
   ) {
+    if (state.isTraveling) {
+      return;
+    }
     _travelUseCase(event.location);
-    _pauseTimeUseCase(false);
     emit(
       state.copyWith(
         location: _locationRepository.location,
-        isMapOpen: false,
+        isTraveling: true,
       ),
     );
   }
 
-  void _setMapOpen(
+  void _onMapClosed(
+    GameMapClosed event,
     Emitter<GameState> emit,
-    bool isOpen,
   ) {
-    _pauseTimeUseCase(isOpen);
-    emit(state.copyWith(isMapOpen: isOpen));
+    _pauseTimeUseCase(false);
+    emit(
+      state.copyWith(
+        isMapOpen: false,
+        isTraveling: false,
+      ),
+    );
+  }
+
+  void _onMapTapped(
+    GameMapTapped event,
+    Emitter<GameState> emit,
+  ) {
+    _pauseTimeUseCase(true);
+    emit(state.copyWith(isMapOpen: true));
   }
 
   void _onLocationTapped(

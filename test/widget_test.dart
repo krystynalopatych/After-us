@@ -118,6 +118,7 @@ void main() {
       ),
     );
     addTearDown(() => tester.binding.setSurfaceSize(null));
+    PaintingBinding.instance.imageCache.maximumSizeBytes = 512 << 20;
 
     await diContainer.reset();
     diContainer
@@ -146,6 +147,16 @@ void main() {
     registerUseCases();
 
     await tester.pumpWidget(const AppPage(createAppBloc: AppBloc.new));
+    final loading = tester.element(find.byType(LoadingContainer));
+    await tester.runAsync(
+      () => Future.wait([
+        for (final image in Assets.resources.assets.images.values)
+          precacheImage(
+            image.provider(),
+            loading,
+          ),
+      ]),
+    );
     await tester.pumpAndSettle();
   }
 

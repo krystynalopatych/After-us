@@ -19,7 +19,7 @@ class PickupBloc extends Bloc<PickupEvent, PickupState> {
     : _keepPickupUseCase = diContainer.get(),
       _locationPickupsUseCase = diContainer.get(),
       _throwPickupUseCase = diContainer.get(),
-      super(const PickupState()) {
+      super(PickupState(pickups: diContainer.get<LocationPickupsUseCase>().pickups)) {
     on<PickupStarted>(_onStarted);
     on<PickupTapped>(
       (event, emit) => emit(

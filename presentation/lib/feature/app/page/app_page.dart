@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
+import 'package:presentation/feature/loading/page/loading_page.dart';
 import 'package:presentation/flow/app_flow_router/app_router.dart';
 
 class AppPage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _AppPageState extends State<AppPage> {
             brightness: brightness,
             child: SceneContainer(
               children: [
-                child!,
+                LoadingPage.withBloc(child: child!),
               ],
             ),
           );

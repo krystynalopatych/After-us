@@ -81,9 +81,9 @@ class _GamePageState extends State<GamePage> {
     1330,
     704,
   );
+  static const _maxTravelWait = Duration(seconds: 3);
 
   late final GameBloc _bloc;
-  var _isPrecached = false;
   final _characterTaps = StreamController<void>.broadcast();
 
   @override
@@ -98,35 +98,31 @@ class _GamePageState extends State<GamePage> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isPrecached) {
+  Future<void> _closeMapWhenLoaded() async {
+    await _sceneImagesLoaded().timeout(
+      _maxTravelWait,
+      onTimeout: () {},
+    );
+    if (!mounted) {
       return;
     }
-    _isPrecached = true;
-    for (final image in [
-      context.images.imgMap,
-      context.images.imgButtonClose,
-      context.images.imgSunLight,
-      context.images.imgLakeBlackRectangle,
-      context.images.imgMoon,
-      for (final location in widget.level.locations) ...[
-        _locationBackground(location),
-        _locationIcon(location),
-      ],
-    ]) {
-      precacheImage(
-        image.provider(),
-        context,
-      );
-    }
+    _bloc.add(const GameMapClosed());
+  }
+
+  Future<void> _sceneImagesLoaded() async {
+    final binding = WidgetsBinding.instance;
+    final imageCache = PaintingBinding.instance.imageCache;
+    do {
+      await binding.endOfFrame;
+    } while (mounted && _bloc.state.isTraveling && imageCache.pendingImageCount > 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(
+    return BlocConsumer<GameBloc, GameState>(
       bloc: _bloc,
+      listenWhen: (previous, current) => !previous.isTraveling && current.isTraveling,
+      listener: (context, state) => _closeMapWhenLoaded(),
       builder: (context, state) => Stack(
         fit: .expand,
         children: [

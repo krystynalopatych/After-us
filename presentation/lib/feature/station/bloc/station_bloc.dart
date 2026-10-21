@@ -10,7 +10,9 @@ part 'station_state.dart';
 class StationBloc extends Bloc<StationEvent, StationState> {
   final StationRepository _stationRepository;
 
-  StationBloc() : _stationRepository = diContainer.get(), super(const StationState()) {
+  StationBloc()
+    : _stationRepository = diContainer.get(),
+      super(StationState(built: diContainer.get<StationRepository>().built)) {
     on<StationStarted>(_onStarted);
   }
 

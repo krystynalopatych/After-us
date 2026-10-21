@@ -29,7 +29,8 @@ class _Level2PageState extends State<Level2Page> {
   Widget build(BuildContext context) {
     return BlocBuilder<Level2Bloc, Level2State>(
       bloc: _bloc,
-      builder: (context, state) => GamePage.withBloc(level: GameLevel.level2),
+      builder: (context, state) =>
+          state.isStarted ? GamePage.withBloc(level: GameLevel.level2) : const SizedBox.shrink(),
     );
   }
 }

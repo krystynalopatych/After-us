@@ -16,8 +16,50 @@
 
   <title>after_us_game</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    @font-face {
+      font-family: PixelifySans;
+      src: url("assets/resources/fonts/PixelifySans-Bold.ttf");
+      font-weight: 700;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: PixelifySans, monospace;
+      font-weight: 700;
+      font-size: 32px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      50% { opacity: 0.3; }
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <div id="splash">LOADING</div>
+  <script>
+    {{flutter_js}}
+    {{flutter_build_config}}
+    _flutter.loader.load({
+      onEntrypointLoaded: async (engineInitializer) => {
+        const appRunner = await engineInitializer.initializeEngine();
+        await appRunner.runApp();
+        document.getElementById('splash').remove();
+      },
+    });
+  </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ part of 'game_bloc.dart';
 final class GameState extends Equatable {
   final GameLocation location;
   final bool isMapOpen;
+  final bool isTraveling;
   final bool isBuildOpen;
   final Station? fireStation;
   final bool isWorkbenchOpen;
@@ -12,6 +13,7 @@ final class GameState extends Equatable {
   const GameState({
     required this.location,
     this.isMapOpen = false,
+    this.isTraveling = false,
     this.isBuildOpen = false,
     this.fireStation,
     this.isWorkbenchOpen = false,
@@ -22,6 +24,7 @@ final class GameState extends Equatable {
   GameState copyWith({
     GameLocation? location,
     bool? isMapOpen,
+    bool? isTraveling,
     bool? isBuildOpen,
     Station? Function()? fireStation,
     bool? isWorkbenchOpen,
@@ -30,6 +33,7 @@ final class GameState extends Equatable {
   }) => GameState(
     location: location ?? this.location,
     isMapOpen: isMapOpen ?? this.isMapOpen,
+    isTraveling: isTraveling ?? this.isTraveling,
     isBuildOpen: isBuildOpen ?? this.isBuildOpen,
     fireStation: fireStation != null ? fireStation() : this.fireStation,
     isWorkbenchOpen: isWorkbenchOpen ?? this.isWorkbenchOpen,
@@ -40,5 +44,14 @@ final class GameState extends Equatable {
   bool get isStationOpen => fireStation != null || isWorkbenchOpen;
 
   @override
-  List<Object?> get props => [location, isMapOpen, isBuildOpen, fireStation, isWorkbenchOpen, waterChoice, isBookOpen];
+  List<Object?> get props => [
+    location,
+    isMapOpen,
+    isTraveling,
+    isBuildOpen,
+    fireStation,
+    isWorkbenchOpen,
+    waterChoice,
+    isBookOpen,
+  ];
 }

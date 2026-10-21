@@ -214,9 +214,12 @@ lib/di/
 - Opening a deep URL directly redirects to the start screen.
 
 ### Assets
-- Images in `resources/assets/images/` (flat, `img_*.png`). Fonts in `resources/fonts/`.
+- Images in `resources/assets/images/` (flat, `img_*.webp`). Fonts in `resources/fonts/`.
+- Images are WebP (quality 85), never PNG. Full-scene pictures (location backgrounds, map, sky, book, station windows) keep their size; wide UI panels are at most 1280 px on the long side; everything else (icons, items, buttons, characters) at most 768 px. The game is served over the web, so every extra MB is load time.
 - After adding an image run `dart run build_runner build` from the root; output goes to `presentation/lib/generated/assets/`.
 - Never hard-code asset paths; use the generated getters.
+- `LoadingPage` precaches every image before the router is shown, and `main.dart` raises the image cache to 512 MB so nothing gets evicted. Don't add separate `precacheImage` calls in pages.
+- Switching location keeps the map open: `GameLocationSelected` moves the player under the map (`isTraveling`), and `GamePage` sends `GameMapClosed` once the new scene's images are loaded.
 
 ---
 
