@@ -10,20 +10,24 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 class StationPage extends StatefulWidget {
   final AssetGenImage background;
   final VoidCallback onLocationTap;
+  final ValueChanged<Station> onStationTap;
 
   const StationPage._({
     required this.background,
     required this.onLocationTap,
+    required this.onStationTap,
   });
 
   static Widget withBloc({
     required AssetGenImage background,
     required VoidCallback onLocationTap,
+    required ValueChanged<Station> onStationTap,
   }) => BlocProvider(
     create: (_) => StationBloc()..add(const StationStarted()),
     child: StationPage._(
       background: background,
       onLocationTap: onLocationTap,
+      onStationTap: onStationTap,
     ),
   );
 
@@ -57,10 +61,14 @@ class _StationPageState extends State<StationPage> {
                   top: spot.top,
                   width: spot.width,
                   height: spot.height,
-                  child: _image(
-                    context,
-                    station,
-                  ).image(fit: .contain),
+                  child: GestureDetector(
+                    behavior: .opaque,
+                    onTap: () => widget.onStationTap(station),
+                    child: _image(
+                      context,
+                      station,
+                    ).image(fit: .contain),
+                  ),
                 ),
           ],
         ),

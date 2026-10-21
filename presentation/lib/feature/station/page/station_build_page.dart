@@ -58,7 +58,7 @@ class _StationBuildPageState extends State<StationBuildPage> {
           Positioned.fromRect(
             rect: _messageRect,
             child: MessageContainer(
-              lines: const ['Using this material,', 'you can build the following objects:'],
+              lines: const ['USING THIS MATERIAL', 'YOU CAN BUILD THE FOLLOWING OBJECTS'],
               actionSize: _actionSize,
               actions: [
                 for (final choice in state.choices) _action(choice),
@@ -74,7 +74,7 @@ class _StationBuildPageState extends State<StationBuildPage> {
     text: _title(choice.station),
     isEnabled: choice.canBuild,
     isDone: choice.isBuilt,
-    hint: choice.isBuilt ? null : 'Not enough resources!',
+    hint: choice.isBuilt ? null : 'NOT ENOUGH RESOURCES!',
     onTap: () {
       _bloc.add(StationBuildTapped(choice.station));
       widget.onClose();

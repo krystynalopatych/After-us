@@ -27,6 +27,19 @@ final class GameBuildClosed extends GameEvent {
   const GameBuildClosed();
 }
 
+final class GameStationTapped extends GameEvent {
+  final Station station;
+
+  const GameStationTapped(this.station);
+
+  @override
+  List<Object?> get props => [station];
+}
+
+final class GameCampfireClosed extends GameEvent {
+  const GameCampfireClosed();
+}
+
 final class GameLocationSelected extends GameEvent {
   final GameLocation location;
 

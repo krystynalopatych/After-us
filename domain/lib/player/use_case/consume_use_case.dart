@@ -76,7 +76,7 @@ final class ConsumeUseCase {
       .soil => ' from polluted soil',
       null => '',
     };
-    final text = 'You $verb ${_name(item)}$source. ${changes.join(', ')}.';
+    final text = 'You $verb ${_name(item)}$source ${changes.join(' ')}';
     return switch (pollutedZone) {
       .water => FeedbackMessage(
         text: text,

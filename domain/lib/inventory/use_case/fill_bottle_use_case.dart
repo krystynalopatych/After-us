@@ -13,16 +13,16 @@ final class FillBottleUseCase {
 
   bool call() {
     if (_inventoryRepository.count(.sodisBottle) == 0) {
-      _feedbackRepository.show(const FeedbackMessage(text: 'You need a SODIS bottle to carry lake water.'));
+      _feedbackRepository.show(const FeedbackMessage(text: 'You need a SODIS bottle to carry lake water'));
       return false;
     }
     if (!_inventoryRepository.add(.lakeWater)) {
-      _feedbackRepository.show(const FeedbackMessage(text: 'Your inventory is full.'));
+      _feedbackRepository.show(const FeedbackMessage(text: 'Your inventory is full'));
       return false;
     }
     _feedbackRepository.show(
       const FeedbackMessage(
-        text: 'You filled a bottle with lake water.',
+        text: 'You filled a bottle with lake water',
         heroLine: 'Drinking it as is will make me sick.',
       ),
     );

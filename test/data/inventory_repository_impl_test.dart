@@ -204,4 +204,120 @@ void main() {
       );
     },
   );
+
+  test(
+    'replace swaps one item for several results',
+    () {
+      final repository = InventoryRepositoryImpl()..add(.lakeWater);
+
+      expect(
+        repository.replace(
+          .lakeWater,
+          .cleanWater,
+          2,
+        ),
+        isTrue,
+      );
+      expect(
+        repository.stacks,
+        const [
+          InventoryStack(
+            item: .cleanWater,
+            count: 2,
+          ),
+        ],
+      );
+    },
+  );
+
+  test(
+    'replace uses the slot freed by the last removed item',
+    () {
+      final repository = InventoryRepositoryImpl();
+      for (var i = 0; i < 55; i++) {
+        repository.add(.berries);
+      }
+      repository.add(.cattailRoot);
+
+      expect(
+        repository.canReplace(
+          .cattailRoot,
+          .cattailRootCooked,
+          1,
+        ),
+        isTrue,
+      );
+      expect(
+        repository.replace(
+          .cattailRoot,
+          .cattailRootCooked,
+          1,
+        ),
+        isTrue,
+      );
+      expect(
+        repository.count(.cattailRootCooked),
+        1,
+      );
+      expect(
+        repository.count(.cattailRoot),
+        0,
+      );
+    },
+  );
+
+  test(
+    'replace changes nothing when the results do not fit',
+    () {
+      final repository = InventoryRepositoryImpl();
+      for (var i = 0; i < 55; i++) {
+        repository.add(.berries);
+      }
+      repository
+        ..add(.lakeWater)
+        ..add(.lakeWater);
+      final before = repository.stacks;
+
+      expect(
+        repository.canReplace(
+          .lakeWater,
+          .cleanWater,
+          2,
+        ),
+        isFalse,
+      );
+      expect(
+        repository.replace(
+          .lakeWater,
+          .cleanWater,
+          2,
+        ),
+        isFalse,
+      );
+      expect(
+        repository.stacks,
+        before,
+      );
+    },
+  );
+
+  test(
+    'replace fails for an item that is not in the inventory',
+    () {
+      final repository = InventoryRepositoryImpl()..add(.berries);
+
+      expect(
+        repository.replace(
+          .lakeWater,
+          .cleanWater,
+          2,
+        ),
+        isFalse,
+      );
+      expect(
+        repository.count(.berries),
+        1,
+      );
+    },
+  );
 }

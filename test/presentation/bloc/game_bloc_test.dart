@@ -247,4 +247,43 @@ void main() {
       );
     },
   );
+
+  test(
+    'tapping the campfire opens and closes the campfire window',
+    () async {
+      bloc.add(const GameStationTapped(.campfire));
+      await pumpEventQueue();
+      expect(
+        bloc.state.isCampfireOpen,
+        isTrue,
+      );
+
+      bloc.add(const GameCampfireClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isCampfireOpen,
+        isFalse,
+      );
+    },
+  );
+
+  test(
+    'tapping the workbench works like tapping the location',
+    () async {
+      deps.material.add(.wood);
+      deps.selection.selectMaterial(.wood);
+
+      bloc.add(const GameStationTapped(.workbench));
+      await pumpEventQueue();
+
+      expect(
+        bloc.state.isBuildOpen,
+        isTrue,
+      );
+      expect(
+        bloc.state.isCampfireOpen,
+        isFalse,
+      );
+    },
+  );
 }

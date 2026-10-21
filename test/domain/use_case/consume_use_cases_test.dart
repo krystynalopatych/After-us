@@ -223,16 +223,16 @@ void main() {
             messages,
             const [
               FeedbackMessage(
-                text: 'You ate berries. +10 hunger, +3 thirst.',
+                text: 'You ate berries +10 hunger +3 thirst',
                 mood: .happy,
               ),
               FeedbackMessage(
-                text: 'You drank lake water. +20 thirst, −15 health.',
+                text: 'You drank lake water +20 thirst −15 health',
                 heroLine: 'It tastes like mud. I need clean water.',
                 mood: .sad,
               ),
               FeedbackMessage(
-                text: 'You ate cattail roots from the polluted lake. +5 hunger, −10 health.',
+                text: 'You ate cattail roots from the polluted lake +5 hunger −10 health',
                 heroLine: 'Ugh... The lake is poisoned now.',
                 mood: .sad,
               ),
@@ -251,7 +251,7 @@ void main() {
 
           expect(
             messages.single.text,
-            'You ate berries from polluted soil. +5 hunger, +1.5 thirst, −40 health.',
+            'You ate berries from polluted soil +5 hunger +1.5 thirst −40 health',
           );
         },
       );
@@ -285,7 +285,7 @@ void main() {
           );
           expect(
             messages.single.text,
-            'You need a SODIS bottle to carry lake water.',
+            'You need a SODIS bottle to carry lake water',
           );
         },
       );
@@ -315,7 +315,7 @@ void main() {
           );
           expect(
             messages.last.text,
-            'You filled a bottle with lake water.',
+            'You filled a bottle with lake water',
           );
         },
       );
@@ -335,7 +335,7 @@ void main() {
 
           expect(
             messages.last.text,
-            'Your inventory is full.',
+            'Your inventory is full',
           );
         },
       );

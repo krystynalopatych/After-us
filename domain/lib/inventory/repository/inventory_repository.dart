@@ -12,6 +12,18 @@ abstract interface class InventoryRepository {
 
   bool remove(InventoryItem item);
 
+  bool canReplace(
+    InventoryItem item,
+    InventoryItem result,
+    int count,
+  );
+
+  bool replace(
+    InventoryItem item,
+    InventoryItem result,
+    int count,
+  );
+
   void restore(List<InventoryStack> stacks);
 
   void reset();

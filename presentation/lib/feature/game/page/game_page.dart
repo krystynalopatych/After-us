@@ -16,6 +16,7 @@ import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
+import 'package:presentation/feature/station/page/campfire_page.dart';
 import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
@@ -139,6 +140,7 @@ class _GamePageState extends State<GamePage> {
                     ? StationPage.withBloc(
                         background: _locationBackground(state.location),
                         onLocationTap: () => _bloc.add(const GameLocationTapped()),
+                        onStationTap: (station) => _bloc.add(GameStationTapped(station)),
                       )
                     : BackgroundContainer(image: _locationBackground(state.location)),
               ),
@@ -165,18 +167,17 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 ),
+              if (state.isCampfireOpen) ...[
+                _pickups(),
+                Positioned.fill(child: CampfirePage.withBloc(onClose: () => _bloc.add(const GameCampfireClosed()))),
+              ],
               Positioned.fill(
                 child: HudPage.withBloc(
                   onMapTap: () => _bloc.add(const GameMapTapped()),
                   characterTaps: _characterTaps.stream,
                 ),
               ),
-              Positioned.fill(
-                child: PickupPage.withBloc(
-                  level: widget.level,
-                  locationTop: _skyHeight,
-                ),
-              ),
+              if (!state.isCampfireOpen) _pickups(),
               if (state.isBuildOpen)
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
@@ -191,6 +192,13 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
+
+  Widget _pickups() => Positioned.fill(
+    child: PickupPage.withBloc(
+      level: widget.level,
+      locationTop: _skyHeight,
+    ),
+  );
 
   Widget _map() {
     return BackgroundContainer(

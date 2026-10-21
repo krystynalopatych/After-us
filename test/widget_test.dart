@@ -880,7 +880,7 @@ void main() {
       WidgetTester tester,
     ) async {
       final images = Assets.resources.assets.images;
-      const buildLine = 'you can build the following objects:';
+      const buildLine = 'YOU CAN BUILD THE FOLLOWING OBJECTS';
       final materialRepository = MaterialRepositoryImpl();
       await pumpApp(
         tester,
@@ -1090,7 +1090,7 @@ void main() {
         findsNothing,
       );
       expect(
-        find.text('You ate berries. +10 hunger, +3 thirst.'),
+        find.text('YOU ATE BERRIES +10 HUNGER +3 THIRST'),
         findsOneWidget,
       );
     },
@@ -1300,7 +1300,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(
-        find.text('You built a rocket stove.'),
+        find.text('YOU BUILT A ROCKET STOVE.'),
         findsOneWidget,
       );
       expect(
@@ -1312,7 +1312,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(
-        find.text('You built a rocket stove.'),
+        find.text('YOU BUILT A ROCKET STOVE.'),
         findsNothing,
       );
       expect(

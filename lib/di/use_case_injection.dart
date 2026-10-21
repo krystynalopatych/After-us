@@ -9,6 +9,9 @@ import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
 import 'package:domain/station/use_case/build_station_use_case.dart';
+import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
+import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
+import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:presentation/di/di_container.dart';
 
@@ -22,11 +25,34 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => CampfireFuelUseCase(
+        feedbackRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => CampfireRecipeUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => ConsumeUseCase(
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => CookOnCampfireUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        pollutionRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

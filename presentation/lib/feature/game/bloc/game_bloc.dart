@@ -2,6 +2,7 @@ import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameLakeWaterTapped>((event, emit) => _fillBottleUseCase());
     on<GameLocationTapped>((event, emit) => emit(state.copyWith(isBuildOpen: _stationChoicesUseCase().isNotEmpty)));
     on<GameBuildClosed>((event, emit) => emit(state.copyWith(isBuildOpen: false)));
+    on<GameStationTapped>(_onStationTapped);
+    on<GameCampfireClosed>((event, emit) => emit(state.copyWith(isCampfireOpen: false)));
   }
 
   Future<void> _onStarted(
@@ -54,4 +57,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       ),
     );
   }
+
+  void _onStationTapped(
+    GameStationTapped event,
+    Emitter<GameState> emit,
+  ) => switch (event.station) {
+    .campfire => emit(state.copyWith(isCampfireOpen: true)),
+    .workbench => emit(state.copyWith(isBuildOpen: _stationChoicesUseCase().isNotEmpty)),
+  };
 }

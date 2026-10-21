@@ -180,6 +180,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgFilterRefresher =>
       const AssetGenImage('resources/assets/images/img_filter_refresher.png');
 
+  /// File path: resources/assets/images/img_fire_stack.png
+  AssetGenImage get imgFireStack =>
+      const AssetGenImage('resources/assets/images/img_fire_stack.png');
+
   /// File path: resources/assets/images/img_forest_icon.png
   AssetGenImage get imgForestIcon =>
       const AssetGenImage('resources/assets/images/img_forest_icon.png');
@@ -489,6 +493,7 @@ class $ResourcesAssetsImagesGen {
     imgExitIcon,
     imgFabric,
     imgFilterRefresher,
+    imgFireStack,
     imgForestIcon,
     imgForestRectangle,
     imgFreezerGorshok,

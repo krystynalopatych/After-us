@@ -29,7 +29,7 @@ final class TopMessageContainer extends StatelessWidget {
               child: FittedBox(
                 fit: .scaleDown,
                 child: Text(
-                  text,
+                  text.toUpperCase(),
                   textAlign: .center,
                   style: theme.typography.display.copyWith(color: theme.colors.base.white),
                 ),
