@@ -1,9 +1,12 @@
+import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
+import 'package:domain/compost/model/compost_pit.dart';
+import 'package:domain/construction/model/construction.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
@@ -13,6 +16,7 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  late CompostRepositoryImpl compost;
   late ConstructionRepositoryImpl constructions;
   late DayRepositoryImpl day;
   late FeedbackRepositoryImpl feedback;
@@ -22,6 +26,7 @@ void main() {
   late PassSecondUseCase passSecond;
 
   setUp(() {
+    compost = CompostRepositoryImpl();
     constructions = ConstructionRepositoryImpl();
     day = DayRepositoryImpl();
     feedback = FeedbackRepositoryImpl();
@@ -29,6 +34,7 @@ void main() {
     pollution = PollutionRepositoryImpl();
     sunSpot = SunSpotRepositoryImpl();
     passSecond = PassSecondUseCase(
+      compostRepository: compost,
       constructionRepository: constructions,
       dayRepository: day,
       feedbackRepository: feedback,
@@ -424,6 +430,40 @@ void main() {
           number: 4,
           seconds: 0,
         ),
+      );
+    },
+  );
+
+  test(
+    'compost in a full pit is ready after one day and completes the goal',
+    () async {
+      final messages = <FeedbackMessage>[];
+      final subscription = feedback.messageStream.listen(messages.add);
+      addTearDown(subscription.cancel);
+      for (var i = 0; i < CompostPit.capacity; i++) {
+        compost.addOrganics();
+      }
+
+      pass(CompostPit.readySeconds - 1);
+      expect(
+        constructions.built,
+        isEmpty,
+      );
+
+      pass();
+      await pumpEventQueue();
+
+      expect(
+        compost.pit.isReady,
+        isTrue,
+      );
+      expect(
+        constructions.built,
+        {Construction.compostPit},
+      );
+      expect(
+        messages.map((message) => message.text),
+        contains('Your compost is ready'),
       );
     },
   );

@@ -1,3 +1,4 @@
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -15,6 +16,7 @@ import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
 final class SaveGameUseCase {
   final CampfireRepository _campfireRepository;
+  final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final InventoryRepository _inventoryRepository;
@@ -29,6 +31,7 @@ final class SaveGameUseCase {
 
   const SaveGameUseCase({
     required this._campfireRepository,
+    required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
     required this._inventoryRepository,
@@ -57,6 +60,7 @@ final class SaveGameUseCase {
       stations: _stationRepository.built,
       sunBottle: _sunSpotRepository.bottle,
       campfireUses: _campfireRepository.uses,
+      compostPit: _compostRepository.pit,
     ),
   );
 }

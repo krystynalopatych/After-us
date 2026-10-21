@@ -27,6 +27,7 @@ void main() {
     deps = TestDependencies();
     startLevel = StartLevelUseCase(
       campfireRepository: deps.campfire,
+      compostRepository: deps.compost,
       characterRepository: deps.character,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
@@ -43,6 +44,7 @@ void main() {
     );
     saveGame = SaveGameUseCase(
       campfireRepository: deps.campfire,
+      compostRepository: deps.compost,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
       inventoryRepository: deps.inventory,

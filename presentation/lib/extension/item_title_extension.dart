@@ -26,6 +26,7 @@ extension GameMaterialTitleExtension on GameMaterial {
     .chlorine => 'Chlorine',
     .electronics => 'Electronics',
     .charcoal => 'Charcoal',
+    .compost => 'Compost',
   };
 }
 

@@ -1,3 +1,4 @@
+import 'package:domain/compost/model/compost_pit.dart';
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
@@ -26,6 +27,7 @@ final class GameSave extends Equatable {
   final Set<Station> stations;
   final SunBottle? sunBottle;
   final CampfireUses campfireUses;
+  final CompostPit compostPit;
 
   const GameSave({
     required this.level,
@@ -41,6 +43,7 @@ final class GameSave extends Equatable {
     required this.stations,
     this.sunBottle,
     this.campfireUses = const .none(),
+    this.compostPit = const .empty(),
   });
 
   GameSave copyWith({
@@ -57,6 +60,7 @@ final class GameSave extends Equatable {
     Set<Station>? stations,
     SunBottle? Function()? sunBottle,
     CampfireUses? campfireUses,
+    CompostPit? compostPit,
   }) => GameSave(
     level: level ?? this.level,
     location: location ?? this.location,
@@ -71,6 +75,7 @@ final class GameSave extends Equatable {
     stations: stations ?? this.stations,
     sunBottle: sunBottle != null ? sunBottle() : this.sunBottle,
     campfireUses: campfireUses ?? this.campfireUses,
+    compostPit: compostPit ?? this.compostPit,
   );
 
   @override
@@ -88,5 +93,6 @@ final class GameSave extends Equatable {
     stations,
     sunBottle,
     campfireUses,
+    compostPit,
   ];
 }

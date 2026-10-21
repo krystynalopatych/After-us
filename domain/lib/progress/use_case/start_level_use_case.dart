@@ -1,4 +1,5 @@
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -18,6 +19,7 @@ import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 final class StartLevelUseCase {
   final CharacterRepository _characterRepository;
   final CampfireRepository _campfireRepository;
+  final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final InventoryRepository _inventoryRepository;
@@ -34,6 +36,7 @@ final class StartLevelUseCase {
   const StartLevelUseCase({
     required this._characterRepository,
     required this._campfireRepository,
+    required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
     required this._inventoryRepository,
@@ -70,6 +73,7 @@ final class StartLevelUseCase {
     _stationRepository.restore(save.stations);
     _sunSpotRepository.restore(save.sunBottle);
     _campfireRepository.restore(save.campfireUses);
+    _compostRepository.restore(save.compostPit);
     _locationRepository.setLocation(save.location);
   }
 
@@ -84,6 +88,7 @@ final class StartLevelUseCase {
     _stationRepository.reset();
     _sunSpotRepository.reset();
     _campfireRepository.reset();
+    _compostRepository.reset();
     _locationRepository.setLocation(.house);
   }
 }

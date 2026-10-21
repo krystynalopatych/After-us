@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
+import 'package:presentation/feature/compost/page/compost_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
 import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
@@ -147,6 +148,7 @@ class _GamePageState extends State<GamePage> {
                       )
                     : BackgroundContainer(image: _locationBackground(state.location)),
               ),
+              if (state.location == .house) Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
               if (state.location == .lake)
                 Positioned.fromRect(
                   rect: _sunLightRect,

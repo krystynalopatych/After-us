@@ -1,3 +1,4 @@
+import 'package:domain/compost/use_case/use_compost_pit_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
@@ -109,6 +110,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => PassSecondUseCase(
+        compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
@@ -128,6 +130,7 @@ void registerUseCases() {
     ..registerFactory(
       () => SaveGameUseCase(
         campfireRepository: diContainer.get(),
+        compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
@@ -144,6 +147,7 @@ void registerUseCases() {
     ..registerFactory(
       () => StartLevelUseCase(
         campfireRepository: diContainer.get(),
+        compostRepository: diContainer.get(),
         characterRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
@@ -176,6 +180,14 @@ void registerUseCases() {
       () => TravelUseCase(
         locationRepository: diContainer.get(),
         playerRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => UseCompostPitUseCase(
+        compostRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

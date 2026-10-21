@@ -20,6 +20,7 @@ extension GameMaterialImageExtension on GameMaterial {
       .chlorine => images.imgChlorine,
       .electronics => images.imgProvoda,
       .charcoal => images.imgCoal,
+      .compost => images.imgKompost,
     };
   }
 }

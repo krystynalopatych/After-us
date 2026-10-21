@@ -242,6 +242,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgHarvest =>
       const AssetGenImage('resources/assets/images/img_harvest.png');
 
+  /// File path: resources/assets/images/img_hole.png
+  AssetGenImage get imgHole =>
+      const AssetGenImage('resources/assets/images/img_hole.png');
+
   /// File path: resources/assets/images/img_home_icon.png
   AssetGenImage get imgHomeIcon =>
       const AssetGenImage('resources/assets/images/img_home_icon.png');
@@ -544,6 +548,7 @@ class $ResourcesAssetsImagesGen {
     imgGryadka,
     imgGryadkaRastet,
     imgHarvest,
+    imgHole,
     imgHomeIcon,
     imgHouse,
     imgHouseRectangle,

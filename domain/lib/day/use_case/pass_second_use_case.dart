@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
@@ -22,6 +23,7 @@ final class PassSecondUseCase {
   static const _weakHealthLevel = 30.0;
   static const _weakDropMultiplier = 1.5;
 
+  final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final FeedbackRepository _feedbackRepository;
@@ -30,6 +32,7 @@ final class PassSecondUseCase {
   final SunSpotRepository _sunSpotRepository;
 
   const PassSecondUseCase({
+    required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
     required this._feedbackRepository,
@@ -64,6 +67,7 @@ final class PassSecondUseCase {
     _playerRepository.setStats(stats);
     _dayRepository.setDay(day);
     _sunSpotRepository.tick();
+    _tickCompost();
     if (outcome != null) {
       _dayRepository.setOutcome(outcome);
     }
@@ -110,6 +114,21 @@ final class PassSecondUseCase {
       change += _perSecond(_recoveryHealthPerDay);
     }
     return change;
+  }
+
+  void _tickCompost() {
+    final wasReady = _compostRepository.pit.isReady;
+    _compostRepository.tick();
+    if (wasReady || !_compostRepository.pit.isReady) {
+      return;
+    }
+    _constructionRepository.build(.compostPit);
+    _feedbackRepository.show(
+      const FeedbackMessage(
+        text: 'Your compost is ready',
+        mood: .happy,
+      ),
+    );
   }
 
   PlayerStats _endOfDayStats(PlayerStats stats) {

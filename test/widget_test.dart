@@ -1,5 +1,6 @@
 import 'package:after_us_game/di/use_case_injection.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
+import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
@@ -17,6 +18,7 @@ import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
@@ -116,6 +118,7 @@ void main() {
       ..registerSingleton<AppRepository>(appRepository ?? FakeAppRepository())
       ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
+      ..registerSingleton<CompostRepository>(CompostRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
       ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
