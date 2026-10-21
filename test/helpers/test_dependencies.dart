@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:after_us_game/di/use_case_injection.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
+import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
@@ -14,9 +15,12 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
+import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
@@ -30,7 +34,9 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 import 'package:presentation/di/di_container.dart';
 
 final class FakeAppRepository implements AppRepository {
@@ -55,7 +61,9 @@ final class ManualTickerRepository implements TickerRepository {
 
 final class TestDependencies {
   final app = FakeAppRepository();
+  final campfire = CampfireRepositoryImpl();
   final character = CharacterRepositoryImpl();
+  final compost = CompostRepositoryImpl();
   final construction = ConstructionRepositoryImpl();
   final day = DayRepositoryImpl();
   final feedback = FeedbackRepositoryImpl();
@@ -69,13 +77,16 @@ final class TestDependencies {
   final save = SaveRepositoryImpl();
   final selection = SelectionRepositoryImpl();
   final station = StationRepositoryImpl();
+  final sunSpot = SunSpotRepositoryImpl();
   final ticker = ManualTickerRepository();
 
   Future<void> register() async {
     await diContainer.reset();
     diContainer
       ..registerSingleton<AppRepository>(app)
+      ..registerSingleton<CampfireRepository>(campfire)
       ..registerSingleton<CharacterRepository>(character)
+      ..registerSingleton<CompostRepository>(compost)
       ..registerSingleton<ConstructionRepository>(construction)
       ..registerSingleton<DayRepository>(day)
       ..registerSingleton<FeedbackRepository>(feedback)
@@ -89,6 +100,7 @@ final class TestDependencies {
       ..registerSingleton<SaveRepository>(save)
       ..registerSingleton<SelectionRepository>(selection)
       ..registerSingleton<StationRepository>(station)
+      ..registerSingleton<SunSpotRepository>(sunSpot)
       ..registerSingleton<TickerRepository>(ticker);
     registerUseCases();
   }

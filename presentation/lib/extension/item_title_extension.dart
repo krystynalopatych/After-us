@@ -26,6 +26,7 @@ extension GameMaterialTitleExtension on GameMaterial {
     .chlorine => 'Chlorine',
     .electronics => 'Electronics',
     .charcoal => 'Charcoal',
+    .compost => 'Compost',
   };
 }
 
@@ -37,7 +38,13 @@ extension InventoryItemTitleExtension on InventoryItem {
     .algaeSoaked => 'Soaked algae',
     .berries => 'Berries',
     .cleanWater => 'Clean water',
-    .lakeWater => 'Lake water',
+    .sodisLakeWater => 'Lake water (SODIS)',
+    .bottleLakeWater => 'Lake water',
+    .sodisStrainedWater => 'Strained water (SODIS)',
+    .bottleStrainedWater => 'Strained water',
+    .sodisFilteredWater => 'Filtered water (SODIS)',
+    .bottleFilteredWater => 'Filtered water',
+    .sodisCleanWater => 'Clean water (SODIS)',
     .sodisBottle => 'SODIS bottle',
     .prefilter => 'Cloth prefilter',
     .cookingPot => 'Cooking pot',

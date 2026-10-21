@@ -1,4 +1,5 @@
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -11,10 +12,14 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
 final class StartLevelUseCase {
   final CharacterRepository _characterRepository;
+  final CampfireRepository _campfireRepository;
+  final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final InventoryRepository _inventoryRepository;
@@ -26,9 +31,12 @@ final class StartLevelUseCase {
   final SaveRepository _saveRepository;
   final SelectionRepository _selectionRepository;
   final StationRepository _stationRepository;
+  final SunSpotRepository _sunSpotRepository;
 
   const StartLevelUseCase({
     required this._characterRepository,
+    required this._campfireRepository,
+    required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
     required this._inventoryRepository,
@@ -40,6 +48,7 @@ final class StartLevelUseCase {
     required this._saveRepository,
     required this._selectionRepository,
     required this._stationRepository,
+    required this._sunSpotRepository,
   });
 
   void call(GameLevel level) {
@@ -62,6 +71,9 @@ final class StartLevelUseCase {
     _pickupRepository.restore(save.pickups);
     _constructionRepository.restore(save.constructions);
     _stationRepository.restore(save.stations);
+    _sunSpotRepository.restore(save.sunBottle);
+    _campfireRepository.restore(save.campfireUses);
+    _compostRepository.restore(save.compostPit);
     _locationRepository.setLocation(save.location);
   }
 
@@ -74,6 +86,9 @@ final class StartLevelUseCase {
     _pickupRepository.startLevel(level);
     _constructionRepository.reset();
     _stationRepository.reset();
+    _sunSpotRepository.reset();
+    _campfireRepository.reset();
+    _compostRepository.reset();
     _locationRepository.setLocation(.house);
   }
 }

@@ -42,8 +42,10 @@ class _GameOverPageState extends State<GameOverPage> {
   Widget build(BuildContext context) {
     final (colors, typography) = context.colorsTypography;
 
-    return BlocBuilder<GameOverBloc, GameOverState>(
+    return BlocConsumer<GameOverBloc, GameOverState>(
       bloc: _bloc,
+      listenWhen: (previous, current) => !previous.isCompleted && current.isCompleted,
+      listener: (context, state) => AppRoute.levels.go(context),
       builder: (context, state) {
         final result = state.result;
         if (result == null) {
@@ -75,20 +77,21 @@ class _GameOverPageState extends State<GameOverPage> {
                     mainAxisSize: .min,
                     spacing: _spacing,
                     children: [
-                      SizedBox.fromSize(
-                        size: _actionSize,
-                        child: AnswerButtonContainer(
-                          text: 'RETRY',
-                          onTap: () => _bloc.add(const GameOverRetryTapped()),
+                      if (result.outcome == .won)
+                        _action(
+                          'CONTINUE',
+                          () => _bloc.add(const GameOverContinueTapped()),
+                        )
+                      else ...[
+                        _action(
+                          'RETRY',
+                          () => _bloc.add(const GameOverRetryTapped()),
                         ),
-                      ),
-                      SizedBox.fromSize(
-                        size: _actionSize,
-                        child: AnswerButtonContainer(
-                          text: 'MENU',
-                          onTap: () => AppRoute.start.go(context),
+                        _action(
+                          'MENU',
+                          () => AppRoute.start.go(context),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ],
@@ -100,15 +103,25 @@ class _GameOverPageState extends State<GameOverPage> {
     );
   }
 
+  static Widget _action(
+    String text,
+    VoidCallback onTap,
+  ) => SizedBox.fromSize(
+    size: _actionSize,
+    child: AnswerButtonContainer(
+      text: text,
+      onTap: onTap,
+    ),
+  );
+
   static String _title(LevelOutcome outcome) => switch (outcome) {
-    .won => 'YOU SURVIVED',
+    .won => 'YOU WON!',
     .died => 'YOU DIED',
     .noTimeLeft => 'YOU LOST',
   };
 
   static String? _reason(LevelResult result) => switch (result.outcome) {
-    .won => null,
-    .died => 'You died.',
+    .won || .died => null,
     .noTimeLeft => 'You did not finish ${_goalList(result.missingGoals)}.',
   };
 

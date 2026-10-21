@@ -60,6 +60,20 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgBookIcon =>
       const AssetGenImage('resources/assets/images/img_book_icon.png');
 
+  /// File path: resources/assets/images/img_bottle_filtered_water.png
+  AssetGenImage get imgBottleFilteredWater => const AssetGenImage(
+    'resources/assets/images/img_bottle_filtered_water.png',
+  );
+
+  /// File path: resources/assets/images/img_bottle_lake_water.png
+  AssetGenImage get imgBottleLakeWater =>
+      const AssetGenImage('resources/assets/images/img_bottle_lake_water.png');
+
+  /// File path: resources/assets/images/img_bottle_strained_water.png
+  AssetGenImage get imgBottleStrainedWater => const AssetGenImage(
+    'resources/assets/images/img_bottle_strained_water.png',
+  );
+
   /// File path: resources/assets/images/img_bush_berriespng.png
   AssetGenImage get imgBushBerriespng =>
       const AssetGenImage('resources/assets/images/img_bush_berriespng.png');
@@ -115,6 +129,10 @@ class $ResourcesAssetsImagesGen {
   /// File path: resources/assets/images/img_chlorine.png
   AssetGenImage get imgChlorine =>
       const AssetGenImage('resources/assets/images/img_chlorine.png');
+
+  /// File path: resources/assets/images/img_circle_timer.png
+  AssetGenImage get imgCircleTimer =>
+      const AssetGenImage('resources/assets/images/img_circle_timer.png');
 
   /// File path: resources/assets/images/img_claud_black.png
   AssetGenImage get imgClaudBlack =>
@@ -180,6 +198,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgFilterRefresher =>
       const AssetGenImage('resources/assets/images/img_filter_refresher.png');
 
+  /// File path: resources/assets/images/img_fire_stack.png
+  AssetGenImage get imgFireStack =>
+      const AssetGenImage('resources/assets/images/img_fire_stack.png');
+
   /// File path: resources/assets/images/img_forest_icon.png
   AssetGenImage get imgForestIcon =>
       const AssetGenImage('resources/assets/images/img_forest_icon.png');
@@ -219,6 +241,10 @@ class $ResourcesAssetsImagesGen {
   /// File path: resources/assets/images/img_harvest.png
   AssetGenImage get imgHarvest =>
       const AssetGenImage('resources/assets/images/img_harvest.png');
+
+  /// File path: resources/assets/images/img_hole.png
+  AssetGenImage get imgHole =>
+      const AssetGenImage('resources/assets/images/img_hole.png');
 
   /// File path: resources/assets/images/img_home_icon.png
   AssetGenImage get imgHomeIcon =>
@@ -413,6 +439,24 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgSoap =>
       const AssetGenImage('resources/assets/images/img_soap.png');
 
+  /// File path: resources/assets/images/img_sodis_clean_water.png
+  AssetGenImage get imgSodisCleanWater =>
+      const AssetGenImage('resources/assets/images/img_sodis_clean_water.png');
+
+  /// File path: resources/assets/images/img_sodis_filtered_water.png
+  AssetGenImage get imgSodisFilteredWater => const AssetGenImage(
+    'resources/assets/images/img_sodis_filtered_water.png',
+  );
+
+  /// File path: resources/assets/images/img_sodis_lake_water.png
+  AssetGenImage get imgSodisLakeWater =>
+      const AssetGenImage('resources/assets/images/img_sodis_lake_water.png');
+
+  /// File path: resources/assets/images/img_sodis_strained_water.png
+  AssetGenImage get imgSodisStrainedWater => const AssetGenImage(
+    'resources/assets/images/img_sodis_strained_water.png',
+  );
+
   /// File path: resources/assets/images/img_store_icon.png
   AssetGenImage get imgStoreIcon =>
       const AssetGenImage('resources/assets/images/img_store_icon.png');
@@ -459,6 +503,9 @@ class $ResourcesAssetsImagesGen {
     imgBerries,
     imgBoiledWater,
     imgBookIcon,
+    imgBottleFilteredWater,
+    imgBottleLakeWater,
+    imgBottleStrainedWater,
     imgBushBerriespng,
     imgButtonBack,
     imgButtonClose,
@@ -473,6 +520,7 @@ class $ResourcesAssetsImagesGen {
     imgCampfire,
     imgCardboard,
     imgChlorine,
+    imgCircleTimer,
     imgClaudBlack,
     imgClaudBlue,
     imgClaudBlueSmaller,
@@ -489,6 +537,7 @@ class $ResourcesAssetsImagesGen {
     imgExitIcon,
     imgFabric,
     imgFilterRefresher,
+    imgFireStack,
     imgForestIcon,
     imgForestRectangle,
     imgFreezerGorshok,
@@ -499,6 +548,7 @@ class $ResourcesAssetsImagesGen {
     imgGryadka,
     imgGryadkaRastet,
     imgHarvest,
+    imgHole,
     imgHomeIcon,
     imgHouse,
     imgHouseRectangle,
@@ -546,6 +596,10 @@ class $ResourcesAssetsImagesGen {
     imgSkyBlack,
     imgSkyBlue,
     imgSoap,
+    imgSodisCleanWater,
+    imgSodisFilteredWater,
+    imgSodisLakeWater,
+    imgSodisStrainedWater,
     imgStoreIcon,
     imgSun,
     imgSunLight,

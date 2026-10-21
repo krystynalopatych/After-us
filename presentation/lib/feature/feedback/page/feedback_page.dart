@@ -23,12 +23,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     760,
     456,
   );
-  static const _heroLineRect = Rect.fromLTWH(
-    80,
-    760,
-    840,
-    280,
-  );
   static const _fadeDuration = Duration(milliseconds: 250);
 
   late final FeedbackBloc _bloc;
@@ -54,16 +48,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 (message) => TopMessageContainer(text: message.text),
               ),
             ),
-            Positioned.fromRect(
-              rect: _heroLineRect,
-              child: _fade(
-                state.message,
-                (message) => switch (message.heroLine) {
-                  final heroLine? => HeroLineContainer(text: heroLine),
-                  null => null,
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -72,7 +56,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   static Widget _fade(
     FeedbackMessage? message,
-    Widget? Function(FeedbackMessage message) builder,
+    Widget Function(FeedbackMessage message) builder,
   ) {
     final child = message == null ? null : builder(message);
     return AnimatedSwitcher(

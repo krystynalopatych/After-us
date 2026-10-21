@@ -27,17 +27,10 @@ final class InventoryRepositoryImpl implements InventoryRepository {
 
   @override
   bool add(InventoryItem item) {
-    final index = _stacks.indexWhere((stack) => stack.item == item && stack.count < _stackSize);
-    if (index != -1) {
-      _stacks[index] = _stacks[index].copyWith(count: _stacks[index].count + 1);
-    } else if (_stacks.length < _slotCount) {
-      _stacks.add(
-        InventoryStack(
-          item: item,
-          count: 1,
-        ),
-      );
-    } else {
+    if (!_addTo(
+      _stacks,
+      item,
+    )) {
       return false;
     }
     _stacksController.add(stacks);
@@ -46,17 +39,49 @@ final class InventoryRepositoryImpl implements InventoryRepository {
 
   @override
   bool remove(InventoryItem item) {
-    final index = _stacks.lastIndexWhere((stack) => stack.item == item);
-    if (index == -1) {
+    if (!_removeFrom(
+      _stacks,
+      item,
+    )) {
       return false;
     }
-    final stack = _stacks[index];
-    if (stack.count > 1) {
-      _stacks[index] = stack.copyWith(count: stack.count - 1);
-    } else {
-      _stacks.removeAt(index);
-    }
     _stacksController.add(stacks);
+    return true;
+  }
+
+  @override
+  bool canReplace(
+    InventoryItem item,
+    List<InventoryItem> results,
+  ) =>
+      _exchanged(
+        [item],
+        results,
+      ) !=
+      null;
+
+  @override
+  bool replace(
+    InventoryItem item,
+    List<InventoryItem> results,
+  ) => exchange(
+    [item],
+    results,
+  );
+
+  @override
+  bool exchange(
+    List<InventoryItem> removed,
+    List<InventoryItem> added,
+  ) {
+    final exchanged = _exchanged(
+      removed,
+      added,
+    );
+    if (exchanged == null) {
+      return false;
+    }
+    restore(exchanged);
     return true;
   }
 
@@ -72,5 +97,67 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   void reset() {
     _stacks.clear();
     _stacksController.add(stacks);
+  }
+
+  List<InventoryStack>? _exchanged(
+    List<InventoryItem> removed,
+    List<InventoryItem> added,
+  ) {
+    final stacks = [..._stacks];
+    for (final item in removed) {
+      if (!_removeFrom(
+        stacks,
+        item,
+      )) {
+        return null;
+      }
+    }
+    for (final result in added) {
+      if (!_addTo(
+        stacks,
+        result,
+      )) {
+        return null;
+      }
+    }
+    return stacks;
+  }
+
+  static bool _addTo(
+    List<InventoryStack> stacks,
+    InventoryItem item,
+  ) {
+    final index = stacks.indexWhere((stack) => stack.item == item && stack.count < _stackSize);
+    if (index != -1) {
+      stacks[index] = stacks[index].copyWith(count: stacks[index].count + 1);
+      return true;
+    }
+    if (stacks.length >= _slotCount) {
+      return false;
+    }
+    stacks.add(
+      InventoryStack(
+        item: item,
+        count: 1,
+      ),
+    );
+    return true;
+  }
+
+  static bool _removeFrom(
+    List<InventoryStack> stacks,
+    InventoryItem item,
+  ) {
+    final index = stacks.lastIndexWhere((stack) => stack.item == item);
+    if (index == -1) {
+      return false;
+    }
+    final stack = stacks[index];
+    if (stack.count > 1) {
+      stacks[index] = stack.copyWith(count: stack.count - 1);
+    } else {
+      stacks.removeAt(index);
+    }
+    return true;
   }
 }

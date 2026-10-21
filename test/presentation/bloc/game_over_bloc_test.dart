@@ -1,6 +1,7 @@
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
+import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/model/level_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/game_over/bloc/game_over_bloc.dart';
@@ -81,6 +82,29 @@ void main() {
       expect(
         deps.construction.built,
         isEmpty,
+      );
+    },
+  );
+
+  test(
+    'continue after a win unlocks the next level and finishes',
+    () async {
+      final bloc = GameOverBloc(level: .level1)..add(const GameOverStarted());
+      addTearDown(bloc.close);
+      await pumpEventQueue();
+      deps.day.setOutcome(.won);
+      await pumpEventQueue();
+
+      bloc.add(const GameOverContinueTapped());
+      await pumpEventQueue();
+
+      expect(
+        bloc.state.isCompleted,
+        isTrue,
+      );
+      expect(
+        deps.progress.unlockedLevel,
+        GameLevel.level2,
       );
     },
   );

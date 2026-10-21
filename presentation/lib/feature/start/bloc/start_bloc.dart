@@ -19,10 +19,23 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       _characterRepository = diContainer.get(),
       _progressRepository = diContainer.get(),
       super(StartState(unlockedLevel: diContainer.get<ProgressRepository>().unlockedLevel)) {
-    on<StartStarted>((event, emit) => _characterRepository.setMood(.normal));
+    on<StartStarted>(_onStarted);
     on<StartNewGameTapped>(_onNewGameTapped);
     on<StartExitTapped>((event, emit) => _appRepository.exit());
     on<StartBackTapped>(_onBackTapped);
+  }
+
+  void _onStarted(
+    StartStarted event,
+    Emitter<StartState> emit,
+  ) {
+    _characterRepository.setMood(.normal);
+    emit(
+      state.copyWith(
+        isLevelSelection: event.isLevelSelection,
+        unlockedLevel: _progressRepository.unlockedLevel,
+      ),
+    );
   }
 
   void _onNewGameTapped(

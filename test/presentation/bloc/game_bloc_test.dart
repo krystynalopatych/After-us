@@ -1,4 +1,6 @@
+import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/location/model/game_location.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 
@@ -207,21 +209,44 @@ void main() {
   );
 
   test(
-    'tapping the lake water fills a bottle when there is one',
+    'tapping the lake water fills the selected SODIS bottle',
     () async {
-      bloc.add(const GameLakeWaterTapped());
-      await pumpEventQueue();
-      expect(
-        deps.inventory.count(.lakeWater),
-        0,
-      );
-
       deps.inventory.add(.sodisBottle);
       bloc.add(const GameLakeWaterTapped());
       await pumpEventQueue();
       expect(
-        deps.inventory.count(.lakeWater),
+        deps.inventory.count(.sodisLakeWater),
+        0,
+      );
+
+      deps.selection.selectSlot(0);
+      bloc.add(const GameLakeWaterTapped());
+      await pumpEventQueue();
+      expect(
+        deps.inventory.count(.sodisLakeWater),
         1,
+      );
+    },
+  );
+
+  test(
+    'tapping the lake water with a filter asks where to store the water',
+    () async {
+      deps.inventory.add(.prefilter);
+      deps.selection.selectSlot(0);
+
+      bloc.add(const GameLakeWaterTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.waterChoice,
+        WaterKind.strained,
+      );
+
+      bloc.add(const GameWaterChoiceClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.waterChoice,
+        isNull,
       );
     },
   );
@@ -244,6 +269,75 @@ void main() {
       expect(
         states.where((state) => !state.isMapOpen && state.location == .house),
         isEmpty,
+      );
+    },
+  );
+
+  test(
+    'tapping the campfire opens and closes the campfire window',
+    () async {
+      bloc.add(const GameStationTapped(.campfire));
+      await pumpEventQueue();
+      expect(
+        bloc.state.fireStation,
+        Station.campfire,
+      );
+
+      bloc.add(const GameFireClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.fireStation,
+        isNull,
+      );
+    },
+  );
+
+  test(
+    'tapping the workbench opens and closes the workbench window',
+    () async {
+      bloc.add(const GameStationTapped(.workbench));
+      await pumpEventQueue();
+      expect(
+        bloc.state.isWorkbenchOpen,
+        isTrue,
+      );
+      expect(
+        bloc.state.isStationOpen,
+        isTrue,
+      );
+
+      bloc.add(const GameWorkbenchClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isWorkbenchOpen,
+        isFalse,
+      );
+    },
+  );
+
+  test(
+    'tapping the house with the rocket stove selected sets it up and opens no build dialog',
+    () async {
+      deps.inventory.add(.rocketStove);
+      deps.selection.selectSlot(0);
+
+      bloc.add(const GameLocationTapped());
+      await pumpEventQueue();
+
+      expect(
+        deps.station.built,
+        {Station.rocketStove},
+      );
+      expect(
+        bloc.state.isBuildOpen,
+        isFalse,
+      );
+
+      bloc.add(const GameStationTapped(.rocketStove));
+      await pumpEventQueue();
+      expect(
+        bloc.state.fireStation,
+        Station.rocketStove,
       );
     },
   );

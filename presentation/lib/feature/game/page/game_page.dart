@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
+import 'package:presentation/feature/compost/page/compost_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
 import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
@@ -16,8 +17,12 @@ import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
+import 'package:presentation/feature/sun_spot/page/sun_spot_page.dart';
+import 'package:presentation/feature/station/page/campfire_page.dart';
 import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
+import 'package:presentation/feature/station/page/workbench_page.dart';
+import 'package:presentation/feature/water/page/water_choice_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 class GamePage extends StatefulWidget {
@@ -139,9 +144,11 @@ class _GamePageState extends State<GamePage> {
                     ? StationPage.withBloc(
                         background: _locationBackground(state.location),
                         onLocationTap: () => _bloc.add(const GameLocationTapped()),
+                        onStationTap: (station) => _bloc.add(GameStationTapped(station)),
                       )
                     : BackgroundContainer(image: _locationBackground(state.location)),
               ),
+              if (state.location == .house) Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
               if (state.location == .lake)
                 Positioned.fromRect(
                   rect: _sunLightRect,
@@ -154,6 +161,7 @@ class _GamePageState extends State<GamePage> {
                 height: SceneContainer.designSize.height,
                 child: CharacterPage.withBloc(onTap: () => _characterTaps.add(null)),
               ),
+              if (state.location == .lake) Positioned.fill(child: SunSpotPage.withBloc(locationTop: _skyHeight)),
               if (state.location == .lake)
                 Positioned.fromRect(
                   rect: _lakeWaterRect,
@@ -165,18 +173,30 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 ),
+              if (state.isStationOpen) _pickups(),
+              if (state.fireStation case final station?)
+                Positioned.fill(
+                  child: CampfirePage.withBloc(
+                    station: station,
+                    onClose: () => _bloc.add(const GameFireClosed()),
+                  ),
+                ),
+              if (state.isWorkbenchOpen)
+                Positioned.fill(child: WorkbenchPage.withBloc(onClose: () => _bloc.add(const GameWorkbenchClosed()))),
               Positioned.fill(
                 child: HudPage.withBloc(
                   onMapTap: () => _bloc.add(const GameMapTapped()),
                   characterTaps: _characterTaps.stream,
                 ),
               ),
-              Positioned.fill(
-                child: PickupPage.withBloc(
-                  level: widget.level,
-                  locationTop: _skyHeight,
+              if (!state.isStationOpen) _pickups(),
+              if (state.waterChoice case final water?)
+                Positioned.fill(
+                  child: WaterChoicePage.withBloc(
+                    water: water,
+                    onClose: () => _bloc.add(const GameWaterChoiceClosed()),
+                  ),
                 ),
-              ),
               if (state.isBuildOpen)
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
@@ -191,6 +211,13 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
+
+  Widget _pickups() => Positioned.fill(
+    child: PickupPage.withBloc(
+      level: widget.level,
+      locationTop: _skyHeight,
+    ),
+  );
 
   Widget _map() {
     return BackgroundContainer(

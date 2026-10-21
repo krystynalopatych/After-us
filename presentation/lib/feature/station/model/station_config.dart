@@ -15,5 +15,11 @@ abstract final class StationConfig {
       280,
       256,
     ),
+    Station.rocketStove: Rect.fromLTWH(
+      560,
+      720,
+      170,
+      170,
+    ),
   };
 }

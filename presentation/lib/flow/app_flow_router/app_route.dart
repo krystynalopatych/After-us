@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 enum AppRoute {
   start('/'),
+  levels('/levels'),
   loadGame('/load-game'),
   level1('/level-1'),
   level2('/level-2'),

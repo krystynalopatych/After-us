@@ -25,6 +25,10 @@ abstract final class AppRouter {
           (_, _) => StartPage.withBloc(),
         ),
         _route(
+          AppRoute.levels,
+          (_, _) => StartPage.withBloc(isLevelSelection: true),
+        ),
+        _route(
           AppRoute.loadGame,
           (_, _) => LoadGamePage.withBloc(),
         ),

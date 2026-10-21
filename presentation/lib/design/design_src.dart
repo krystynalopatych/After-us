@@ -21,3 +21,4 @@ export 'src/widget/side_panel/side_panel_container.dart';
 export 'src/widget/sky/model/sky_state.dart';
 export 'src/widget/sky/sky_container.dart';
 export 'src/widget/stat/stat_container.dart';
+export 'src/widget/timer/timer_container.dart';

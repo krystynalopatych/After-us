@@ -1,5 +1,6 @@
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/model/level_result.dart';
+import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:equatable/equatable.dart';
@@ -11,15 +12,26 @@ part 'game_over_state.dart';
 
 class GameOverBloc extends Bloc<GameOverEvent, GameOverState> {
   final GameLevel _level;
+  final CompleteLevelUseCase _completeLevelUseCase;
   final LevelResultUseCase _levelResultUseCase;
   final StartLevelUseCase _startLevelUseCase;
 
   GameOverBloc({required this._level})
-    : _levelResultUseCase = diContainer.get(),
+    : _completeLevelUseCase = diContainer.get(),
+      _levelResultUseCase = diContainer.get(),
       _startLevelUseCase = diContainer.get(),
       super(const GameOverState()) {
     on<GameOverStarted>(_onStarted);
     on<GameOverRetryTapped>((event, emit) => _startLevelUseCase(_level));
+    on<GameOverContinueTapped>(_onContinueTapped);
+  }
+
+  void _onContinueTapped(
+    GameOverContinueTapped event,
+    Emitter<GameOverState> emit,
+  ) {
+    _completeLevelUseCase(_level);
+    emit(state.copyWith(isCompleted: true));
   }
 
   Future<void> _onStarted(

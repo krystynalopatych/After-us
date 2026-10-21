@@ -1,5 +1,6 @@
 import 'package:after_us_game/di/use_case_injection.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
+import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
@@ -12,9 +13,12 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
+import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
+import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
@@ -38,7 +42,9 @@ import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -110,7 +116,9 @@ void main() {
     await diContainer.reset();
     diContainer
       ..registerSingleton<AppRepository>(appRepository ?? FakeAppRepository())
+      ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
+      ..registerSingleton<CompostRepository>(CompostRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
       ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
@@ -124,6 +132,7 @@ void main() {
       ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl())
       ..registerSingleton<SelectionRepository>(SelectionRepositoryImpl())
       ..registerSingleton<StationRepository>(StationRepositoryImpl())
+      ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
       ..registerSingleton<TickerRepository>(ManualTickerRepository());
     registerUseCases();
 
@@ -880,7 +889,7 @@ void main() {
       WidgetTester tester,
     ) async {
       final images = Assets.resources.assets.images;
-      const buildLine = 'you can build the following objects:';
+      const buildLine = 'YOU CAN BUILD THE FOLLOWING OBJECTS';
       final materialRepository = MaterialRepositoryImpl();
       await pumpApp(
         tester,
@@ -1090,7 +1099,7 @@ void main() {
         findsNothing,
       );
       expect(
-        find.text('You ate berries. +10 hunger, +3 thirst.'),
+        find.text('YOU ATE BERRIES +10 HUNGER +3 THIRST'),
         findsOneWidget,
       );
     },
@@ -1282,7 +1291,7 @@ void main() {
   );
 
   testWidgets(
-    'Feedback shows the top message and the hero line, then hides them',
+    'Feedback shows the top message without the hero line, then hides it',
     (
       WidgetTester tester,
     ) async {
@@ -1300,23 +1309,19 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(
-        find.text('You built a rocket stove.'),
+        find.text('YOU BUILT A ROCKET STOVE.'),
         findsOneWidget,
       );
       expect(
-        find.text('Less wood, less smoke.'),
-        findsOneWidget,
+        find.byType(HeroLineContainer),
+        findsNothing,
       );
 
       await tester.pump(const Duration(seconds: 3));
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(
-        find.text('You built a rocket stove.'),
-        findsNothing,
-      );
-      expect(
-        find.byType(HeroLineContainer),
+        find.text('YOU BUILT A ROCKET STOVE.'),
         findsNothing,
       );
     },
@@ -1365,18 +1370,30 @@ void main() {
       await pumpScene(tester);
 
       expect(
-        find.text('YOU SURVIVED'),
+        find.text('YOU WON!'),
         findsOneWidget,
+      );
+      expect(
+        find.text('RETRY'),
+        findsNothing,
       );
 
       await tapText(
         tester,
-        'MENU',
+        'CONTINUE',
       );
 
       expect(
         find.byType(StartPage),
         findsOneWidget,
+      );
+      expect(
+        diContainer.get<ProgressRepository>().unlockedLevel,
+        GameLevel.level2,
+      );
+      expect(
+        find.byWidgetPredicate((widget) => widget is PressableContainer && widget.isEnabled),
+        findsNWidgets(3),
       );
     },
   );

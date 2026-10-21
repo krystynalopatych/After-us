@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:domain/inventory/model/inventory_item.dart';
-import 'package:domain/material/model/game_material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/item_image_extension.dart';
 import 'package:presentation/extension/item_title_extension.dart';
+import 'package:presentation/extension/material_image_extension.dart';
 import 'package:presentation/feature/hud/bloc/hud_bloc.dart';
-import 'package:presentation/generated/assets/assets.gen.dart';
 
 class HudPage extends StatefulWidget {
   final VoidCallback onMapTap;
@@ -109,10 +108,7 @@ class _HudPageState extends State<HudPage> {
                   onTap: () => _bloc.add(HudMaterialTapped(stock.material)),
                   child: MaterialContainer(
                     frame: images.imgResourseIcon,
-                    image: _materialImage(
-                      context,
-                      stock.material,
-                    ),
+                    image: stock.material.asset(context),
                     count: stock.count,
                   ),
                 ),
@@ -135,7 +131,7 @@ class _HudPageState extends State<HudPage> {
               height: _statHeight,
               child: StatContainer(
                 image: images.imgPlayerHp,
-                value: state.stats.health.round(),
+                value: state.stats.health.ceil(),
                 valueAlignment: _healthValueAlignment,
               ),
             ),
@@ -164,19 +160,13 @@ class _HudPageState extends State<HudPage> {
                 width: _slotSize * _inventoryScale,
                 height: _slotSize * _inventoryScale,
                 child: SelectableContainer(
-                  glowImage: _inventoryImage(
-                    context,
-                    stack.item,
-                  ),
+                  glowImage: stack.item.asset(context),
                   label: stack.item.title,
                   isSelected: state.selectedSlot == index,
                   isLabelBelow: false,
                   onTap: () => _bloc.add(HudSlotTapped(index)),
                   child: InventorySlotContainer(
-                    image: _inventoryImage(
-                      context,
-                      stack.item,
-                    ),
+                    image: stack.item.asset(context),
                     count: stack.count,
                   ),
                 ),
@@ -198,47 +188,4 @@ class _HudPageState extends State<HudPage> {
   }
 
   static double get _inventoryScale => _inventoryWidth / _inventoryImageWidth;
-
-  static AssetGenImage _inventoryImage(
-    BuildContext context,
-    InventoryItem item,
-  ) {
-    final images = context.images;
-    return switch (item) {
-      .cattailRoot => images.imgKoreniKamyshaSyrye,
-      .cattailRootCooked => images.imgKoreniKamyshaSvarenye,
-      .algae => images.imgSeaweedNEVymochenye,
-      .algaeSoaked => images.imgSeaweedVymochenye,
-      .berries => images.imgBerries,
-      .cleanWater => images.imgBoiledWater,
-      .lakeWater => images.imgWaterSodis,
-      .sodisBottle => images.imgWaterSodis,
-      .prefilter => images.imgPrefilter,
-      .cookingPot => images.imgCookingPot,
-      .rocketStove => images.imgRocketFire,
-      .waterFilter => images.imgFullWaterFilter,
-    };
-  }
-
-  static AssetGenImage _materialImage(
-    BuildContext context,
-    GameMaterial material,
-  ) {
-    final images = context.images;
-    return switch (material) {
-      .plastic => images.imgPlasticBottle,
-      .cloth => images.imgFabric,
-      .sand => images.imgSand,
-      .wood => images.imgWood,
-      .metal => images.imgMetal,
-      .organics => images.imgOrganic,
-      .cardboard => images.imgCardboard,
-      .seeds => images.imgSeeds,
-      .clay => images.imgClay,
-      .oil => images.imgOil,
-      .chlorine => images.imgChlorine,
-      .electronics => images.imgProvoda,
-      .charcoal => images.imgCoal,
-    };
-  }
 }

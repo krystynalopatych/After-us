@@ -9,8 +9,8 @@ import 'package:presentation/flow/app_flow_router/app_route.dart';
 class StartPage extends StatefulWidget {
   const StartPage._();
 
-  static Widget withBloc() => BlocProvider(
-    create: (_) => StartBloc()..add(const StartStarted()),
+  static Widget withBloc({bool isLevelSelection = false}) => BlocProvider(
+    create: (_) => StartBloc()..add(StartStarted(isLevelSelection: isLevelSelection)),
     child: const StartPage._(),
   );
 
@@ -93,10 +93,16 @@ class _StartPageState extends State<StartPage> {
           PressableContainer(
             image: image,
             isEnabled: level.index <= state.unlockedLevel.index,
-            onTap: () => AppRoute.fromLevel(level).go(context),
+            onTap: () => _onLevelTap(level),
           ),
         ),
     ];
+  }
+
+  void _onLevelTap(GameLevel level) {
+    if (level == .level1) {
+      AppRoute.fromLevel(level).go(context);
+    }
   }
 
   BackgroundElement _button(

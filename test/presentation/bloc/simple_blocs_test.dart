@@ -89,6 +89,24 @@ void main() {
       );
 
       test(
+        'opening the levels screen shows level selection with the progress kept',
+        () async {
+          deps.progress.completeLevel(.level1);
+          final bloc = StartBloc()..add(const StartStarted(isLevelSelection: true));
+          addTearDown(bloc.close);
+          await pumpEventQueue();
+
+          expect(
+            bloc.state,
+            const StartState(
+              isLevelSelection: true,
+              unlockedLevel: .level2,
+            ),
+          );
+        },
+      );
+
+      test(
         'new game resets progress and opens level selection, back closes it',
         () async {
           deps.progress.completeLevel(.level1);
