@@ -10,3 +10,7 @@ sealed class Level3Event extends Equatable {
 final class Level3Started extends Level3Event {
   const Level3Started();
 }
+
+final class Level3Retried extends Level3Event {
+  const Level3Retried();
+}

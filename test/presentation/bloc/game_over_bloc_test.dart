@@ -1,6 +1,4 @@
 import 'package:domain/construction/model/construction.dart';
-import 'package:domain/day/model/game_day.dart';
-import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/model/level_result.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,47 +39,6 @@ void main() {
             Construction.compostPit,
           ],
         ),
-      );
-    },
-  );
-
-  test(
-    'retry restarts the level and hides the screen',
-    () async {
-      final bloc = GameOverBloc(level: .level1)..add(const GameOverStarted());
-      addTearDown(bloc.close);
-      await pumpEventQueue();
-
-      deps.construction.build(.rocketStove);
-      deps.day
-        ..setDay(
-          const GameDay(
-            number: 3,
-            seconds: 599,
-          ),
-        )
-        ..setOutcome(.died);
-      await pumpEventQueue();
-
-      expect(
-        bloc.state.result?.outcome,
-        LevelOutcome.died,
-      );
-
-      bloc.add(const GameOverRetryTapped());
-      await pumpEventQueue();
-
-      expect(
-        bloc.state.result,
-        isNull,
-      );
-      expect(
-        deps.day.day,
-        const GameDay.first(),
-      );
-      expect(
-        deps.construction.built,
-        isEmpty,
       );
     },
   );

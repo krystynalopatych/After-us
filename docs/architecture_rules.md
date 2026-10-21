@@ -218,7 +218,9 @@ lib/di/
 - Images are WebP (quality 85), never PNG. Full-scene pictures (location backgrounds, map, sky, book, station windows) keep their size; wide UI panels are at most 1280 px on the long side; everything else (icons, items, buttons, characters) at most 768 px. The game is served over the web, so every extra MB is load time.
 - After adding an image run `dart run build_runner build` from the root; output goes to `presentation/lib/generated/assets/`.
 - Never hard-code asset paths; use the generated getters.
-- `LoadingPage` precaches every image before the router is shown, and `main.dart` raises the image cache to 512 MB so nothing gets evicted. Don't add separate `precacheImage` calls in pages.
+- Images load per screen through `LoadingPage.withBloc(images, child)`: `AppPage` loads the menu images (`_menuImages`) before the router is shown, and each level page loads `GameLevel.images(context)` (everything except other levels' far locations) before building `GamePage`. A new menu-only image goes into `AppPage._menuImages`. Don't add separate `precacheImage` calls in pages.
+- `main.dart` sets the image cache to 300 MB, enough for the menu plus one level.
+- Level pages own the run: `LevelXStarted` and `LevelXRetried` call `StartLevelUseCase` and bump `run`, and `GamePage` is keyed by `run`, so Retry rebuilds the whole game screen with fresh BLoCs.
 - Switching location keeps the map open: `GameLocationSelected` moves the player under the map (`isTraveling`), and `GamePage` sends `GameMapClosed` once the new scene's images are loaded.
 
 ---

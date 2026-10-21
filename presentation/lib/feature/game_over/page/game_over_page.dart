@@ -11,11 +11,16 @@ import 'package:presentation/feature/game_over/bloc/game_over_bloc.dart';
 import 'package:presentation/flow/app_flow_router/app_route.dart';
 
 class GameOverPage extends StatefulWidget {
-  const GameOverPage._();
+  final VoidCallback onRetry;
 
-  static Widget withBloc({required GameLevel level}) => BlocProvider(
+  const GameOverPage._({required this.onRetry});
+
+  static Widget withBloc({
+    required GameLevel level,
+    required VoidCallback onRetry,
+  }) => BlocProvider(
     create: (_) => GameOverBloc(level: level)..add(const GameOverStarted()),
-    child: const GameOverPage._(),
+    child: GameOverPage._(onRetry: onRetry),
   );
 
   @override
@@ -85,7 +90,7 @@ class _GameOverPageState extends State<GameOverPage> {
                       else ...[
                         _action(
                           'RETRY',
-                          () => _bloc.add(const GameOverRetryTapped()),
+                          widget.onRetry,
                         ),
                         _action(
                           'MENU',

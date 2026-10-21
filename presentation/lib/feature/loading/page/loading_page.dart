@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
-import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/feature/loading/bloc/loading_bloc.dart';
+import 'package:presentation/generated/assets/assets.gen.dart';
 
 class LoadingPage extends StatefulWidget {
+  final List<AssetGenImage> images;
   final Widget child;
 
-  const LoadingPage._({required this.child});
+  const LoadingPage._({
+    required this.images,
+    required this.child,
+  });
 
-  static Widget withBloc({required Widget child}) => BlocProvider(
+  static Widget withBloc({
+    required List<AssetGenImage> images,
+    required Widget child,
+  }) => BlocProvider(
     create: (_) => LoadingBloc(),
-    child: LoadingPage._(child: child),
+    child: LoadingPage._(
+      images: images,
+      child: child,
+    ),
   );
 
   @override
@@ -35,7 +45,7 @@ class _LoadingPageState extends State<LoadingPage> {
       return;
     }
     _isPrecacheStarted = true;
-    final images = context.images.values;
+    final images = widget.images;
     _bloc.add(LoadingStarted(images.length));
     for (final image in images) {
       precacheImage(

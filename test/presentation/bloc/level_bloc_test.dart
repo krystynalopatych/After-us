@@ -244,6 +244,25 @@ void main() {
       );
 
       test(
+        'retry restarts the level as a new run',
+        () async {
+          final bloc = Level1Bloc()..add(const Level1Started());
+          addTearDown(bloc.close);
+          await pumpEventQueue();
+          dirtyEverything();
+
+          bloc.add(const Level1Retried());
+          await pumpEventQueue();
+
+          expectFreshLevel(.level1);
+          expect(
+            bloc.state.run,
+            2,
+          );
+        },
+      );
+
+      test(
         'a loaded level 1 save restores everything',
         () async {
           dirtyEverything();

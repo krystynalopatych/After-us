@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/location_image_extension.dart';
 import 'package:presentation/feature/book/page/book_page.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/compost/page/compost_page.dart';
@@ -26,16 +27,25 @@ import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
 import 'package:presentation/feature/station/page/workbench_page.dart';
 import 'package:presentation/feature/water/page/water_choice_page.dart';
-import 'package:presentation/generated/assets/assets.gen.dart';
 
 class GamePage extends StatefulWidget {
   final GameLevel level;
+  final VoidCallback onRetry;
 
-  const GamePage._({required this.level});
+  const GamePage._({
+    required this.level,
+    required this.onRetry,
+  });
 
-  static Widget withBloc({required GameLevel level}) => BlocProvider(
+  static Widget withBloc({
+    required GameLevel level,
+    required VoidCallback onRetry,
+  }) => BlocProvider(
     create: (_) => GameBloc()..add(const GameStarted()),
-    child: GamePage._(level: level),
+    child: GamePage._(
+      level: level,
+      onRetry: onRetry,
+    ),
   );
 
   @override
@@ -103,7 +113,7 @@ class _GamePageState extends State<GamePage> {
       _maxTravelWait,
       onTimeout: () {},
     );
-    if (!mounted) {
+    if (!mounted || !_bloc.state.isTraveling) {
       return;
     }
     _bloc.add(const GameMapClosed());
@@ -143,13 +153,13 @@ class _GamePageState extends State<GamePage> {
                 height: _locationHeight,
                 child: switch (state.location) {
                   .house => StationPage.withBloc(
-                    background: _locationBackground(state.location),
+                    background: state.location.background(context),
                     onLocationTap: () => _bloc.add(const GameLocationTapped()),
                     onStationTap: (station) => _bloc.add(GameStationTapped(station)),
                   ),
                   .lake => LakePage.withBloc(),
                   .forest || .dump || .store || .garage => BackgroundContainer(
-                    image: _locationBackground(state.location),
+                    image: state.location.background(context),
                   ),
                 },
               ),
@@ -219,7 +229,10 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
           if (state.isMapOpen) _map(),
-          GameOverPage.withBloc(level: widget.level),
+          GameOverPage.withBloc(
+            level: widget.level,
+            onRetry: widget.onRetry,
+          ),
         ],
       ),
     );
@@ -243,7 +256,7 @@ class _GamePageState extends State<GamePage> {
             width: _mapIconWidth,
             height: _mapIconHeight,
             child: PressableContainer(
-              image: _locationIcon(location),
+              image: location.icon(context),
               onTap: () => _bloc.add(GameLocationSelected(location)),
             ),
           ),
@@ -267,28 +280,4 @@ class _GamePageState extends State<GamePage> {
     .forest => _forestSpot,
     .dump || .store || .garage => _farSpot,
   };
-
-  AssetGenImage _locationBackground(GameLocation location) {
-    final images = context.images;
-    return switch (location) {
-      .house => images.imgHouseRectangle,
-      .forest => images.imgForestRectangle,
-      .lake => images.imgLakeRectangle,
-      .dump => images.imgSvalka,
-      .store => images.imgAbandonnedStore,
-      .garage => images.imgGarage,
-    };
-  }
-
-  AssetGenImage _locationIcon(GameLocation location) {
-    final images = context.images;
-    return switch (location) {
-      .house => images.imgHomeIcon,
-      .forest => images.imgForestIcon,
-      .lake => images.imgLakeIcon,
-      .dump => images.imgSvalkaIcon,
-      .store => images.imgStoreIcon,
-      .garage => images.imgGarageIcon,
-    };
-  }
 }

@@ -10,3 +10,7 @@ sealed class Level2Event extends Equatable {
 final class Level2Started extends Level2Event {
   const Level2Started();
 }
+
+final class Level2Retried extends Level2Event {
+  const Level2Retried();
+}

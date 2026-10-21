@@ -1,12 +1,14 @@
 part of 'level_3_bloc.dart';
 
 final class Level3State extends Equatable {
-  final bool isStarted;
+  final int run;
 
-  const Level3State({this.isStarted = false});
+  const Level3State({this.run = 0});
 
-  Level3State copyWith({bool? isStarted}) => Level3State(isStarted: isStarted ?? this.isStarted);
+  bool get isStarted => run > 0;
+
+  Level3State copyWith({int? run}) => Level3State(run: run ?? this.run);
 
   @override
-  List<Object?> get props => [isStarted];
+  List<Object?> get props => [run];
 }

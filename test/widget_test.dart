@@ -74,6 +74,7 @@ void main() {
 
   Future<void> pumpScene(WidgetTester tester) async {
     await tester.pump();
+    await tester.pump();
     await tester.pump(const Duration(seconds: 4));
   }
 
