@@ -26,6 +26,7 @@ void main() {
   setUp(() {
     deps = TestDependencies();
     startLevel = StartLevelUseCase(
+      campfireRepository: deps.campfire,
       characterRepository: deps.character,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
@@ -38,8 +39,10 @@ void main() {
       saveRepository: deps.save,
       selectionRepository: deps.selection,
       stationRepository: deps.station,
+      sunSpotRepository: deps.sunSpot,
     );
     saveGame = SaveGameUseCase(
+      campfireRepository: deps.campfire,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
       inventoryRepository: deps.inventory,
@@ -50,6 +53,7 @@ void main() {
       pollutionRepository: deps.pollution,
       saveRepository: deps.save,
       stationRepository: deps.station,
+      sunSpotRepository: deps.sunSpot,
     );
   });
 

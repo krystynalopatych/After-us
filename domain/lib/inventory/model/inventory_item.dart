@@ -25,7 +25,10 @@ enum InventoryItem {
     thirst: 3,
     zone: .soil,
   ),
-  cleanWater(thirst: 35),
+  cleanWater(
+    thirst: 35,
+    water: .boiled,
+  ),
   sodisLakeWater(
     thirst: 20,
     health: -15,
@@ -63,6 +66,11 @@ enum InventoryItem {
     thirst: 35,
     water: .filtered,
     bottle: .plastic,
+  ),
+  sodisCleanWater(
+    thirst: 30,
+    water: .disinfected,
+    bottle: .sodis,
   ),
   sodisBottle,
   prefilter,

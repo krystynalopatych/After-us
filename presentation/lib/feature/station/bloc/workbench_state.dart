@@ -1,7 +1,7 @@
 part of 'workbench_bloc.dart';
 
 final class WorkbenchState extends Equatable {
-  final List<GameMaterial?> slots;
+  final List<WorkbenchItem?> slots;
   final bool isDone;
 
   const WorkbenchState({
@@ -10,7 +10,7 @@ final class WorkbenchState extends Equatable {
   });
 
   WorkbenchState copyWith({
-    List<GameMaterial?>? slots,
+    List<WorkbenchItem?>? slots,
     bool? isDone,
   }) => WorkbenchState(
     slots: slots ?? this.slots,

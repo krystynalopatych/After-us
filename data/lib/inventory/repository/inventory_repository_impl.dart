@@ -54,8 +54,8 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     InventoryItem item,
     List<InventoryItem> results,
   ) =>
-      _replaced(
-        item,
+      _exchanged(
+        [item],
         results,
       ) !=
       null;
@@ -64,15 +64,24 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   bool replace(
     InventoryItem item,
     List<InventoryItem> results,
+  ) => exchange(
+    [item],
+    results,
+  );
+
+  @override
+  bool exchange(
+    List<InventoryItem> removed,
+    List<InventoryItem> added,
   ) {
-    final replaced = _replaced(
-      item,
-      results,
+    final exchanged = _exchanged(
+      removed,
+      added,
     );
-    if (replaced == null) {
+    if (exchanged == null) {
       return false;
     }
-    restore(replaced);
+    restore(exchanged);
     return true;
   }
 
@@ -90,18 +99,20 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     _stacksController.add(stacks);
   }
 
-  List<InventoryStack>? _replaced(
-    InventoryItem item,
-    List<InventoryItem> results,
+  List<InventoryStack>? _exchanged(
+    List<InventoryItem> removed,
+    List<InventoryItem> added,
   ) {
     final stacks = [..._stacks];
-    if (!_removeFrom(
-      stacks,
-      item,
-    )) {
-      return null;
+    for (final item in removed) {
+      if (!_removeFrom(
+        stacks,
+        item,
+      )) {
+        return null;
+      }
     }
-    for (final result in results) {
+    for (final result in added) {
       if (!_addTo(
         stacks,
         result,

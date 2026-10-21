@@ -1,4 +1,4 @@
-import 'package:domain/material/model/game_material.dart';
+import 'package:domain/station/model/workbench_item.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:equatable/equatable.dart';

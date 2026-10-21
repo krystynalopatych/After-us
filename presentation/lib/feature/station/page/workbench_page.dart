@@ -1,9 +1,12 @@
+import 'package:domain/station/model/workbench_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/item_image_extension.dart';
 import 'package:presentation/extension/material_image_extension.dart';
 import 'package:presentation/feature/station/bloc/workbench_bloc.dart';
+import 'package:presentation/generated/assets/assets.gen.dart';
 
 class WorkbenchPage extends StatefulWidget {
   final VoidCallback onClose;
@@ -90,16 +93,19 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             rect: _windowRect,
             child: context.images.imgCraftingProcess.image(fit: .contain),
           ),
-          for (final (index, material) in state.slots.indexed)
+          for (final (index, slot) in state.slots.indexed)
             Positioned.fromRect(
               rect: _slotScreenRect(_slotRects[index]),
               child: GestureDetector(
                 behavior: .opaque,
                 onTap: () => _bloc.add(WorkbenchSlotTapped(index)),
-                child: switch (material) {
-                  final material? => Padding(
+                child: switch (slot) {
+                  final slot? => Padding(
                     padding: const EdgeInsets.all(_itemPadding),
-                    child: material.asset(context).image(fit: .contain),
+                    child: _image(
+                      context,
+                      slot,
+                    ).image(fit: .contain),
                   ),
                   null => const SizedBox.expand(),
                 },
@@ -116,6 +122,15 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
       ),
     );
   }
+
+  static AssetGenImage _image(
+    BuildContext context,
+    WorkbenchItem slot,
+  ) => switch (slot) {
+    WorkbenchItem(:final material?) => material.asset(context),
+    WorkbenchItem(:final item?) => item.asset(context),
+    _ => context.images.imgCraftingProcess,
+  };
 
   static double get _scale => _windowRect.width / _imageWidth;
 

@@ -130,6 +130,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgChlorine =>
       const AssetGenImage('resources/assets/images/img_chlorine.png');
 
+  /// File path: resources/assets/images/img_circle_timer.png
+  AssetGenImage get imgCircleTimer =>
+      const AssetGenImage('resources/assets/images/img_circle_timer.png');
+
   /// File path: resources/assets/images/img_claud_black.png
   AssetGenImage get imgClaudBlack =>
       const AssetGenImage('resources/assets/images/img_claud_black.png');
@@ -431,6 +435,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgSoap =>
       const AssetGenImage('resources/assets/images/img_soap.png');
 
+  /// File path: resources/assets/images/img_sodis_clean_water.png
+  AssetGenImage get imgSodisCleanWater =>
+      const AssetGenImage('resources/assets/images/img_sodis_clean_water.png');
+
   /// File path: resources/assets/images/img_sodis_filtered_water.png
   AssetGenImage get imgSodisFilteredWater => const AssetGenImage(
     'resources/assets/images/img_sodis_filtered_water.png',
@@ -508,6 +516,7 @@ class $ResourcesAssetsImagesGen {
     imgCampfire,
     imgCardboard,
     imgChlorine,
+    imgCircleTimer,
     imgClaudBlack,
     imgClaudBlue,
     imgClaudBlueSmaller,
@@ -582,6 +591,7 @@ class $ResourcesAssetsImagesGen {
     imgSkyBlack,
     imgSkyBlue,
     imgSoap,
+    imgSodisCleanWater,
     imgSodisFilteredWater,
     imgSodisLakeWater,
     imgSodisStrainedWater,

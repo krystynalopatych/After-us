@@ -2,6 +2,7 @@ import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
+import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
@@ -14,6 +15,7 @@ void main() {
   late DayRepositoryImpl day;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
+  late SunSpotRepositoryImpl sunSpot;
   late PassSecondUseCase passSecond;
 
   setUp(() {
@@ -21,11 +23,13 @@ void main() {
     day = DayRepositoryImpl();
     player = PlayerRepositoryImpl();
     pollution = PollutionRepositoryImpl();
+    sunSpot = SunSpotRepositoryImpl();
     passSecond = PassSecondUseCase(
       constructionRepository: constructions,
       dayRepository: day,
       playerRepository: player,
       pollutionRepository: pollution,
+      sunSpotRepository: sunSpot,
     );
   });
 

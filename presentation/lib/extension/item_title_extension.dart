@@ -43,6 +43,7 @@ extension InventoryItemTitleExtension on InventoryItem {
     .bottleStrainedWater => 'Strained water',
     .sodisFilteredWater => 'Filtered water (SODIS)',
     .bottleFilteredWater => 'Filtered water',
+    .sodisCleanWater => 'Clean water (SODIS)',
     .sodisBottle => 'SODIS bottle',
     .prefilter => 'Cloth prefilter',
     .cookingPot => 'Cooking pot',

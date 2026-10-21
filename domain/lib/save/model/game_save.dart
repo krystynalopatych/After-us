@@ -7,7 +7,9 @@ import 'package:domain/pickup/model/pickup.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/station/model/campfire_uses.dart';
 import 'package:domain/station/model/station.dart';
+import 'package:domain/sun_spot/model/sun_bottle.dart';
 import 'package:equatable/equatable.dart';
 
 final class GameSave extends Equatable {
@@ -22,6 +24,8 @@ final class GameSave extends Equatable {
   final Pollution pollution;
   final Set<Construction> constructions;
   final Set<Station> stations;
+  final SunBottle? sunBottle;
+  final CampfireUses campfireUses;
 
   const GameSave({
     required this.level,
@@ -35,6 +39,8 @@ final class GameSave extends Equatable {
     required this.pollution,
     required this.constructions,
     required this.stations,
+    this.sunBottle,
+    this.campfireUses = const .none(),
   });
 
   GameSave copyWith({
@@ -49,6 +55,8 @@ final class GameSave extends Equatable {
     Pollution? pollution,
     Set<Construction>? constructions,
     Set<Station>? stations,
+    SunBottle? Function()? sunBottle,
+    CampfireUses? campfireUses,
   }) => GameSave(
     level: level ?? this.level,
     location: location ?? this.location,
@@ -61,6 +69,8 @@ final class GameSave extends Equatable {
     pollution: pollution ?? this.pollution,
     constructions: constructions ?? this.constructions,
     stations: stations ?? this.stations,
+    sunBottle: sunBottle != null ? sunBottle() : this.sunBottle,
+    campfireUses: campfireUses ?? this.campfireUses,
   );
 
   @override
@@ -76,5 +86,7 @@ final class GameSave extends Equatable {
     pollution,
     constructions,
     stations,
+    sunBottle,
+    campfireUses,
   ];
 }

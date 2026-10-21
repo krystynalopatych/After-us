@@ -17,6 +17,7 @@ import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
+import 'package:domain/sun_spot/use_case/use_sun_spot_use_case.dart';
 import 'package:presentation/di/di_container.dart';
 
 void registerUseCases() {
@@ -53,6 +54,8 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => CookOnCampfireUseCase(
+        campfireRepository: diContainer.get(),
+        dayRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -109,10 +112,12 @@ void registerUseCases() {
         dayRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
+        sunSpotRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
       () => SaveGameUseCase(
+        campfireRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
@@ -123,10 +128,12 @@ void registerUseCases() {
         pollutionRepository: diContainer.get(),
         saveRepository: diContainer.get(),
         stationRepository: diContainer.get(),
+        sunSpotRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
       () => StartLevelUseCase(
+        campfireRepository: diContainer.get(),
         characterRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
@@ -139,6 +146,7 @@ void registerUseCases() {
         saveRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
+        sunSpotRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -161,6 +169,14 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => UseSunSpotUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => WaterBottlesUseCase(
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -169,6 +185,7 @@ void registerUseCases() {
     ..registerFactory(
       () => WorkbenchSlotUseCase(
         feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
       ),

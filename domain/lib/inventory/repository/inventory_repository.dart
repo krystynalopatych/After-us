@@ -22,6 +22,11 @@ abstract interface class InventoryRepository {
     List<InventoryItem> results,
   );
 
+  bool exchange(
+    List<InventoryItem> removed,
+    List<InventoryItem> added,
+  );
+
   void restore(List<InventoryStack> stacks);
 
   void reset();

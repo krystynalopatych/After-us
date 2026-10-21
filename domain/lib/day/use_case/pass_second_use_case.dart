@@ -8,6 +8,7 @@ import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
 final class PassSecondUseCase {
   static const _hungerPerDay = 40.0;
@@ -23,12 +24,14 @@ final class PassSecondUseCase {
   final DayRepository _dayRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
+  final SunSpotRepository _sunSpotRepository;
 
   const PassSecondUseCase({
     required this._constructionRepository,
     required this._dayRepository,
     required this._playerRepository,
     required this._pollutionRepository,
+    required this._sunSpotRepository,
   });
 
   void call(GameLevel level) {
@@ -56,6 +59,7 @@ final class PassSecondUseCase {
 
     _playerRepository.setStats(stats);
     _dayRepository.setDay(day);
+    _sunSpotRepository.tick();
     if (outcome != null) {
       _dayRepository.setOutcome(outcome);
     }

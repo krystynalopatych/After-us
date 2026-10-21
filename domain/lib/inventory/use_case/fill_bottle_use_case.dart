@@ -77,5 +77,6 @@ final class FillBottleUseCase {
     .lake => 'lake water',
     .strained => 'strained water',
     .filtered => 'filtered water',
+    .disinfected || .boiled => 'clean water',
   };
 }

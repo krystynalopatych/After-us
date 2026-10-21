@@ -14,7 +14,9 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
+import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
@@ -30,7 +32,9 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 import 'package:presentation/di/di_container.dart';
 
 final class FakeAppRepository implements AppRepository {
@@ -55,6 +59,7 @@ final class ManualTickerRepository implements TickerRepository {
 
 final class TestDependencies {
   final app = FakeAppRepository();
+  final campfire = CampfireRepositoryImpl();
   final character = CharacterRepositoryImpl();
   final construction = ConstructionRepositoryImpl();
   final day = DayRepositoryImpl();
@@ -69,12 +74,14 @@ final class TestDependencies {
   final save = SaveRepositoryImpl();
   final selection = SelectionRepositoryImpl();
   final station = StationRepositoryImpl();
+  final sunSpot = SunSpotRepositoryImpl();
   final ticker = ManualTickerRepository();
 
   Future<void> register() async {
     await diContainer.reset();
     diContainer
       ..registerSingleton<AppRepository>(app)
+      ..registerSingleton<CampfireRepository>(campfire)
       ..registerSingleton<CharacterRepository>(character)
       ..registerSingleton<ConstructionRepository>(construction)
       ..registerSingleton<DayRepository>(day)
@@ -89,6 +96,7 @@ final class TestDependencies {
       ..registerSingleton<SaveRepository>(save)
       ..registerSingleton<SelectionRepository>(selection)
       ..registerSingleton<StationRepository>(station)
+      ..registerSingleton<SunSpotRepository>(sunSpot)
       ..registerSingleton<TickerRepository>(ticker);
     registerUseCases();
   }

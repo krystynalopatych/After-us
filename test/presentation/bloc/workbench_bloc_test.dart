@@ -1,4 +1,4 @@
-import 'package:domain/material/model/game_material.dart';
+import 'package:domain/station/model/workbench_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/station/bloc/workbench_bloc.dart';
 
@@ -33,7 +33,9 @@ void main() {
 
       expect(
         bloc.state,
-        const WorkbenchState(slots: [GameMaterial.metal, GameMaterial.metal, null, GameMaterial.metal]),
+        const WorkbenchState(
+          slots: [WorkbenchItem.material(.metal), WorkbenchItem.material(.metal), null, WorkbenchItem.material(.metal)],
+        ),
       );
 
       bloc.add(const WorkbenchCraftTapped());
@@ -65,7 +67,7 @@ void main() {
 
       expect(
         bloc.state,
-        const WorkbenchState(slots: [GameMaterial.metal, GameMaterial.metal, null, null]),
+        const WorkbenchState(slots: [WorkbenchItem.material(.metal), WorkbenchItem.material(.metal), null, null]),
       );
     },
   );

@@ -12,7 +12,9 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
+import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
@@ -38,7 +40,9 @@ import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -110,6 +114,7 @@ void main() {
     await diContainer.reset();
     diContainer
       ..registerSingleton<AppRepository>(appRepository ?? FakeAppRepository())
+      ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
@@ -124,6 +129,7 @@ void main() {
       ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl())
       ..registerSingleton<SelectionRepository>(SelectionRepositoryImpl())
       ..registerSingleton<StationRepository>(StationRepositoryImpl())
+      ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
       ..registerSingleton<TickerRepository>(ManualTickerRepository());
     registerUseCases();
 

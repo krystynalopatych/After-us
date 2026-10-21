@@ -127,7 +127,7 @@ final class ConsumeUseCase {
     .algae => 'algae',
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
-    .cleanWater => 'clean water',
+    .cleanWater || .sodisCleanWater => 'clean water',
     .sodisLakeWater || .bottleLakeWater => 'lake water',
     .sodisStrainedWater || .bottleStrainedWater => 'strained water',
     .sodisFilteredWater || .bottleFilteredWater => 'filtered water',

@@ -19,6 +19,7 @@ extension InventoryItemImageExtension on InventoryItem {
       .bottleStrainedWater => images.imgBottleStrainedWater,
       .sodisFilteredWater => images.imgSodisFilteredWater,
       .bottleFilteredWater => images.imgBottleFilteredWater,
+      .sodisCleanWater => images.imgSodisCleanWater,
       .sodisBottle => images.imgWaterSodis,
       .prefilter => images.imgPrefilter,
       .cookingPot => images.imgCookingPot,

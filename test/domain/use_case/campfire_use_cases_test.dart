@@ -28,6 +28,8 @@ void main() {
       selectionRepository: deps.selection,
     );
     cookOnCampfire = CookOnCampfireUseCase(
+      campfireRepository: deps.campfire,
+      dayRepository: deps.day,
       feedbackRepository: deps.feedback,
       inventoryRepository: deps.inventory,
       materialRepository: deps.material,
@@ -452,6 +454,31 @@ void main() {
               heroLine: 'Cough... Next time I should think harder.',
               mood: .sad,
             ),
+          );
+        },
+      );
+
+      test(
+        'the third campfire in a day adds smoke',
+        () async {
+          deps.inventory.add(.cookingPot);
+          addWood(6);
+
+          for (var i = 0; i < 3; i++) {
+            cookOnCampfire(
+              .makeCharcoal,
+              .wood,
+            );
+          }
+
+          expect(
+            deps.pollution.pollution.airPoints,
+            1,
+          );
+          await pumpEventQueue();
+          expect(
+            messages.last.text,
+            'You made charcoal +1 charcoal\nToo many fires today Air quality −1',
           );
         },
       );

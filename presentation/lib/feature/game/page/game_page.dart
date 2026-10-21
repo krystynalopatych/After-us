@@ -16,6 +16,7 @@ import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
+import 'package:presentation/feature/sun_spot/page/sun_spot_page.dart';
 import 'package:presentation/feature/station/page/campfire_page.dart';
 import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
@@ -158,6 +159,7 @@ class _GamePageState extends State<GamePage> {
                 height: SceneContainer.designSize.height,
                 child: CharacterPage.withBloc(onTap: () => _characterTaps.add(null)),
               ),
+              if (state.location == .lake) Positioned.fill(child: SunSpotPage.withBloc(locationTop: _skyHeight)),
               if (state.location == .lake)
                 Positioned.fromRect(
                   rect: _lakeWaterRect,

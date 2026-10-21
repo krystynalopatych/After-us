@@ -1,6 +1,8 @@
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
+import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/material/model/game_material.dart';
+import 'package:domain/station/model/workbench_item.dart';
 import 'package:domain/station/model/workbench_recipe.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
@@ -14,12 +16,13 @@ void main() {
   late CraftUseCase craft;
   late List<FeedbackMessage> messages;
 
-  const empty = <GameMaterial?>[null, null, null, null];
+  const empty = <WorkbenchItem?>[null, null, null, null];
 
   setUp(() {
     deps = TestDependencies();
     workbenchSlot = WorkbenchSlotUseCase(
       feedbackRepository: deps.feedback,
+      inventoryRepository: deps.inventory,
       materialRepository: deps.material,
       selectionRepository: deps.selection,
     );
@@ -102,7 +105,7 @@ void main() {
 
           expect(
             slots,
-            [null, null, GameMaterial.metal, null],
+            [null, null, WorkbenchItem.material(.metal), null],
           );
           expect(
             deps.selection.selection.material,
@@ -122,10 +125,10 @@ void main() {
 
           expect(
             workbenchSlot(
-              const [GameMaterial.metal, null, null, null],
+              const [WorkbenchItem.material(.metal), null, null, null],
               1,
             ),
-            [GameMaterial.metal, null, null, null],
+            [WorkbenchItem.material(.metal), null, null, null],
           );
           await pumpEventQueue();
           expect(
@@ -146,10 +149,10 @@ void main() {
 
           expect(
             workbenchSlot(
-              const [GameMaterial.metal, null, null, null],
+              const [WorkbenchItem.material(.metal), null, null, null],
               0,
             ),
-            [GameMaterial.metal, null, null, null],
+            [WorkbenchItem.material(.metal), null, null, null],
           );
         },
       );
@@ -159,7 +162,7 @@ void main() {
         () {
           expect(
             workbenchSlot(
-              const [GameMaterial.metal, null, null, null],
+              const [WorkbenchItem.material(.metal), null, null, null],
               0,
             ),
             empty,
@@ -168,22 +171,24 @@ void main() {
       );
 
       test(
-        'refuses inventory items',
-        () async {
-          deps.inventory.add(.berries);
+        'puts the selected inventory item into the slot',
+        () {
+          deps.inventory.add(.algae);
           deps.selection.selectSlot(0);
 
           expect(
             workbenchSlot(
               empty,
-              0,
+              1,
             ),
-            empty,
+            [null, const WorkbenchItem.item(.algae), null, null],
           );
-          await pumpEventQueue();
           expect(
-            messages.single.text,
-            "You can't use this at the workbench",
+            workbenchSlot(
+              const [null, WorkbenchItem.item(.algae), null, null],
+              2,
+            ),
+            [null, const WorkbenchItem.item(.algae), null, null],
           );
         },
       );
@@ -203,7 +208,7 @@ void main() {
           deps.selection.selectMaterial(.plastic);
 
           expect(
-            craft(const [null, GameMaterial.plastic, null, null]),
+            craft(const [null, WorkbenchItem.material(.plastic), null, null]),
             isTrue,
           );
           expect(
@@ -234,7 +239,12 @@ void main() {
           }
 
           expect(
-            craft(const [GameMaterial.plastic, GameMaterial.cloth, GameMaterial.sand, GameMaterial.charcoal]),
+            craft(const [
+              WorkbenchItem.material(.plastic),
+              WorkbenchItem.material(.cloth),
+              WorkbenchItem.material(.sand),
+              WorkbenchItem.material(.charcoal),
+            ]),
             isTrue,
           );
           expect(
@@ -261,7 +271,12 @@ void main() {
           );
 
           expect(
-            craft(const [GameMaterial.metal, GameMaterial.metal, GameMaterial.metal, null]),
+            craft(const [
+              WorkbenchItem.material(.metal),
+              WorkbenchItem.material(.metal),
+              WorkbenchItem.material(.metal),
+              null,
+            ]),
             isTrue,
           );
           expect(
@@ -280,6 +295,109 @@ void main() {
       );
 
       test(
+        'soaks two algae in clean water and gives the SODIS bottle back',
+        () async {
+          deps.inventory
+            ..add(.algae)
+            ..add(.algae)
+            ..add(.sodisCleanWater);
+
+          expect(
+            craft(const [
+              WorkbenchItem.item(.algae),
+              WorkbenchItem.item(.algae),
+              WorkbenchItem.item(.sodisCleanWater),
+              null,
+            ]),
+            isTrue,
+          );
+          expect(
+            deps.inventory.count(.algaeSoaked),
+            2,
+          );
+          expect(
+            deps.inventory.count(.algae),
+            0,
+          );
+          expect(
+            deps.inventory.count(.sodisBottle),
+            1,
+          );
+          await pumpEventQueue();
+          expect(
+            messages.single.text,
+            'You soaked the algae +2 soaked algae',
+          );
+        },
+      );
+
+      test(
+        'soaks one alga in boiled water',
+        () {
+          deps.inventory
+            ..add(.algae)
+            ..add(.cleanWater);
+
+          expect(
+            craft(const [WorkbenchItem.item(.cleanWater), WorkbenchItem.item(.algae), null, null]),
+            isTrue,
+          );
+          expect(
+            deps.inventory.stacks.map((stack) => stack.item),
+            [InventoryItem.algaeSoaked],
+          );
+        },
+      );
+
+      test(
+        'filtered water in a plastic bottle gives the plastic back',
+        () {
+          deps.inventory
+            ..add(.algae)
+            ..add(.bottleFilteredWater);
+
+          expect(
+            craft(const [WorkbenchItem.item(.algae), WorkbenchItem.item(.bottleFilteredWater), null, null]),
+            isTrue,
+          );
+          expect(
+            deps.material.count(.plastic),
+            1,
+          );
+        },
+      );
+
+      test(
+        'algae do not soak in dirty water or with too many algae',
+        () {
+          deps.inventory
+            ..add(.algae)
+            ..add(.algae)
+            ..add(.algae)
+            ..add(.sodisLakeWater)
+            ..add(.cleanWater);
+
+          expect(
+            craft(const [WorkbenchItem.item(.algae), WorkbenchItem.item(.sodisLakeWater), null, null]),
+            isFalse,
+          );
+          expect(
+            craft(const [
+              WorkbenchItem.item(.algae),
+              WorkbenchItem.item(.algae),
+              WorkbenchItem.item(.algae),
+              WorkbenchItem.item(.cleanWater),
+            ]),
+            isFalse,
+          );
+          expect(
+            deps.inventory.count(.algae),
+            3,
+          );
+        },
+      );
+
+      test(
         'refuses a set that makes nothing',
         () async {
           addMaterial(
@@ -288,7 +406,7 @@ void main() {
           );
 
           expect(
-            craft(const [GameMaterial.metal, GameMaterial.metal, null, null]),
+            craft(const [WorkbenchItem.material(.metal), WorkbenchItem.material(.metal), null, null]),
             isFalse,
           );
           expect(
@@ -315,7 +433,7 @@ void main() {
           );
 
           expect(
-            craft(const [GameMaterial.metal, null, null, null]),
+            craft(const [WorkbenchItem.material(.metal), null, null, null]),
             isFalse,
           );
           expect(
