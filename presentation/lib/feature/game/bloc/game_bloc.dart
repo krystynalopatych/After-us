@@ -42,6 +42,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameStationTapped>(_onStationTapped);
     on<GameFireClosed>((event, emit) => emit(state.copyWith(fireStation: () => null)));
     on<GameWorkbenchClosed>((event, emit) => emit(state.copyWith(isWorkbenchOpen: false)));
+    on<GameBookTapped>((event, emit) => emit(state.copyWith(isBookOpen: true)));
+    on<GameBookClosed>((event, emit) => emit(state.copyWith(isBookOpen: false)));
   }
 
   Future<void> _onStarted(

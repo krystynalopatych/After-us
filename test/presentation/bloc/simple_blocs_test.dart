@@ -110,6 +110,7 @@ void main() {
         'new game resets progress and opens level selection, back closes it',
         () async {
           deps.progress.completeLevel(.level1);
+          deps.book.write(.sodisBottle);
           final bloc = StartBloc();
           addTearDown(bloc.close);
 
@@ -127,6 +128,10 @@ void main() {
           expect(
             deps.progress.unlockedLevel,
             GameLevel.level1,
+          );
+          expect(
+            deps.book.book.records,
+            isEmpty,
           );
 
           bloc.add(const StartBackTapped());

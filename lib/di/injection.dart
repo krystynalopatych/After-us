@@ -1,5 +1,6 @@
 import 'package:after_us_game/di/use_case_injection.dart';
 import 'package:data/app/repository/app_repository_impl.dart';
+import 'package:data/book/repository/book_repository_impl.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
 import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
@@ -19,6 +20,7 @@ import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
+import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
@@ -45,6 +47,7 @@ AppBloc createAppBloc() => AppBloc();
 void registerDependencies() {
   diContainer
     ..registerSingleton<AppRepository>(AppRepositoryImpl())
+    ..registerSingleton<BookRepository>(BookRepositoryImpl())
     ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
     ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
     ..registerSingleton<CompostRepository>(CompostRepositoryImpl())

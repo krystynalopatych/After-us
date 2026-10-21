@@ -7,6 +7,7 @@ final class GameState extends Equatable {
   final Station? fireStation;
   final bool isWorkbenchOpen;
   final WaterKind? waterChoice;
+  final bool isBookOpen;
 
   const GameState({
     required this.location,
@@ -15,6 +16,7 @@ final class GameState extends Equatable {
     this.fireStation,
     this.isWorkbenchOpen = false,
     this.waterChoice,
+    this.isBookOpen = false,
   });
 
   GameState copyWith({
@@ -24,6 +26,7 @@ final class GameState extends Equatable {
     Station? Function()? fireStation,
     bool? isWorkbenchOpen,
     WaterKind? Function()? waterChoice,
+    bool? isBookOpen,
   }) => GameState(
     location: location ?? this.location,
     isMapOpen: isMapOpen ?? this.isMapOpen,
@@ -31,10 +34,11 @@ final class GameState extends Equatable {
     fireStation: fireStation != null ? fireStation() : this.fireStation,
     isWorkbenchOpen: isWorkbenchOpen ?? this.isWorkbenchOpen,
     waterChoice: waterChoice != null ? waterChoice() : this.waterChoice,
+    isBookOpen: isBookOpen ?? this.isBookOpen,
   );
 
   bool get isStationOpen => fireStation != null || isWorkbenchOpen;
 
   @override
-  List<Object?> get props => [location, isMapOpen, isBuildOpen, fireStation, isWorkbenchOpen, waterChoice];
+  List<Object?> get props => [location, isMapOpen, isBuildOpen, fireStation, isWorkbenchOpen, waterChoice, isBookOpen];
 }

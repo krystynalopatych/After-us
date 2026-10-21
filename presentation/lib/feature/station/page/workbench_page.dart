@@ -10,12 +10,22 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 
 class WorkbenchPage extends StatefulWidget {
   final VoidCallback onClose;
+  final VoidCallback onBookTap;
 
-  const WorkbenchPage._({required this.onClose});
+  const WorkbenchPage._({
+    required this.onClose,
+    required this.onBookTap,
+  });
 
-  static Widget withBloc({required VoidCallback onClose}) => BlocProvider(
+  static Widget withBloc({
+    required VoidCallback onClose,
+    required VoidCallback onBookTap,
+  }) => BlocProvider(
     create: (_) => WorkbenchBloc()..add(const WorkbenchStarted()),
-    child: WorkbenchPage._(onClose: onClose),
+    child: WorkbenchPage._(
+      onClose: onClose,
+      onBookTap: onBookTap,
+    ),
   );
 
   @override
@@ -64,6 +74,16 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
     320,
     192,
   );
+  static const _bookRect = Rect.fromLTWH(
+    1250,
+    1215,
+    170,
+    180,
+  );
+  static const _recordLabelOffset = Offset(
+    1440,
+    1280,
+  );
 
   late final WorkbenchBloc _bloc;
 
@@ -75,10 +95,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<WorkbenchBloc, WorkbenchState>(
+    return BlocBuilder<WorkbenchBloc, WorkbenchState>(
       bloc: _bloc,
-      listenWhen: (previous, current) => !previous.isDone && current.isDone,
-      listener: (context, state) => widget.onClose(),
       builder: (context, state) => Stack(
         fit: .expand,
         children: [
@@ -110,6 +128,19 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
                   null => const SizedBox.expand(),
                 },
               ),
+            ),
+          Positioned.fromRect(
+            rect: _bookRect,
+            child: PressableContainer(
+              image: context.images.imgBookIcon,
+              onTap: widget.onBookTap,
+            ),
+          ),
+          if (state.hasNewRecord)
+            Positioned(
+              left: _recordLabelOffset.dx,
+              top: _recordLabelOffset.dy,
+              child: const LabelContainer(text: 'YOUR BOOK HAS A NEW RECORD'),
             ),
           Positioned.fromRect(
             rect: _craftRect,

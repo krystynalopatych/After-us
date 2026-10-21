@@ -1,4 +1,5 @@
 import 'package:domain/compost/use_case/use_compost_pit_use_case.dart';
+import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
@@ -10,6 +11,7 @@ import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
+import 'package:domain/progress/use_case/new_game_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
 import 'package:domain/station/use_case/build_station_use_case.dart';
@@ -71,6 +73,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => CraftUseCase(
+        bookRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
@@ -113,6 +116,12 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => NewGameUseCase(
+        bookRepository: diContainer.get(),
+        progressRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => PassSecondUseCase(
         compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
@@ -130,6 +139,9 @@ void registerUseCases() {
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => ReadBookUseCase(bookRepository: diContainer.get()),
     )
     ..registerFactory(
       () => SaveGameUseCase(
