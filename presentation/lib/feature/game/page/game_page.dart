@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/feature/book/page/book_page.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/compost/page/compost_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
@@ -14,6 +15,7 @@ import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
 import 'package:presentation/feature/goal/page/goal_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
+import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
@@ -106,6 +108,7 @@ class _GamePageState extends State<GamePage> {
       context.images.imgMap,
       context.images.imgButtonClose,
       context.images.imgSunLight,
+      context.images.imgLakeBlackRectangle,
       for (final location in widget.level.locations) ...[
         _locationBackground(location),
         _locationIcon(location),
@@ -140,13 +143,17 @@ class _GamePageState extends State<GamePage> {
                 right: 0,
                 bottom: 0,
                 height: _locationHeight,
-                child: state.location == .house
-                    ? StationPage.withBloc(
-                        background: _locationBackground(state.location),
-                        onLocationTap: () => _bloc.add(const GameLocationTapped()),
-                        onStationTap: (station) => _bloc.add(GameStationTapped(station)),
-                      )
-                    : BackgroundContainer(image: _locationBackground(state.location)),
+                child: switch (state.location) {
+                  .house => StationPage.withBloc(
+                    background: _locationBackground(state.location),
+                    onLocationTap: () => _bloc.add(const GameLocationTapped()),
+                    onStationTap: (station) => _bloc.add(GameStationTapped(station)),
+                  ),
+                  .lake => LakePage.withBloc(),
+                  .forest || .dump || .store || .garage => BackgroundContainer(
+                    image: _locationBackground(state.location),
+                  ),
+                },
               ),
               if (state.location == .house) Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
               if (state.location == .lake)
@@ -182,7 +189,12 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               if (state.isWorkbenchOpen)
-                Positioned.fill(child: WorkbenchPage.withBloc(onClose: () => _bloc.add(const GameWorkbenchClosed()))),
+                Positioned.fill(
+                  child: WorkbenchPage.withBloc(
+                    onClose: () => _bloc.add(const GameWorkbenchClosed()),
+                    onBookTap: () => _bloc.add(const GameBookTapped()),
+                  ),
+                ),
               Positioned.fill(
                 child: HudPage.withBloc(
                   onMapTap: () => _bloc.add(const GameMapTapped()),
@@ -199,6 +211,8 @@ class _GamePageState extends State<GamePage> {
                 ),
               if (state.isBuildOpen)
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
+              if (state.isBookOpen)
+                Positioned.fill(child: BookPage.withBloc(onClose: () => _bloc.add(const GameBookClosed()))),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),

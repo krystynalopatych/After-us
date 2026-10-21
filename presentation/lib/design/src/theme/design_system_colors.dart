@@ -29,6 +29,7 @@ final class BaseColors extends Equatable {
   final Color purple;
   final Color pink;
   final Color grey;
+  final Color brown;
 
   const BaseColors.light()
     : white = const .new(0xFFFFFFFF),
@@ -40,7 +41,8 @@ final class BaseColors extends Equatable {
       orange = const .new(0xFFFB8C00),
       purple = const .new(0xFF8E24AA),
       pink = const .new(0xFFD81B60),
-      grey = const .new(0xFF9E9E9E);
+      grey = const .new(0xFF9E9E9E),
+      brown = const .new(0xFF3C2210);
 
   const BaseColors.dark()
     : white = const .new(0xFFFFFFFF),
@@ -52,7 +54,8 @@ final class BaseColors extends Equatable {
       orange = const .new(0xFFFB8C00),
       purple = const .new(0xFF8E24AA),
       pink = const .new(0xFFD81B60),
-      grey = const .new(0xFF9E9E9E);
+      grey = const .new(0xFF9E9E9E),
+      brown = const .new(0xFF3C2210);
 
   @override
   List<Object> get props => [
@@ -66,5 +69,6 @@ final class BaseColors extends Equatable {
     purple,
     pink,
     grey,
+    brown,
   ];
 }

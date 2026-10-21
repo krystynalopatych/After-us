@@ -4,6 +4,8 @@ export 'src/theme/design_system_theme_data.dart';
 export 'src/theme/design_system_typography.dart';
 export 'src/widget/background/background_container.dart';
 export 'src/widget/background/model/background_element.dart';
+export 'src/widget/book/book_container.dart';
+export 'src/widget/book/model/book_entry.dart';
 export 'src/widget/character/character_container.dart';
 export 'src/widget/character/model/character_state.dart';
 export 'src/widget/inventory/inventory_slot_container.dart';

@@ -44,6 +44,14 @@ final class GameWorkbenchClosed extends GameEvent {
   const GameWorkbenchClosed();
 }
 
+final class GameBookTapped extends GameEvent {
+  const GameBookTapped();
+}
+
+final class GameBookClosed extends GameEvent {
+  const GameBookClosed();
+}
+
 final class GameLocationSelected extends GameEvent {
   final GameLocation location;
 

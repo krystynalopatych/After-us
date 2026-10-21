@@ -1,3 +1,4 @@
+import 'package:domain/book/model/book_record.dart';
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
@@ -27,6 +28,7 @@ void main() {
       selectionRepository: deps.selection,
     );
     craft = CraftUseCase(
+      bookRepository: deps.book,
       constructionRepository: deps.construction,
       feedbackRepository: deps.feedback,
       inventoryRepository: deps.inventory,
@@ -393,6 +395,31 @@ void main() {
           expect(
             deps.inventory.count(.algae),
             3,
+          );
+        },
+      );
+
+      test(
+        'every first craft writes a book record, repeats do not',
+        () {
+          deps.material
+            ..add(.metal)
+            ..add(.metal);
+          deps.inventory
+            ..add(.algae)
+            ..add(.cleanWater);
+
+          craft(const [WorkbenchItem.material(.metal), null, null, null]);
+          craft(const [WorkbenchItem.material(.metal), null, null, null]);
+          craft(const [WorkbenchItem.item(.algae), WorkbenchItem.item(.cleanWater), null, null]);
+
+          expect(
+            deps.book.book.records,
+            [BookRecord.cookingPot, BookRecord.soakedAlgae],
+          );
+          expect(
+            deps.book.book.hasNewRecord,
+            isTrue,
           );
         },
       );

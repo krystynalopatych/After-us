@@ -341,4 +341,23 @@ void main() {
       );
     },
   );
+
+  test(
+    'the book opens and closes',
+    () async {
+      bloc.add(const GameBookTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBookOpen,
+        isTrue,
+      );
+
+      bloc.add(const GameBookClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isBookOpen,
+        isFalse,
+      );
+    },
+  );
 }

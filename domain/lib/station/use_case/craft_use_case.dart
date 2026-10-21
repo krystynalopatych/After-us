@@ -1,3 +1,5 @@
+import 'package:domain/book/model/book_record.dart';
+import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
@@ -12,6 +14,7 @@ import 'package:domain/station/model/workbench_recipe.dart';
 final class CraftUseCase {
   static const _algaePerWater = 2;
 
+  final BookRepository _bookRepository;
   final ConstructionRepository _constructionRepository;
   final FeedbackRepository _feedbackRepository;
   final InventoryRepository _inventoryRepository;
@@ -19,6 +22,7 @@ final class CraftUseCase {
   final SelectionRepository _selectionRepository;
 
   const CraftUseCase({
+    required this._bookRepository,
     required this._constructionRepository,
     required this._feedbackRepository,
     required this._inventoryRepository,
@@ -72,6 +76,7 @@ final class CraftUseCase {
     if (recipe.construction case final construction?) {
       _constructionRepository.build(construction);
     }
+    _bookRepository.write(recipe.record);
     _show(
       FeedbackMessage(
         text: _text(recipe),
@@ -112,6 +117,7 @@ final class CraftUseCase {
     if (water.container case final container?) {
       _materialRepository.add(container);
     }
+    _bookRepository.write(BookRecord.soakedAlgae);
     _show(
       FeedbackMessage(
         text: 'You soaked the algae +$algae soaked algae',

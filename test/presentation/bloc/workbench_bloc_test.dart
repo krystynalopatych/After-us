@@ -18,7 +18,7 @@ void main() {
   tearDown(() => bloc.close());
 
   test(
-    'places materials into slots and crafts them',
+    'places materials into slots, crafts them, clears the slots and shows the new book record',
     () async {
       deps.material
         ..add(.metal)
@@ -42,8 +42,8 @@ void main() {
       await pumpEventQueue();
 
       expect(
-        bloc.state.isDone,
-        isTrue,
+        bloc.state,
+        const WorkbenchState(hasNewRecord: true),
       );
       expect(
         deps.inventory.count(.rocketStove),

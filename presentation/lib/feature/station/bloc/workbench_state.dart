@@ -1,22 +1,24 @@
 part of 'workbench_bloc.dart';
 
 final class WorkbenchState extends Equatable {
+  static const emptySlots = <WorkbenchItem?>[null, null, null, null];
+
   final List<WorkbenchItem?> slots;
-  final bool isDone;
+  final bool hasNewRecord;
 
   const WorkbenchState({
-    this.slots = const [null, null, null, null],
-    this.isDone = false,
+    this.slots = emptySlots,
+    this.hasNewRecord = false,
   });
 
   WorkbenchState copyWith({
     List<WorkbenchItem?>? slots,
-    bool? isDone,
+    bool? hasNewRecord,
   }) => WorkbenchState(
     slots: slots ?? this.slots,
-    isDone: isDone ?? this.isDone,
+    hasNewRecord: hasNewRecord ?? this.hasNewRecord,
   );
 
   @override
-  List<Object?> get props => [slots, isDone];
+  List<Object?> get props => [slots, hasNewRecord];
 }
