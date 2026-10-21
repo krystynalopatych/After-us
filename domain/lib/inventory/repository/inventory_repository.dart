@@ -14,14 +14,12 @@ abstract interface class InventoryRepository {
 
   bool canReplace(
     InventoryItem item,
-    InventoryItem result,
-    int count,
+    List<InventoryItem> results,
   );
 
   bool replace(
     InventoryItem item,
-    InventoryItem result,
-    int count,
+    List<InventoryItem> results,
   );
 
   void restore(List<InventoryStack> stacks);

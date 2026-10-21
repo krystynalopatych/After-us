@@ -26,7 +26,18 @@ final class ConsumeUseCase {
   });
 
   bool call(InventoryItem item) {
-    if (!item.isConsumable || !_inventoryRepository.remove(item)) {
+    if (!item.isConsumable || _inventoryRepository.count(item) == 0) {
+      return false;
+    }
+    final isTaken = switch (item.emptyBottle) {
+      final emptyBottle? => _inventoryRepository.replace(
+        item,
+        [emptyBottle],
+      ),
+      null => _inventoryRepository.remove(item),
+    };
+    if (!isTaken) {
+      _feedbackRepository.show(const FeedbackMessage(text: 'Your inventory is full'));
       return false;
     }
     final pollutedZone = switch (item.zone) {
@@ -117,7 +128,9 @@ final class ConsumeUseCase {
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
     .cleanWater => 'clean water',
-    .lakeWater || .lakeWaterBottle => 'lake water',
+    .sodisLakeWater || .bottleLakeWater => 'lake water',
+    .sodisStrainedWater || .bottleStrainedWater => 'strained water',
+    .sodisFilteredWater || .bottleFilteredWater => 'filtered water',
     .sodisBottle => 'a SODIS bottle',
     .prefilter => 'a cloth prefilter',
     .cookingPot => 'a cooking pot',

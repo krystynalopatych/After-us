@@ -105,7 +105,7 @@ void main() {
       test(
         'needs a cooking pot',
         () async {
-          deps.inventory.add(.lakeWater);
+          deps.inventory.add(.sodisLakeWater);
           deps.selection.selectSlot(0);
 
           expect(
@@ -128,8 +128,8 @@ void main() {
           }
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWater)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater)
+            ..add(.sodisLakeWater);
           deps.selection.selectSlot(11);
 
           expect(
@@ -149,12 +149,12 @@ void main() {
         () async {
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater);
           deps.selection.selectSlot(1);
 
           expect(
             campfireRecipe(),
-            CampfireRecipe.boilWater,
+            CampfireRecipe.boilSodisLakeWater,
           );
           expect(
             deps.selection.selection.slot,
@@ -203,7 +203,7 @@ void main() {
 
             expect(
               campfireFuel(
-                .boilWater,
+                .boilSodisLakeWater,
                 fuel.material,
               ),
               fuel,
@@ -220,7 +220,7 @@ void main() {
 
           expect(
             campfireFuel(
-              .boilWater,
+              .boilSodisLakeWater,
               .sand,
             ),
             isNull,
@@ -276,18 +276,18 @@ void main() {
         () async {
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater);
           addWood(2);
 
           expect(
             cookOnCampfire(
-              .boilWater,
+              .boilSodisLakeWater,
               .wood,
             ),
             isTrue,
           );
           expect(
-            deps.inventory.count(.lakeWater),
+            deps.inventory.count(.sodisLakeWater),
             0,
           );
           expect(
@@ -319,12 +319,12 @@ void main() {
         () {
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWaterBottle);
+            ..add(.bottleLakeWater);
           addWood(1);
 
           expect(
             cookOnCampfire(
-              .boilBottledWater,
+              .boilBottleLakeWater,
               .wood,
             ),
             isTrue,
@@ -335,6 +335,32 @@ void main() {
           );
           expect(
             deps.material.count(.plastic),
+            1,
+          );
+        },
+      );
+
+      test(
+        'boiling water from a SODIS bottle gives the empty bottle back',
+        () {
+          deps.inventory
+            ..add(.cookingPot)
+            ..add(.sodisStrainedWater);
+          addWood(1);
+
+          expect(
+            cookOnCampfire(
+              .boilSodisStrainedWater,
+              .wood,
+            ),
+            isTrue,
+          );
+          expect(
+            deps.inventory.count(.cleanWater),
+            2,
+          );
+          expect(
+            deps.inventory.count(.sodisBottle),
             1,
           );
         },
@@ -400,12 +426,12 @@ void main() {
         () async {
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater);
           deps.material.add(.plastic);
 
           expect(
             cookOnCampfire(
-              .boilWater,
+              .boilSodisLakeWater,
               .plastic,
             ),
             isTrue,
@@ -422,7 +448,7 @@ void main() {
           expect(
             messages.single,
             const FeedbackMessage(
-              text: 'You boiled lake water +2 clean water\nYou burned plastic Air quality −3',
+              text: 'You boiled water +2 clean water\nYou burned plastic Air quality −3',
               heroLine: 'Cough... Next time I should think harder.',
               mood: .sad,
             ),
@@ -455,17 +481,17 @@ void main() {
         () {
           deps.inventory
             ..add(.cookingPot)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater);
 
           expect(
             cookOnCampfire(
-              .boilWater,
+              .boilSodisLakeWater,
               .wood,
             ),
             isFalse,
           );
           expect(
-            deps.inventory.count(.lakeWater),
+            deps.inventory.count(.sodisLakeWater),
             1,
           );
         },

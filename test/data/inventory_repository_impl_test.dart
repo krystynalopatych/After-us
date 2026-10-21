@@ -208,13 +208,12 @@ void main() {
   test(
     'replace swaps one item for several results',
     () {
-      final repository = InventoryRepositoryImpl()..add(.lakeWater);
+      final repository = InventoryRepositoryImpl()..add(.sodisLakeWater);
 
       expect(
         repository.replace(
-          .lakeWater,
-          .cleanWater,
-          2,
+          .sodisLakeWater,
+          [.cleanWater, .cleanWater],
         ),
         isTrue,
       );
@@ -242,16 +241,14 @@ void main() {
       expect(
         repository.canReplace(
           .cattailRoot,
-          .cattailRootCooked,
-          1,
+          [.cattailRootCooked],
         ),
         isTrue,
       );
       expect(
         repository.replace(
           .cattailRoot,
-          .cattailRootCooked,
-          1,
+          [.cattailRootCooked],
         ),
         isTrue,
       );
@@ -274,23 +271,21 @@ void main() {
         repository.add(.berries);
       }
       repository
-        ..add(.lakeWater)
-        ..add(.lakeWater);
+        ..add(.sodisLakeWater)
+        ..add(.sodisLakeWater);
       final before = repository.stacks;
 
       expect(
         repository.canReplace(
-          .lakeWater,
-          .cleanWater,
-          2,
+          .sodisLakeWater,
+          [.cleanWater, .cleanWater],
         ),
         isFalse,
       );
       expect(
         repository.replace(
-          .lakeWater,
-          .cleanWater,
-          2,
+          .sodisLakeWater,
+          [.cleanWater, .cleanWater],
         ),
         isFalse,
       );
@@ -308,9 +303,8 @@ void main() {
 
       expect(
         repository.replace(
-          .lakeWater,
-          .cleanWater,
-          2,
+          .sodisLakeWater,
+          [.cleanWater, .cleanWater],
         ),
         isFalse,
       );

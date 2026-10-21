@@ -33,11 +33,10 @@ final class CampfireRecipeUseCase {
     final problem = switch (recipe) {
       null => "You can't use this at the campfire",
       _ when _inventoryRepository.count(.cookingPot) == 0 => 'You need a cooking pot',
-      CampfireRecipe(:final input?, :final output?)
+      CampfireRecipe(:final input?)
           when !_inventoryRepository.canReplace(
             input,
-            output,
-            recipe.outputCount,
+            recipe.outputs,
           ) =>
         'Your inventory is full',
       _ => null,

@@ -2,6 +2,8 @@ import 'package:domain/station/model/campfire_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/item_image_extension.dart';
+import 'package:presentation/extension/material_image_extension.dart';
 import 'package:presentation/feature/station/bloc/campfire_bloc.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
@@ -104,13 +106,9 @@ class _CampfirePageState extends State<CampfirePage> {
   static AssetGenImage _image(
     BuildContext context,
     CampfireRecipe recipe,
-  ) {
-    final images = context.images;
-    return switch (recipe) {
-      .boilWater => images.imgWaterSodis,
-      .boilBottledWater => images.imgPlasticBottle,
-      .cookCattailRoot => images.imgKoreniKamyshaSyrye,
-      .makeCharcoal => images.imgWood,
-    };
-  }
+  ) => switch ((recipe.input, recipe.material)) {
+    (final input?, _) => input.asset(context),
+    (_, final material?) => material.asset(context),
+    _ => context.images.imgFireStack,
+  };
 }

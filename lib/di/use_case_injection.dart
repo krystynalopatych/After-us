@@ -1,5 +1,7 @@
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
+import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
+import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
@@ -12,7 +14,9 @@ import 'package:domain/station/use_case/build_station_use_case.dart';
 import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
 import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
 import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
+import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
+import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:presentation/di/di_container.dart';
 
 void registerUseCases() {
@@ -57,6 +61,15 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => CraftUseCase(
+        constructionRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => FillBottleUseCase(
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
@@ -69,6 +82,13 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => LakeWaterRequestUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -138,6 +158,19 @@ void registerUseCases() {
       () => TravelUseCase(
         locationRepository: diContainer.get(),
         playerRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => WaterBottlesUseCase(
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => WorkbenchSlotUseCase(
+        feedbackRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     );
 }

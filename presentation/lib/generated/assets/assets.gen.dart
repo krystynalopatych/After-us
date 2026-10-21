@@ -60,6 +60,20 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgBookIcon =>
       const AssetGenImage('resources/assets/images/img_book_icon.png');
 
+  /// File path: resources/assets/images/img_bottle_filtered_water.png
+  AssetGenImage get imgBottleFilteredWater => const AssetGenImage(
+    'resources/assets/images/img_bottle_filtered_water.png',
+  );
+
+  /// File path: resources/assets/images/img_bottle_lake_water.png
+  AssetGenImage get imgBottleLakeWater =>
+      const AssetGenImage('resources/assets/images/img_bottle_lake_water.png');
+
+  /// File path: resources/assets/images/img_bottle_strained_water.png
+  AssetGenImage get imgBottleStrainedWater => const AssetGenImage(
+    'resources/assets/images/img_bottle_strained_water.png',
+  );
+
   /// File path: resources/assets/images/img_bush_berriespng.png
   AssetGenImage get imgBushBerriespng =>
       const AssetGenImage('resources/assets/images/img_bush_berriespng.png');
@@ -417,6 +431,20 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgSoap =>
       const AssetGenImage('resources/assets/images/img_soap.png');
 
+  /// File path: resources/assets/images/img_sodis_filtered_water.png
+  AssetGenImage get imgSodisFilteredWater => const AssetGenImage(
+    'resources/assets/images/img_sodis_filtered_water.png',
+  );
+
+  /// File path: resources/assets/images/img_sodis_lake_water.png
+  AssetGenImage get imgSodisLakeWater =>
+      const AssetGenImage('resources/assets/images/img_sodis_lake_water.png');
+
+  /// File path: resources/assets/images/img_sodis_strained_water.png
+  AssetGenImage get imgSodisStrainedWater => const AssetGenImage(
+    'resources/assets/images/img_sodis_strained_water.png',
+  );
+
   /// File path: resources/assets/images/img_store_icon.png
   AssetGenImage get imgStoreIcon =>
       const AssetGenImage('resources/assets/images/img_store_icon.png');
@@ -463,6 +491,9 @@ class $ResourcesAssetsImagesGen {
     imgBerries,
     imgBoiledWater,
     imgBookIcon,
+    imgBottleFilteredWater,
+    imgBottleLakeWater,
+    imgBottleStrainedWater,
     imgBushBerriespng,
     imgButtonBack,
     imgButtonClose,
@@ -551,6 +582,9 @@ class $ResourcesAssetsImagesGen {
     imgSkyBlack,
     imgSkyBlue,
     imgSoap,
+    imgSodisFilteredWater,
+    imgSodisLakeWater,
+    imgSodisStrainedWater,
     imgStoreIcon,
     imgSun,
     imgSunLight,

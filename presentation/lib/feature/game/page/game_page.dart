@@ -19,6 +19,8 @@ import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/feature/station/page/campfire_page.dart';
 import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
+import 'package:presentation/feature/station/page/workbench_page.dart';
+import 'package:presentation/feature/water/page/water_choice_page.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 class GamePage extends StatefulWidget {
@@ -167,17 +169,25 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 ),
-              if (state.isCampfireOpen) ...[
-                _pickups(),
+              if (state.isStationOpen) _pickups(),
+              if (state.isCampfireOpen)
                 Positioned.fill(child: CampfirePage.withBloc(onClose: () => _bloc.add(const GameCampfireClosed()))),
-              ],
+              if (state.isWorkbenchOpen)
+                Positioned.fill(child: WorkbenchPage.withBloc(onClose: () => _bloc.add(const GameWorkbenchClosed()))),
               Positioned.fill(
                 child: HudPage.withBloc(
                   onMapTap: () => _bloc.add(const GameMapTapped()),
                   characterTaps: _characterTaps.stream,
                 ),
               ),
-              if (!state.isCampfireOpen) _pickups(),
+              if (!state.isStationOpen) _pickups(),
+              if (state.waterChoice case final water?)
+                Positioned.fill(
+                  child: WaterChoicePage.withBloc(
+                    water: water,
+                    onClose: () => _bloc.add(const GameWaterChoiceClosed()),
+                  ),
+                ),
               if (state.isBuildOpen)
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),

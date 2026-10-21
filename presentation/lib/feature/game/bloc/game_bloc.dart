@@ -1,4 +1,7 @@
+import 'package:domain/inventory/model/water_kind.dart';
+import 'package:domain/inventory/model/water_request.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
+import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
@@ -13,12 +16,14 @@ part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   final FillBottleUseCase _fillBottleUseCase;
+  final LakeWaterRequestUseCase _lakeWaterRequestUseCase;
   final LocationRepository _locationRepository;
   final StationChoicesUseCase _stationChoicesUseCase;
   final TravelUseCase _travelUseCase;
 
   GameBloc()
     : _fillBottleUseCase = diContainer.get(),
+      _lakeWaterRequestUseCase = diContainer.get(),
       _locationRepository = diContainer.get(),
       _stationChoicesUseCase = diContainer.get(),
       _travelUseCase = diContainer.get(),
@@ -27,11 +32,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameMapTapped>((event, emit) => emit(state.copyWith(isMapOpen: true)));
     on<GameMapClosed>((event, emit) => emit(state.copyWith(isMapOpen: false)));
     on<GameLocationSelected>(_onLocationSelected);
-    on<GameLakeWaterTapped>((event, emit) => _fillBottleUseCase());
+    on<GameLakeWaterTapped>(_onLakeWaterTapped);
+    on<GameWaterChoiceClosed>((event, emit) => emit(state.copyWith(waterChoice: () => null)));
     on<GameLocationTapped>((event, emit) => emit(state.copyWith(isBuildOpen: _stationChoicesUseCase().isNotEmpty)));
     on<GameBuildClosed>((event, emit) => emit(state.copyWith(isBuildOpen: false)));
     on<GameStationTapped>(_onStationTapped);
     on<GameCampfireClosed>((event, emit) => emit(state.copyWith(isCampfireOpen: false)));
+    on<GameWorkbenchClosed>((event, emit) => emit(state.copyWith(isWorkbenchOpen: false)));
   }
 
   Future<void> _onStarted(
@@ -58,11 +65,28 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
   }
 
+  void _onLakeWaterTapped(
+    GameLakeWaterTapped event,
+    Emitter<GameState> emit,
+  ) {
+    switch (_lakeWaterRequestUseCase()) {
+      case WaterRequest(:final water, :final bottle?):
+        _fillBottleUseCase(
+          bottle,
+          water,
+        );
+      case WaterRequest(:final water):
+        emit(state.copyWith(waterChoice: () => water));
+      case null:
+        return;
+    }
+  }
+
   void _onStationTapped(
     GameStationTapped event,
     Emitter<GameState> emit,
   ) => switch (event.station) {
     .campfire => emit(state.copyWith(isCampfireOpen: true)),
-    .workbench => emit(state.copyWith(isBuildOpen: _stationChoicesUseCase().isNotEmpty)),
+    .workbench => emit(state.copyWith(isWorkbenchOpen: true)),
   };
 }

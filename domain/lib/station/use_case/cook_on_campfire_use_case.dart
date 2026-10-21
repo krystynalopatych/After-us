@@ -42,11 +42,10 @@ final class CookOnCampfireUseCase {
     if (needed.entries.any((entry) => _materialRepository.count(entry.key) < entry.value)) {
       return false;
     }
-    if (recipe case CampfireRecipe(:final input?, :final output?)
+    if (recipe case CampfireRecipe(:final input?)
         when !_inventoryRepository.replace(
           input,
-          output,
-          recipe.outputCount,
+          recipe.outputs,
         )) {
       return false;
     }
@@ -80,8 +79,8 @@ final class CookOnCampfireUseCase {
     CampfireFuel fuel,
   ) {
     final text = switch (recipe) {
-      .boilWater => 'You boiled lake water +2 clean water',
-      .boilBottledWater => 'You boiled lake water +2 clean water +1 plastic',
+      .boilSodisLakeWater || .boilSodisStrainedWater => 'You boiled water +2 clean water',
+      .boilBottleLakeWater || .boilBottleStrainedWater => 'You boiled water +2 clean water +1 plastic',
       .cookCattailRoot => 'You cooked cattail roots',
       .makeCharcoal => 'You made charcoal +1 charcoal',
     };
@@ -95,7 +94,10 @@ final class CookOnCampfireUseCase {
     return FeedbackMessage(
       text: text,
       heroLine: switch (recipe) {
-        .boilWater || .boilBottledWater => "Now it's safe to drink.",
+        .boilSodisLakeWater ||
+        .boilBottleLakeWater ||
+        .boilSodisStrainedWater ||
+        .boilBottleStrainedWater => "Now it's safe to drink.",
         .cookCattailRoot => 'Warm food at last.',
         .makeCharcoal => 'Charcoal... I can use it for the water filter.',
       },

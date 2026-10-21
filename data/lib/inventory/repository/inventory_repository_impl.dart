@@ -52,26 +52,22 @@ final class InventoryRepositoryImpl implements InventoryRepository {
   @override
   bool canReplace(
     InventoryItem item,
-    InventoryItem result,
-    int count,
+    List<InventoryItem> results,
   ) =>
       _replaced(
         item,
-        result,
-        count,
+        results,
       ) !=
       null;
 
   @override
   bool replace(
     InventoryItem item,
-    InventoryItem result,
-    int count,
+    List<InventoryItem> results,
   ) {
     final replaced = _replaced(
       item,
-      result,
-      count,
+      results,
     );
     if (replaced == null) {
       return false;
@@ -96,8 +92,7 @@ final class InventoryRepositoryImpl implements InventoryRepository {
 
   List<InventoryStack>? _replaced(
     InventoryItem item,
-    InventoryItem result,
-    int count,
+    List<InventoryItem> results,
   ) {
     final stacks = [..._stacks];
     if (!_removeFrom(
@@ -106,7 +101,7 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     )) {
       return null;
     }
-    for (var i = 0; i < count; i++) {
+    for (final result in results) {
       if (!_addTo(
         stacks,
         result,

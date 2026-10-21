@@ -21,7 +21,7 @@ void main() {
     () async {
       deps.inventory
         ..add(.cookingPot)
-        ..add(.lakeWater);
+        ..add(.sodisLakeWater);
       deps.material.add(.wood);
       deps.selection.selectSlot(1);
 
@@ -32,7 +32,7 @@ void main() {
         bloc.state,
         const CampfireState(
           step: .fuel,
-          recipe: .boilWater,
+          recipe: .boilSodisLakeWater,
         ),
       );
 
@@ -43,7 +43,7 @@ void main() {
         bloc.state,
         const CampfireState(
           step: .cooking,
-          recipe: .boilWater,
+          recipe: .boilSodisLakeWater,
           fuel: .wood,
         ),
       );
@@ -74,7 +74,7 @@ void main() {
     () async {
       deps.inventory
         ..add(.cookingPot)
-        ..add(.lakeWater);
+        ..add(.sodisLakeWater);
       deps.material.add(.sand);
       deps.selection.selectSlot(1);
       bloc.add(const CampfireSlotTapped());
@@ -87,7 +87,7 @@ void main() {
         bloc.state,
         const CampfireState(
           step: .fuel,
-          recipe: .boilWater,
+          recipe: .boilSodisLakeWater,
         ),
       );
     },

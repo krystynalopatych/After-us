@@ -40,6 +40,10 @@ final class GameCampfireClosed extends GameEvent {
   const GameCampfireClosed();
 }
 
+final class GameWorkbenchClosed extends GameEvent {
+  const GameWorkbenchClosed();
+}
+
 final class GameLocationSelected extends GameEvent {
   final GameLocation location;
 
@@ -51,4 +55,8 @@ final class GameLocationSelected extends GameEvent {
 
 final class GameLakeWaterTapped extends GameEvent {
   const GameLakeWaterTapped();
+}
+
+final class GameWaterChoiceClosed extends GameEvent {
+  const GameWaterChoiceClosed();
 }

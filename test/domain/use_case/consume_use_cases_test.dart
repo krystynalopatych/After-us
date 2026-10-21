@@ -8,7 +8,11 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
+import 'package:domain/inventory/model/water_bottle.dart';
+import 'package:domain/inventory/model/water_request.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
+import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
+import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
@@ -60,12 +64,32 @@ void main() {
       );
 
       test(
-        'drinking lake water from a plastic bottle gives the plastic back',
-        () async {
-          inventory.add(.lakeWaterBottle);
+        'drinking from a SODIS bottle gives the empty bottle back',
+        () {
+          inventory.add(.sodisStrainedWater);
 
           expect(
-            consume(.lakeWaterBottle),
+            consume(.sodisStrainedWater),
+            isTrue,
+          );
+          expect(
+            (player.stats.thirst, player.stats.health),
+            (75.0, 45.0),
+          );
+          expect(
+            inventory.count(.sodisBottle),
+            1,
+          );
+        },
+      );
+
+      test(
+        'drinking lake water from a plastic bottle gives the plastic back',
+        () async {
+          inventory.add(.bottleLakeWater);
+
+          expect(
+            consume(.bottleLakeWater),
             isTrue,
           );
           await pumpEventQueue();
@@ -91,8 +115,8 @@ void main() {
             InventoryItem.cattailRoot: (60.0, 50.0, 50.0),
             InventoryItem.cattailRootCooked: (70.0, 50.0, 50.0),
             InventoryItem.cleanWater: (50.0, 85.0, 50.0),
-            InventoryItem.lakeWater: (50.0, 70.0, 35.0),
-            InventoryItem.lakeWaterBottle: (50.0, 70.0, 35.0),
+            InventoryItem.sodisLakeWater: (50.0, 70.0, 35.0),
+            InventoryItem.bottleLakeWater: (50.0, 70.0, 35.0),
           };
           for (final MapEntry(key: item, value: (hunger, thirst, health)) in expected.entries) {
             player.setStats(
@@ -163,10 +187,10 @@ void main() {
           inventory
             ..add(.cattailRootCooked)
             ..add(.cleanWater)
-            ..add(.lakeWater);
+            ..add(.sodisLakeWater);
           consume(.cattailRootCooked);
           consume(.cleanWater);
-          consume(.lakeWater);
+          consume(.sodisLakeWater);
 
           expect(
             player.stats.hunger,
@@ -189,7 +213,7 @@ void main() {
           pollution.polluteWater();
           inventory
             ..add(.cattailRoot)
-            ..add(.lakeWater)
+            ..add(.sodisLakeWater)
             ..add(.berries);
           consume(.cattailRoot);
 
@@ -198,7 +222,7 @@ void main() {
             (55.0, 40.0),
           );
 
-          consume(.lakeWater);
+          consume(.sodisLakeWater);
 
           expect(
             (player.stats.thirst, player.stats.health),
@@ -242,10 +266,10 @@ void main() {
         () async {
           inventory
             ..add(.berries)
-            ..add(.lakeWater)
+            ..add(.sodisLakeWater)
             ..add(.cattailRoot);
           consume(.berries);
-          consume(.lakeWater);
+          consume(.sodisLakeWater);
           pollution.polluteWater();
           consume(.cattailRoot);
           await pumpEventQueue();
@@ -304,57 +328,74 @@ void main() {
       );
 
       test(
-        'needs a SODIS bottle or a selected plastic bottle',
+        'needs the chosen bottle',
         () async {
           expect(
-            fill(),
+            fill(
+              .sodis,
+              .lake,
+            ),
+            isFalse,
+          );
+          expect(
+            fill(
+              .plastic,
+              .lake,
+            ),
             isFalse,
           );
           await pumpEventQueue();
 
           expect(
-            inventory.count(.lakeWater),
-            0,
-          );
-          expect(
-            messages.single.text,
-            'You need a bottle to carry lake water',
+            messages.map((message) => message.text),
+            ['You have no empty SODIS bottle', 'You have no plastic bottle'],
           );
         },
       );
 
       test(
-        'adds lake water and keeps the bottle',
+        'a SODIS bottle holds one water and becomes busy',
         () async {
           inventory.add(.sodisBottle);
+          selection.selectSlot(0);
 
           expect(
-            fill(),
+            fill(
+              .sodis,
+              .lake,
+            ),
             isTrue,
           );
           expect(
-            fill(),
-            isTrue,
+            fill(
+              .sodis,
+              .lake,
+            ),
+            isFalse,
           );
           await pumpEventQueue();
 
           expect(
-            inventory.count(.lakeWater),
-            2,
-          );
-          expect(
-            inventory.count(.sodisBottle),
+            inventory.count(.sodisLakeWater),
             1,
           );
           expect(
-            messages.last.text,
-            'You filled a bottle with lake water',
+            inventory.count(.sodisBottle),
+            0,
+          );
+          expect(
+            selection.selection.slot,
+            isNull,
+          );
+          expect(
+            messages.map((message) => message.text),
+            ['You filled a SODIS bottle with lake water', 'You have no empty SODIS bottle'],
           );
         },
       );
 
       test(
-        'fills a selected plastic bottle and takes the plastic from the counter',
+        'a plastic bottle takes one plastic from the counter',
         () async {
           material
             ..add(.plastic)
@@ -362,13 +403,16 @@ void main() {
           selection.selectMaterial(.plastic);
 
           expect(
-            fill(),
+            fill(
+              .plastic,
+              .lake,
+            ),
             isTrue,
           );
           await pumpEventQueue();
 
           expect(
-            inventory.count(.lakeWaterBottle),
+            inventory.count(.bottleLakeWater),
             1,
           );
           expect(
@@ -384,7 +428,10 @@ void main() {
             'You filled a plastic bottle with lake water',
           );
 
-          fill();
+          fill(
+            .plastic,
+            .lake,
+          );
 
           expect(
             material.count(.plastic),
@@ -398,21 +445,168 @@ void main() {
       );
 
       test(
+        'strained and filtered water go into the chosen bottle',
+        () {
+          inventory.add(.sodisBottle);
+          material.add(.plastic);
+
+          fill(
+            .sodis,
+            .strained,
+          );
+          fill(
+            .plastic,
+            .filtered,
+          );
+
+          expect(
+            inventory.count(.sodisStrainedWater),
+            1,
+          );
+          expect(
+            inventory.count(.bottleFilteredWater),
+            1,
+          );
+        },
+      );
+
+      test(
         'a full inventory takes no water',
         () async {
           for (var i = 0; i < 60; i++) {
-            inventory.add(.sodisBottle);
+            inventory.add(.berries);
           }
+          material.add(.plastic);
 
           expect(
-            fill(),
+            fill(
+              .plastic,
+              .lake,
+            ),
             isFalse,
           );
           await pumpEventQueue();
 
           expect(
+            material.count(.plastic),
+            1,
+          );
+          expect(
             messages.last.text,
             'Your inventory is full',
+          );
+        },
+      );
+    },
+  );
+
+  group(
+    'LakeWaterRequestUseCase',
+    () {
+      late LakeWaterRequestUseCase request;
+
+      setUp(
+        () => request = LakeWaterRequestUseCase(
+          feedbackRepository: feedback,
+          inventoryRepository: inventory,
+          selectionRepository: selection,
+        ),
+      );
+
+      test(
+        'plastic and SODIS fill lake water right away',
+        () {
+          inventory.add(.sodisBottle);
+
+          selection.selectMaterial(.plastic);
+          expect(
+            request(),
+            const WaterRequest(
+              water: .lake,
+              bottle: .plastic,
+            ),
+          );
+
+          selection.selectSlot(0);
+          expect(
+            request(),
+            const WaterRequest(
+              water: .lake,
+              bottle: .sodis,
+            ),
+          );
+        },
+      );
+
+      test(
+        'filters ask where to store the water',
+        () {
+          inventory
+            ..add(.prefilter)
+            ..add(.waterFilter);
+
+          selection.selectSlot(0);
+          expect(
+            request(),
+            const WaterRequest(water: .strained),
+          );
+
+          selection.selectSlot(1);
+          expect(
+            request(),
+            const WaterRequest(water: .filtered),
+          );
+        },
+      );
+
+      test(
+        'anything else asks for a bottle',
+        () async {
+          inventory.add(.berries);
+          selection.selectSlot(0);
+
+          expect(
+            request(),
+            isNull,
+          );
+          selection.reset();
+          expect(
+            request(),
+            isNull,
+          );
+          await pumpEventQueue();
+
+          expect(
+            messages.map((message) => message.text),
+            ['Choose a bottle to fill', 'Choose a bottle to fill'],
+          );
+        },
+      );
+    },
+  );
+
+  group(
+    'WaterBottlesUseCase',
+    () {
+      test(
+        'offers only the bottles the player has',
+        () {
+          final bottles = WaterBottlesUseCase(
+            inventoryRepository: inventory,
+            materialRepository: material,
+          );
+
+          expect(
+            bottles(),
+            isEmpty,
+          );
+
+          inventory.add(.sodisBottle);
+          material.add(.plastic);
+
+          expect(
+            bottles(),
+            {WaterBottle.sodis, WaterBottle.plastic},
           );
         },
       );
