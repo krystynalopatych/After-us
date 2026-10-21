@@ -1,6 +1,7 @@
 import 'package:domain/compost/use_case/use_compost_pit_use_case.dart';
 import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
@@ -53,9 +54,11 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => ConsumeUseCase(
+        dayRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mealRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
       ),
@@ -123,6 +126,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => PassSecondUseCase(
+        clockRepository: diContainer.get(),
         compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
@@ -131,6 +135,9 @@ void registerUseCases() {
         pollutionRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => PauseTimeUseCase(clockRepository: diContainer.get()),
     )
     ..registerFactory(
       () => PlaceStationUseCase(
@@ -152,6 +159,7 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
@@ -163,13 +171,15 @@ void registerUseCases() {
     ..registerFactory(
       () => StartLevelUseCase(
         campfireRepository: diContainer.get(),
-        compostRepository: diContainer.get(),
         characterRepository: diContainer.get(),
+        clockRepository: diContainer.get(),
+        compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),

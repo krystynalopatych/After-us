@@ -360,4 +360,31 @@ void main() {
       );
     },
   );
+
+  test(
+    'time stands still while the map is open',
+    () async {
+      bloc.add(const GameMapTapped());
+      await pumpEventQueue();
+      expect(
+        deps.clock.isPaused,
+        isTrue,
+      );
+
+      bloc.add(const GameMapClosed());
+      await pumpEventQueue();
+      expect(
+        deps.clock.isPaused,
+        isFalse,
+      );
+
+      bloc.add(const GameMapTapped());
+      await pumpEventQueue();
+      await travel(.lake);
+      expect(
+        deps.clock.isPaused,
+        isFalse,
+      );
+    },
+  );
 }

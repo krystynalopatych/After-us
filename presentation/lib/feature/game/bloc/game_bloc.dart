@@ -1,3 +1,4 @@
+import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/inventory/model/water_request.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
@@ -19,6 +20,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final FillBottleUseCase _fillBottleUseCase;
   final LakeWaterRequestUseCase _lakeWaterRequestUseCase;
   final LocationRepository _locationRepository;
+  final PauseTimeUseCase _pauseTimeUseCase;
   final PlaceStationUseCase _placeStationUseCase;
   final StationChoicesUseCase _stationChoicesUseCase;
   final TravelUseCase _travelUseCase;
@@ -27,13 +29,24 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     : _fillBottleUseCase = diContainer.get(),
       _lakeWaterRequestUseCase = diContainer.get(),
       _locationRepository = diContainer.get(),
+      _pauseTimeUseCase = diContainer.get(),
       _placeStationUseCase = diContainer.get(),
       _stationChoicesUseCase = diContainer.get(),
       _travelUseCase = diContainer.get(),
       super(GameState(location: diContainer.get<LocationRepository>().location)) {
     on<GameStarted>(_onStarted);
-    on<GameMapTapped>((event, emit) => emit(state.copyWith(isMapOpen: true)));
-    on<GameMapClosed>((event, emit) => emit(state.copyWith(isMapOpen: false)));
+    on<GameMapTapped>(
+      (event, emit) => _setMapOpen(
+        emit,
+        true,
+      ),
+    );
+    on<GameMapClosed>(
+      (event, emit) => _setMapOpen(
+        emit,
+        false,
+      ),
+    );
     on<GameLocationSelected>(_onLocationSelected);
     on<GameLakeWaterTapped>(_onLakeWaterTapped);
     on<GameWaterChoiceClosed>((event, emit) => emit(state.copyWith(waterChoice: () => null)));
@@ -62,12 +75,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     Emitter<GameState> emit,
   ) {
     _travelUseCase(event.location);
+    _pauseTimeUseCase(false);
     emit(
       state.copyWith(
         location: _locationRepository.location,
         isMapOpen: false,
       ),
     );
+  }
+
+  void _setMapOpen(
+    Emitter<GameState> emit,
+    bool isOpen,
+  ) {
+    _pauseTimeUseCase(isOpen);
+    emit(state.copyWith(isMapOpen: isOpen));
   }
 
   void _onLocationTapped(

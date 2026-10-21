@@ -57,7 +57,7 @@ void main() {
   );
 
   test(
-    'shows the next day when the day ends',
+    'shows the next day when the day ends, starting with the night',
     () async {
       await tick(GameDay.secondsPerDay);
 
@@ -66,6 +66,7 @@ void main() {
         const GameDay(
           number: 2,
           seconds: 0,
+          nightSeconds: GameDay.nightLength,
         ),
       );
     },

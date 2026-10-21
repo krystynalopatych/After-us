@@ -5,6 +5,7 @@ import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/pickup/model/pickup.dart';
+import 'package:domain/player/model/meals_eaten.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/progress/model/game_level.dart';
@@ -28,6 +29,7 @@ final class GameSave extends Equatable {
   final SunBottle? sunBottle;
   final CampfireUses campfireUses;
   final CompostPit compostPit;
+  final MealsEaten meals;
 
   const GameSave({
     required this.level,
@@ -44,6 +46,7 @@ final class GameSave extends Equatable {
     this.sunBottle,
     this.campfireUses = const .none(),
     this.compostPit = const .empty(),
+    this.meals = const .none(),
   });
 
   GameSave copyWith({
@@ -61,6 +64,7 @@ final class GameSave extends Equatable {
     SunBottle? Function()? sunBottle,
     CampfireUses? campfireUses,
     CompostPit? compostPit,
+    MealsEaten? meals,
   }) => GameSave(
     level: level ?? this.level,
     location: location ?? this.location,
@@ -76,6 +80,7 @@ final class GameSave extends Equatable {
     sunBottle: sunBottle != null ? sunBottle() : this.sunBottle,
     campfireUses: campfireUses ?? this.campfireUses,
     compostPit: compostPit ?? this.compostPit,
+    meals: meals ?? this.meals,
   );
 
   @override
@@ -94,5 +99,6 @@ final class GameSave extends Equatable {
     sunBottle,
     campfireUses,
     compostPit,
+    meals,
   ];
 }

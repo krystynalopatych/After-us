@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
+import 'package:data/player/repository/meal_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:domain/day/model/game_day.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/water_bottle.dart';
@@ -19,9 +22,11 @@ import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  late DayRepositoryImpl day;
   late FeedbackRepositoryImpl feedback;
   late InventoryRepositoryImpl inventory;
   late MaterialRepositoryImpl material;
+  late MealRepositoryImpl meal;
   late SelectionRepositoryImpl selection;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
@@ -29,9 +34,11 @@ void main() {
   late StreamSubscription<FeedbackMessage> subscription;
 
   setUp(() {
+    day = DayRepositoryImpl();
     feedback = FeedbackRepositoryImpl();
     inventory = InventoryRepositoryImpl();
     material = MaterialRepositoryImpl();
+    meal = MealRepositoryImpl();
     selection = SelectionRepositoryImpl();
     player = PlayerRepositoryImpl()
       ..setStats(
@@ -55,9 +62,11 @@ void main() {
 
       setUp(
         () => consume = ConsumeUseCase(
+          dayRepository: day,
           feedbackRepository: feedback,
           inventoryRepository: inventory,
           materialRepository: material,
+          mealRepository: meal,
           playerRepository: player,
           pollutionRepository: pollution,
         ),
@@ -101,6 +110,71 @@ void main() {
           expect(
             messages.single.text,
             'You drank lake water +20 thirst −15 health +1 plastic',
+          );
+        },
+      );
+
+      test(
+        'the third portion of the same food in a day gives half',
+        () async {
+          for (var i = 0; i < 3; i++) {
+            inventory.add(.berries);
+            consume(.berries);
+          }
+          await pumpEventQueue();
+
+          expect(
+            player.stats.hunger,
+            closeTo(50 - 0 + 10 + 10 + 5, 0.001),
+          );
+          expect(
+            messages.last.text,
+            'You ate berries +5 hunger +1.5 thirst\nThe same food again only half as filling',
+          );
+        },
+      );
+
+      test(
+        'raw and cooked food and water are counted apart, a new day starts over',
+        () {
+          for (var i = 0; i < 2; i++) {
+            inventory
+              ..add(.cattailRoot)
+              ..add(.cleanWater)
+              ..add(.cleanWater);
+            consume(.cattailRoot);
+            consume(.cleanWater);
+            consume(.cleanWater);
+          }
+          inventory.add(.cattailRootCooked);
+          final hunger = player.stats.hunger;
+          consume(.cattailRootCooked);
+
+          expect(
+            player.stats.hunger - hunger,
+            20,
+          );
+          expect(
+            meal.meals.countOn(
+              1,
+              .cleanWater,
+            ),
+            0,
+          );
+
+          day.setDay(
+            const GameDay(
+              number: 2,
+              seconds: 0,
+            ),
+          );
+          inventory.add(.cattailRoot);
+          final dayTwoHunger = player.stats.hunger;
+          consume(.cattailRoot);
+
+          expect(
+            player.stats.hunger - dayTwoHunger,
+            10,
           );
         },
       );

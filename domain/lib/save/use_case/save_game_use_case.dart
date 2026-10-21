@@ -5,6 +5,7 @@ import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
+import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
@@ -23,6 +24,7 @@ final class SaveGameUseCase {
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
   final PickupRepository _pickupRepository;
+  final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
   final SaveRepository _saveRepository;
@@ -38,6 +40,7 @@ final class SaveGameUseCase {
     required this._locationRepository,
     required this._materialRepository,
     required this._pickupRepository,
+    required this._mealRepository,
     required this._playerRepository,
     required this._pollutionRepository,
     required this._saveRepository,
@@ -61,6 +64,7 @@ final class SaveGameUseCase {
       sunBottle: _sunSpotRepository.bottle,
       campfireUses: _campfireRepository.uses,
       compostPit: _compostRepository.pit,
+      meals: _mealRepository.meals,
     ),
   );
 }

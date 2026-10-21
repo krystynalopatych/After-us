@@ -1,26 +1,34 @@
+import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
+import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/model/pollution_zone.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 
 final class ConsumeUseCase {
   static const _pollutedValueFactor = 0.5;
+  static const _freshPortionsPerDay = 2;
+  static const _monotonyFactor = 0.5;
 
+  final DayRepository _dayRepository;
   final FeedbackRepository _feedbackRepository;
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
+  final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
 
   const ConsumeUseCase({
+    required this._dayRepository,
     required this._feedbackRepository,
     required this._inventoryRepository,
     required this._materialRepository,
+    required this._mealRepository,
     required this._playerRepository,
     required this._pollutionRepository,
   });
@@ -44,7 +52,21 @@ final class ConsumeUseCase {
       final zone? when _pollutionRepository.pollution.isPolluted(zone) => zone,
       _ => null,
     };
-    final factor = pollutedZone != null ? _pollutedValueFactor : 1.0;
+    final day = _dayRepository.day.number;
+    final isMonotonous =
+        !item.isDrink &&
+        _mealRepository.meals.countOn(
+              day,
+              item,
+            ) >=
+            _freshPortionsPerDay;
+    if (!item.isDrink) {
+      _mealRepository.eat(
+        item,
+        day,
+      );
+    }
+    final factor = (pollutedZone != null ? _pollutedValueFactor : 1.0) * (isMonotonous ? _monotonyFactor : 1.0);
     final hunger = item.hunger * factor;
     final thirst = item.thirst * factor;
     final health = item.health - (pollutedZone?.healthPenalty ?? 0);
@@ -72,6 +94,7 @@ final class ConsumeUseCase {
       _message(
         item,
         pollutedZone,
+        isMonotonous,
         [
           if (hunger > 0) '+${_format(hunger)} hunger',
           if (thirst > 0) '+${_format(thirst)} thirst',
@@ -86,6 +109,7 @@ final class ConsumeUseCase {
   static FeedbackMessage _message(
     InventoryItem item,
     PollutionZone? pollutedZone,
+    bool isMonotonous,
     List<String> changes,
   ) {
     final verb = item.isDrink ? 'drank' : 'ate';
@@ -94,7 +118,10 @@ final class ConsumeUseCase {
       .soil => ' from polluted soil',
       null => '',
     };
-    final text = 'You $verb ${_name(item)}$source ${changes.join(' ')}';
+    final text = [
+      'You $verb ${_name(item)}$source ${changes.join(' ')}',
+      if (isMonotonous) 'The same food again only half as filling',
+    ].join('\n');
     return switch (pollutedZone) {
       .water => FeedbackMessage(
         text: text,

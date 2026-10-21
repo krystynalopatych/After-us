@@ -346,6 +346,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgMiceliy =>
       const AssetGenImage('resources/assets/images/img_miceliy.png');
 
+  /// File path: resources/assets/images/img_moon.png
+  AssetGenImage get imgMoon =>
+      const AssetGenImage('resources/assets/images/img_moon.png');
+
   /// File path: resources/assets/images/img_moser_lamp.png
   AssetGenImage get imgMoserLamp =>
       const AssetGenImage('resources/assets/images/img_moser_lamp.png');
@@ -573,6 +577,7 @@ class $ResourcesAssetsImagesGen {
     imgMetal,
     imgMiceliumRoof,
     imgMiceliy,
+    imgMoon,
     imgMoserLamp,
     imgMushrooms,
     imgMushroomsCooked,

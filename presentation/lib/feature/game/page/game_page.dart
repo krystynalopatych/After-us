@@ -17,6 +17,7 @@ import 'package:presentation/feature/goal/page/goal_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
+import 'package:presentation/feature/night/page/night_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/feature/sun_spot/page/sun_spot_page.dart';
@@ -109,6 +110,7 @@ class _GamePageState extends State<GamePage> {
       context.images.imgButtonClose,
       context.images.imgSunLight,
       context.images.imgLakeBlackRectangle,
+      context.images.imgMoon,
       for (final location in widget.level.locations) ...[
         _locationBackground(location),
         _locationIcon(location),
@@ -216,6 +218,7 @@ class _GamePageState extends State<GamePage> {
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
+              Positioned.fill(child: NightPage.withBloc()),
               Positioned.fill(child: FeedbackPage.withBloc()),
             ],
           ),

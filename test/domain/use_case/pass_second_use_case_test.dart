@@ -1,4 +1,5 @@
 import 'package:data/compost/repository/compost_repository_impl.dart';
+import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
@@ -16,6 +17,7 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  late ClockRepositoryImpl clock;
   late CompostRepositoryImpl compost;
   late ConstructionRepositoryImpl constructions;
   late DayRepositoryImpl day;
@@ -26,6 +28,7 @@ void main() {
   late PassSecondUseCase passSecond;
 
   setUp(() {
+    clock = ClockRepositoryImpl();
     compost = CompostRepositoryImpl();
     constructions = ConstructionRepositoryImpl();
     day = DayRepositoryImpl();
@@ -34,6 +37,7 @@ void main() {
     pollution = PollutionRepositoryImpl();
     sunSpot = SunSpotRepositoryImpl();
     passSecond = PassSecondUseCase(
+      clockRepository: clock,
       compostRepository: compost,
       constructionRepository: constructions,
       dayRepository: day,
@@ -88,9 +92,25 @@ void main() {
   );
 
   test(
-    'the day ends after ten minutes and the next one starts',
+    'the day ends after ten minutes with a night, then the next day starts at 06:00',
     () {
       pass(GameDay.secondsPerDay);
+
+      expect(
+        day.day,
+        const GameDay(
+          number: 2,
+          seconds: 0,
+          nightSeconds: GameDay.nightLength,
+        ),
+      );
+      expect(
+        day.outcome,
+        isNull,
+      );
+
+      final stats = player.stats;
+      pass(GameDay.nightLength);
 
       expect(
         day.day,
@@ -100,8 +120,14 @@ void main() {
         ),
       );
       expect(
-        day.outcome,
-        isNull,
+        player.stats,
+        stats,
+      );
+
+      pass();
+      expect(
+        day.day.seconds,
+        1,
       );
     },
   );
@@ -452,6 +478,7 @@ void main() {
         const GameDay(
           number: 4,
           seconds: 0,
+          nightSeconds: GameDay.nightLength,
         ),
       );
     },
@@ -487,6 +514,31 @@ void main() {
       expect(
         messages.map((message) => message.text),
         contains('Your compost is ready'),
+      );
+    },
+  );
+
+  test(
+    'nothing happens while time is paused',
+    () {
+      clock.setPaused(true);
+      pass(10);
+
+      expect(
+        day.day.seconds,
+        0,
+      );
+      expect(
+        player.stats,
+        const PlayerStats.initial(),
+      );
+
+      clock.setPaused(false);
+      pass();
+
+      expect(
+        day.day.seconds,
+        1,
       );
     },
   );

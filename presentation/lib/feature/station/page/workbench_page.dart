@@ -76,13 +76,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   );
   static const _bookRect = Rect.fromLTWH(
     1250,
-    1215,
-    170,
-    180,
+    1212,
+    240,
+    285,
   );
   static const _recordLabelOffset = Offset(
-    1440,
-    1280,
+    1500,
+    1300,
   );
 
   late final WorkbenchBloc _bloc;
@@ -140,7 +140,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             Positioned(
               left: _recordLabelOffset.dx,
               top: _recordLabelOffset.dy,
-              child: const LabelContainer(text: 'YOUR BOOK HAS A NEW RECORD'),
+              child: const LabelContainer(text: 'YOUR BOOK HAS\nA NEW RECORD'),
             ),
           Positioned.fromRect(
             rect: _craftRect,

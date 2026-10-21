@@ -4,6 +4,7 @@ import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
+import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
@@ -23,6 +24,7 @@ final class PassSecondUseCase {
   static const _weakHealthLevel = 30.0;
   static const _weakDropMultiplier = 1.5;
 
+  final ClockRepository _clockRepository;
   final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
@@ -32,6 +34,7 @@ final class PassSecondUseCase {
   final SunSpotRepository _sunSpotRepository;
 
   const PassSecondUseCase({
+    required this._clockRepository,
     required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
@@ -42,7 +45,12 @@ final class PassSecondUseCase {
   });
 
   void call(GameLevel level) {
-    if (_dayRepository.outcome != null) {
+    if (_dayRepository.outcome != null || _clockRepository.isPaused) {
+      return;
+    }
+    final today = _dayRepository.day;
+    if (today.isNight) {
+      _dayRepository.setDay(today.copyWith(nightSeconds: today.nightSeconds - 1));
       return;
     }
     if (_playerRepository.stats.health <= 0) {
@@ -50,7 +58,7 @@ final class PassSecondUseCase {
       return;
     }
     var stats = _secondStats(_playerRepository.stats);
-    var day = _dayRepository.day.copyWith(seconds: _dayRepository.day.seconds + 1);
+    var day = today.copyWith(seconds: today.seconds + 1);
     LevelOutcome? outcome;
 
     if (day.isOver) {
@@ -61,6 +69,7 @@ final class PassSecondUseCase {
         day = GameDay(
           number: day.number + 1,
           seconds: 0,
+          nightSeconds: GameDay.nightLength,
         );
       }
     }

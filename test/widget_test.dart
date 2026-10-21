@@ -3,12 +3,14 @@ import 'package:data/book/repository/book_repository_impl.dart';
 import 'package:data/character/repository/character_repository_impl.dart';
 import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
+import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
+import 'package:data/player/repository/meal_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
@@ -22,6 +24,7 @@ import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
+import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
@@ -36,6 +39,7 @@ import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
+import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
@@ -121,6 +125,7 @@ void main() {
       ..registerSingleton<BookRepository>(BookRepositoryImpl())
       ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
+      ..registerSingleton<ClockRepository>(ClockRepositoryImpl())
       ..registerSingleton<CompostRepository>(CompostRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
@@ -128,6 +133,7 @@ void main() {
       ..registerSingleton<InventoryRepository>(inventoryRepository ?? InventoryRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
       ..registerSingleton<MaterialRepository>(materialRepository ?? MaterialRepositoryImpl())
+      ..registerSingleton<MealRepository>(MealRepositoryImpl())
       ..registerSingleton<PickupRepository>(PickupRepositoryImpl())
       ..registerSingleton<PlayerRepository>(playerRepository ?? PlayerRepositoryImpl())
       ..registerSingleton<PollutionRepository>(pollutionRepository ?? PollutionRepositoryImpl())
