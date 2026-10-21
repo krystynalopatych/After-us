@@ -10,7 +10,7 @@ void main() {
   setUp(() async {
     deps = TestDependencies();
     await deps.register();
-    bloc = CampfireBloc()..add(const CampfireStarted());
+    bloc = CampfireBloc()..add(const CampfireStarted(.campfire));
     await pumpEventQueue();
   });
 

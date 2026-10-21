@@ -1,11 +1,13 @@
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late ConstructionRepositoryImpl constructions;
   late DayRepositoryImpl day;
+  late FeedbackRepositoryImpl feedback;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
   late SunSpotRepositoryImpl sunSpot;
@@ -21,12 +24,14 @@ void main() {
   setUp(() {
     constructions = ConstructionRepositoryImpl();
     day = DayRepositoryImpl();
+    feedback = FeedbackRepositoryImpl();
     player = PlayerRepositoryImpl();
     pollution = PollutionRepositoryImpl();
     sunSpot = SunSpotRepositoryImpl();
     passSecond = PassSecondUseCase(
       constructionRepository: constructions,
       dayRepository: day,
+      feedbackRepository: feedback,
       playerRepository: player,
       pollutionRepository: pollution,
       sunSpotRepository: sunSpot,
@@ -227,10 +232,19 @@ void main() {
   );
 
   test(
-    'air pollution lowers the health ceiling at the end of the day',
-    () {
+    'air pollution lowers the health ceiling at the end of the day and says so',
+    () async {
+      final messages = <FeedbackMessage>[];
+      final subscription = feedback.messageStream.listen(messages.add);
+      addTearDown(subscription.cancel);
       pollution.addAirPoints(8);
       pass(GameDay.secondsPerDay);
+      await pumpEventQueue();
+
+      expect(
+        messages.single.text,
+        'The air is dirty max health −20',
+      );
 
       expect(
         player.stats.healthCeiling,
@@ -244,9 +258,18 @@ void main() {
   );
 
   test(
-    'clean air keeps the health ceiling',
-    () {
+    'clean air keeps the health ceiling without a message',
+    () async {
+      final messages = <FeedbackMessage>[];
+      final subscription = feedback.messageStream.listen(messages.add);
+      addTearDown(subscription.cancel);
       pass(GameDay.secondsPerDay);
+      await pumpEventQueue();
+
+      expect(
+        messages,
+        isEmpty,
+      );
 
       expect(
         player.stats.healthCeiling,

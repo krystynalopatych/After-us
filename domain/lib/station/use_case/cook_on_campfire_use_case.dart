@@ -7,6 +7,7 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 
 final class CookOnCampfireUseCase {
@@ -36,6 +37,7 @@ final class CookOnCampfireUseCase {
   bool call(
     CampfireRecipe recipe,
     CampfireFuel fuel,
+    Station station,
   ) {
     final needed = {
       fuel.material: _fuelCount,
@@ -53,7 +55,7 @@ final class CookOnCampfireUseCase {
     if (recipe case CampfireRecipe(:final input?)
         when !_inventoryRepository.replace(
           input,
-          recipe.outputs,
+          recipe.outputsOn(station),
         )) {
       return false;
     }
@@ -69,12 +71,16 @@ final class CookOnCampfireUseCase {
     if (recipe.product case final product?) {
       _materialRepository.add(product);
     }
-    if (fuel.isPolluting) {
+    final isCampfire = station == .campfire;
+    final isPolluting = isCampfire && fuel.isPolluting;
+    if (isPolluting) {
       _pollutionRepository.addAirPoints(fuel.airPoints);
     }
     final day = _dayRepository.day.number;
-    final isSmoky = _campfireRepository.uses.countOn(day) >= _smokelessCampfiresPerDay;
-    _campfireRepository.use(day);
+    final isSmoky = isCampfire && _campfireRepository.uses.countOn(day) >= _smokelessCampfiresPerDay;
+    if (isCampfire) {
+      _campfireRepository.use(day);
+    }
     if (isSmoky) {
       _pollutionRepository.addAirPoints(_smokeAirPoints);
     }
@@ -83,7 +89,9 @@ final class CookOnCampfireUseCase {
       _message(
         recipe,
         fuel,
-        isSmoky,
+        recipe.outputCountOn(station),
+        isPolluting: isPolluting,
+        isSmoky: isSmoky,
       ),
     );
     return true;
@@ -92,19 +100,21 @@ final class CookOnCampfireUseCase {
   static FeedbackMessage _message(
     CampfireRecipe recipe,
     CampfireFuel fuel,
-    bool isSmoky,
-  ) {
+    int count, {
+    required bool isPolluting,
+    required bool isSmoky,
+  }) {
     final text = switch (recipe) {
-      .boilSodisLakeWater || .boilSodisStrainedWater => 'You boiled water +2 clean water',
-      .boilBottleLakeWater || .boilBottleStrainedWater => 'You boiled water +2 clean water +1 plastic',
-      .cookCattailRoot => 'You cooked cattail roots',
+      .boilSodisLakeWater || .boilSodisStrainedWater => 'You boiled water +$count clean water',
+      .boilBottleLakeWater || .boilBottleStrainedWater => 'You boiled water +$count clean water +1 plastic',
+      .cookCattailRoot => 'You cooked cattail roots +$count cooked cattail roots',
       .makeCharcoal => 'You made charcoal +1 charcoal',
     };
-    if (fuel.isPolluting || isSmoky) {
+    if (isPolluting || isSmoky) {
       return FeedbackMessage(
         text: [
           text,
-          if (fuel.isPolluting) 'You burned ${fuel.name} Air quality −${fuel.airPoints}',
+          if (isPolluting) 'You burned ${fuel.name} Air quality −${fuel.airPoints}',
           if (isSmoky) 'Too many fires today Air quality −$_smokeAirPoints',
         ].join('\n'),
         heroLine: 'Cough... Next time I should think harder.',

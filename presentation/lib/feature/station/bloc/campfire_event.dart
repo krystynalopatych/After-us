@@ -8,7 +8,12 @@ sealed class CampfireEvent extends Equatable {
 }
 
 final class CampfireStarted extends CampfireEvent {
-  const CampfireStarted();
+  final Station station;
+
+  const CampfireStarted(this.station);
+
+  @override
+  List<Object?> get props => [station];
 }
 
 final class CampfireSlotTapped extends CampfireEvent {

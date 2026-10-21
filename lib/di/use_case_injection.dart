@@ -15,6 +15,7 @@ import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
 import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
 import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
+import 'package:domain/station/use_case/place_station_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:domain/sun_spot/use_case/use_sun_spot_use_case.dart';
@@ -110,9 +111,18 @@ void registerUseCases() {
       () => PassSecondUseCase(
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => PlaceStationUseCase(
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

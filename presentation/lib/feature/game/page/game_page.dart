@@ -172,8 +172,13 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               if (state.isStationOpen) _pickups(),
-              if (state.isCampfireOpen)
-                Positioned.fill(child: CampfirePage.withBloc(onClose: () => _bloc.add(const GameCampfireClosed()))),
+              if (state.fireStation case final station?)
+                Positioned.fill(
+                  child: CampfirePage.withBloc(
+                    station: station,
+                    onClose: () => _bloc.add(const GameFireClosed()),
+                  ),
+                ),
               if (state.isWorkbenchOpen)
                 Positioned.fill(child: WorkbenchPage.withBloc(onClose: () => _bloc.add(const GameWorkbenchClosed()))),
               Positioned.fill(

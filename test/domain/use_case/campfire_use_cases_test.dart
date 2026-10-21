@@ -54,7 +54,7 @@ void main() {
         'finds nothing and says nothing without a selection',
         () async {
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             isNull,
           );
           await pumpEventQueue();
@@ -74,13 +74,13 @@ void main() {
           deps.selection.selectSlot(1);
 
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             isNull,
           );
           await pumpEventQueue();
           expect(
             messages.single.text,
-            "You can't use this at the campfire",
+            "You can't use this here",
           );
         },
       );
@@ -93,13 +93,13 @@ void main() {
           deps.selection.selectMaterial(.sand);
 
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             isNull,
           );
           await pumpEventQueue();
           expect(
             messages.single.text,
-            "You can't use this at the campfire",
+            "You can't use this here",
           );
         },
       );
@@ -111,7 +111,7 @@ void main() {
           deps.selection.selectSlot(0);
 
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             isNull,
           );
           await pumpEventQueue();
@@ -135,7 +135,7 @@ void main() {
           deps.selection.selectSlot(11);
 
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             isNull,
           );
           await pumpEventQueue();
@@ -155,7 +155,7 @@ void main() {
           deps.selection.selectSlot(1);
 
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             CampfireRecipe.boilSodisLakeWater,
           );
           expect(
@@ -180,13 +180,13 @@ void main() {
 
           deps.selection.selectSlot(1);
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             CampfireRecipe.cookCattailRoot,
           );
 
           deps.selection.selectMaterial(.wood);
           expect(
-            campfireRecipe(),
+            campfireRecipe(.campfire),
             CampfireRecipe.makeCharcoal,
           );
         },
@@ -285,6 +285,7 @@ void main() {
             cookOnCampfire(
               .boilSodisLakeWater,
               .wood,
+              .campfire,
             ),
             isTrue,
           );
@@ -328,6 +329,7 @@ void main() {
             cookOnCampfire(
               .boilBottleLakeWater,
               .wood,
+              .campfire,
             ),
             isTrue,
           );
@@ -354,6 +356,7 @@ void main() {
             cookOnCampfire(
               .boilSodisStrainedWater,
               .wood,
+              .campfire,
             ),
             isTrue,
           );
@@ -381,6 +384,7 @@ void main() {
             cookOnCampfire(
               .cookCattailRoot,
               .wood,
+              .campfire,
             ),
             isTrue,
           );
@@ -409,6 +413,7 @@ void main() {
             cookOnCampfire(
               .makeCharcoal,
               .wood,
+              .campfire,
             ),
             isTrue,
           );
@@ -435,6 +440,7 @@ void main() {
             cookOnCampfire(
               .boilSodisLakeWater,
               .plastic,
+              .campfire,
             ),
             isTrue,
           );
@@ -468,6 +474,7 @@ void main() {
             cookOnCampfire(
               .makeCharcoal,
               .wood,
+              .campfire,
             );
           }
 
@@ -484,6 +491,63 @@ void main() {
       );
 
       test(
+        'the rocket stove gives more and never smokes',
+        () {
+          deps.inventory
+            ..add(.cookingPot)
+            ..add(.sodisLakeWater)
+            ..add(.cattailRoot);
+          deps.material
+            ..add(.plastic)
+            ..add(.wood)
+            ..add(.wood)
+            ..add(.wood);
+
+          expect(
+            cookOnCampfire(
+              .boilSodisLakeWater,
+              .plastic,
+              .rocketStove,
+            ),
+            isTrue,
+          );
+          expect(
+            cookOnCampfire(
+              .cookCattailRoot,
+              .wood,
+              .rocketStove,
+            ),
+            isTrue,
+          );
+          for (var i = 0; i < 2; i++) {
+            deps.inventory.add(.cattailRoot);
+            cookOnCampfire(
+              .cookCattailRoot,
+              .wood,
+              .rocketStove,
+            );
+          }
+
+          expect(
+            deps.inventory.count(.cleanWater),
+            3,
+          );
+          expect(
+            deps.inventory.count(.cattailRootCooked),
+            6,
+          );
+          expect(
+            deps.pollution.pollution.airPoints,
+            0,
+          );
+          expect(
+            deps.campfire.uses.countOn(1),
+            0,
+          );
+        },
+      );
+
+      test(
         'does nothing when the input is gone',
         () {
           deps.inventory.add(.cookingPot);
@@ -493,6 +557,7 @@ void main() {
             cookOnCampfire(
               .cookCattailRoot,
               .wood,
+              .campfire,
             ),
             isFalse,
           );
@@ -514,6 +579,7 @@ void main() {
             cookOnCampfire(
               .boilSodisLakeWater,
               .wood,
+              .campfire,
             ),
             isFalse,
           );

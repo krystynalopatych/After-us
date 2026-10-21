@@ -84,5 +84,6 @@ class _StationBuildPageState extends State<StationBuildPage> {
   static String _title(Station station) => switch (station) {
     .campfire => 'CAMPFIRE',
     .workbench => 'WORKBENCH',
+    .rocketStove => 'ROCKET STOVE',
   };
 }

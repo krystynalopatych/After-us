@@ -2,6 +2,7 @@ import 'package:domain/material/model/game_material.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
 import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
 import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
@@ -35,6 +36,7 @@ class CampfireBloc extends Bloc<CampfireEvent, CampfireState> {
     CampfireStarted event,
     Emitter<CampfireState> emit,
   ) {
+    emit(state.copyWith(station: event.station));
     return emit.onEach(
       _selectionRepository.selectionStream,
       onData: (selection) {
@@ -52,7 +54,7 @@ class CampfireBloc extends Bloc<CampfireEvent, CampfireState> {
     if (state.step != .empty) {
       return;
     }
-    final recipe = _campfireRecipeUseCase();
+    final recipe = _campfireRecipeUseCase(state.station);
     if (recipe == null) {
       return;
     }
@@ -92,6 +94,7 @@ class CampfireBloc extends Bloc<CampfireEvent, CampfireState> {
     _cookOnCampfireUseCase(
       recipe,
       fuel,
+      state.station,
     );
     emit(state.copyWith(step: .done));
   }

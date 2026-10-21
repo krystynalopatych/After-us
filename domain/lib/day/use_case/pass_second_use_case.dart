@@ -4,6 +4,8 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/feedback/model/feedback_message.dart';
+import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
@@ -22,6 +24,7 @@ final class PassSecondUseCase {
 
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
+  final FeedbackRepository _feedbackRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
   final SunSpotRepository _sunSpotRepository;
@@ -29,6 +32,7 @@ final class PassSecondUseCase {
   const PassSecondUseCase({
     required this._constructionRepository,
     required this._dayRepository,
+    required this._feedbackRepository,
     required this._playerRepository,
     required this._pollutionRepository,
     required this._sunSpotRepository,
@@ -109,9 +113,18 @@ final class PassSecondUseCase {
   }
 
   PlayerStats _endOfDayStats(PlayerStats stats) {
+    final drop = _pollutionRepository.pollution.dailyHealthCeilingDrop;
+    if (drop > 0) {
+      _feedbackRepository.show(
+        FeedbackMessage(
+          text: 'The air is dirty max health −$drop',
+          mood: .sad,
+        ),
+      );
+    }
     final ceiling = max(
       0.0,
-      stats.healthCeiling - _pollutionRepository.pollution.dailyHealthCeilingDrop,
+      stats.healthCeiling - drop,
     );
     return stats.copyWith(
       health: min(

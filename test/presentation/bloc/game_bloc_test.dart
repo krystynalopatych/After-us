@@ -1,5 +1,6 @@
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/location/model/game_location.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 
@@ -278,15 +279,15 @@ void main() {
       bloc.add(const GameStationTapped(.campfire));
       await pumpEventQueue();
       expect(
-        bloc.state.isCampfireOpen,
-        isTrue,
+        bloc.state.fireStation,
+        Station.campfire,
       );
 
-      bloc.add(const GameCampfireClosed());
+      bloc.add(const GameFireClosed());
       await pumpEventQueue();
       expect(
-        bloc.state.isCampfireOpen,
-        isFalse,
+        bloc.state.fireStation,
+        isNull,
       );
     },
   );
@@ -310,6 +311,33 @@ void main() {
       expect(
         bloc.state.isWorkbenchOpen,
         isFalse,
+      );
+    },
+  );
+
+  test(
+    'tapping the house with the rocket stove selected sets it up and opens no build dialog',
+    () async {
+      deps.inventory.add(.rocketStove);
+      deps.selection.selectSlot(0);
+
+      bloc.add(const GameLocationTapped());
+      await pumpEventQueue();
+
+      expect(
+        deps.station.built,
+        {Station.rocketStove},
+      );
+      expect(
+        bloc.state.isBuildOpen,
+        isFalse,
+      );
+
+      bloc.add(const GameStationTapped(.rocketStove));
+      await pumpEventQueue();
+      expect(
+        bloc.state.fireStation,
+        Station.rocketStove,
       );
     },
   );

@@ -7,7 +7,7 @@ enum GameMaterial {
   sand,
   wood,
   metal(pollutesWater: true),
-  organics,
+  organics(airPoints: 0),
   cardboard,
   seeds,
   clay,

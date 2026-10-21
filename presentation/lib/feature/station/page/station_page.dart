@@ -84,6 +84,7 @@ class _StationPageState extends State<StationPage> {
     return switch (station) {
       .campfire => images.imgCampfire,
       .workbench => images.imgCraft,
+      .rocketStove => images.imgRocketFire,
     };
   }
 }

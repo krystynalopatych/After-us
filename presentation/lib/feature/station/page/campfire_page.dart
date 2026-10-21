@@ -1,4 +1,5 @@
 import 'package:domain/station/model/campfire_recipe.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/extension/build_context_extension.dart';
@@ -12,8 +13,11 @@ class CampfirePage extends StatefulWidget {
 
   const CampfirePage._({required this.onClose});
 
-  static Widget withBloc({required VoidCallback onClose}) => BlocProvider(
-    create: (_) => CampfireBloc()..add(const CampfireStarted()),
+  static Widget withBloc({
+    required Station station,
+    required VoidCallback onClose,
+  }) => BlocProvider(
+    create: (_) => CampfireBloc()..add(CampfireStarted(station)),
     child: CampfirePage._(onClose: onClose),
   );
 

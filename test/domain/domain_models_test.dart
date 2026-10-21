@@ -106,7 +106,7 @@ void main() {
   );
 
   test(
-    'GameMaterial air points follow the burn table and default to 1',
+    'GameMaterial air points follow the burn table, organics are harmless, the rest default to 1',
     () {
       expect(
         GameMaterial.plastic.airPoints,
@@ -124,11 +124,14 @@ void main() {
         GameMaterial.electronics.airPoints,
         5,
       );
+      expect(
+        GameMaterial.organics.airPoints,
+        0,
+      );
       for (final material in [
         GameMaterial.sand,
         GameMaterial.wood,
         GameMaterial.metal,
-        GameMaterial.organics,
         GameMaterial.cardboard,
         GameMaterial.seeds,
         GameMaterial.clay,

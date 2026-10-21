@@ -36,8 +36,8 @@ final class GameStationTapped extends GameEvent {
   List<Object?> get props => [station];
 }
 
-final class GameCampfireClosed extends GameEvent {
-  const GameCampfireClosed();
+final class GameFireClosed extends GameEvent {
+  const GameFireClosed();
 }
 
 final class GameWorkbenchClosed extends GameEvent {

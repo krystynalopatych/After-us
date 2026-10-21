@@ -3,6 +3,7 @@ import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
+import 'package:domain/station/model/station.dart';
 
 final class CampfireRecipeUseCase {
   final FeedbackRepository _feedbackRepository;
@@ -15,7 +16,7 @@ final class CampfireRecipeUseCase {
     required this._selectionRepository,
   });
 
-  CampfireRecipe? call() {
+  CampfireRecipe? call(Station station) {
     final selection = _selectionRepository.selection;
     final item = switch (selection.slot) {
       final slot? => _inventoryRepository.stacks.elementAtOrNull(slot)?.item,
@@ -31,12 +32,12 @@ final class CampfireRecipeUseCase {
       _ => null,
     };
     final problem = switch (recipe) {
-      null => "You can't use this at the campfire",
+      null => "You can't use this here",
       _ when _inventoryRepository.count(.cookingPot) == 0 => 'You need a cooking pot',
       CampfireRecipe(:final input?)
           when !_inventoryRepository.canReplace(
             input,
-            recipe.outputs,
+            recipe.outputsOn(station),
           ) =>
         'Your inventory is full',
       _ => null,
