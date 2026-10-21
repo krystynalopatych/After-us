@@ -131,7 +131,7 @@ class _HudPageState extends State<HudPage> {
               height: _statHeight,
               child: StatContainer(
                 image: images.imgPlayerHp,
-                value: state.stats.health.round(),
+                value: state.stats.health.ceil(),
                 valueAlignment: _healthValueAlignment,
               ),
             ),

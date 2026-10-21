@@ -8,7 +8,12 @@ sealed class StartEvent extends Equatable {
 }
 
 final class StartStarted extends StartEvent {
-  const StartStarted();
+  final bool isLevelSelection;
+
+  const StartStarted({this.isLevelSelection = false});
+
+  @override
+  List<Object?> get props => [isLevelSelection];
 }
 
 final class StartNewGameTapped extends StartEvent {

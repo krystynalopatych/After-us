@@ -1370,18 +1370,30 @@ void main() {
       await pumpScene(tester);
 
       expect(
-        find.text('YOU SURVIVED'),
+        find.text('YOU WON!'),
         findsOneWidget,
+      );
+      expect(
+        find.text('RETRY'),
+        findsNothing,
       );
 
       await tapText(
         tester,
-        'MENU',
+        'CONTINUE',
       );
 
       expect(
         find.byType(StartPage),
         findsOneWidget,
+      );
+      expect(
+        diContainer.get<ProgressRepository>().unlockedLevel,
+        GameLevel.level2,
+      );
+      expect(
+        find.byWidgetPredicate((widget) => widget is PressableContainer && widget.isEnabled),
+        findsNWidgets(3),
       );
     },
   );

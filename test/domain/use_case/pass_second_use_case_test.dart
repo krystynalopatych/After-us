@@ -311,6 +311,29 @@ void main() {
     },
   );
 
+  test(
+    'health already at zero ends the level even when the hero is fed and would recover',
+    () {
+      player.setStats(
+        const PlayerStats(
+          health: 0,
+          hunger: 80,
+          thirst: 80,
+        ),
+      );
+      pass();
+
+      expect(
+        day.outcome,
+        LevelOutcome.died,
+      );
+      expect(
+        player.stats.health,
+        0,
+      );
+    },
+  );
+
   void startLastSecond() => day.setDay(
     const GameDay(
       number: 3,

@@ -8,6 +8,7 @@ import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
+import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
@@ -44,6 +45,9 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => CompleteLevelUseCase(progressRepository: diContainer.get()),
     )
     ..registerFactory(
       () => ConsumeUseCase(

@@ -45,6 +45,10 @@ final class PassSecondUseCase {
     if (_dayRepository.outcome != null) {
       return;
     }
+    if (_playerRepository.stats.health <= 0) {
+      _dayRepository.setOutcome(.died);
+      return;
+    }
     var stats = _secondStats(_playerRepository.stats);
     var day = _dayRepository.day.copyWith(seconds: _dayRepository.day.seconds + 1);
     LevelOutcome? outcome;
