@@ -1,12 +1,9 @@
-import 'package:domain/construction/model/construction.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/progress/model/game_level.dart';
-import 'package:domain/progress/model/level_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
-import 'package:presentation/extension/item_title_extension.dart';
 import 'package:presentation/feature/game_over/bloc/game_over_bloc.dart';
 import 'package:presentation/flow/app_flow_router/app_route.dart';
 
@@ -66,7 +63,7 @@ class _GameOverPageState extends State<GameOverPage> {
                     _title(result.outcome),
                     style: typography.banner.copyWith(color: color),
                   ),
-                  if (_reason(result) case final reason?)
+                  if (_reason(result.outcome) case final reason?)
                     Text(
                       reason,
                       textAlign: .center,
@@ -116,22 +113,12 @@ class _GameOverPageState extends State<GameOverPage> {
 
   static String _title(LevelOutcome outcome) => switch (outcome) {
     .won => 'YOU WON!',
+    .died || .noTimeLeft => 'YOU LOST',
+  };
+
+  static String? _reason(LevelOutcome outcome) => switch (outcome) {
+    .won => null,
     .died => 'YOU DIED',
-    .noTimeLeft => 'YOU LOST',
+    .noTimeLeft => 'NO TIME LEFT',
   };
-
-  static String? _reason(LevelResult result) => switch (result.outcome) {
-    .won || .died => null,
-    .noTimeLeft => 'You did not finish ${_goalList(result.missingGoals)}.',
-  };
-
-  static String _goalList(List<Construction> goals) {
-    final names = [
-      for (final goal in goals) 'the ${goal.title.toLowerCase()}',
-    ];
-    if (names.length < 2) {
-      return names.join();
-    }
-    return '${names.take(names.length - 1).join(', ')} and ${names.last}';
-  }
 }

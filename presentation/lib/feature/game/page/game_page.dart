@@ -10,6 +10,7 @@ import 'package:presentation/feature/book/page/book_page.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/compost/page/compost_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
+import 'package:presentation/feature/dialogue/page/dialogue_page.dart';
 import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
@@ -219,6 +220,7 @@ class _GamePageState extends State<GamePage> {
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
               Positioned.fill(child: NightPage.withBloc()),
+              Positioned.fill(child: DialoguePage.withBloc()),
               Positioned.fill(child: FeedbackPage.withBloc()),
             ],
           ),

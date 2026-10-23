@@ -7,11 +7,13 @@ import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/day/repository/ticker_repository_impl.dart';
+import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
+import 'package:data/pickup/repository/pickup_hint_repository_impl.dart';
 import 'package:data/player/repository/meal_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
@@ -29,10 +31,12 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
+import 'package:domain/dialogue/repository/dialogue_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/pickup/repository/pickup_hint_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
@@ -58,11 +62,13 @@ void registerDependencies() {
     ..registerSingleton<CompostRepository>(CompostRepositoryImpl())
     ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
     ..registerSingleton<DayRepository>(DayRepositoryImpl())
+    ..registerSingleton<DialogueRepository>(DialogueRepositoryImpl())
     ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
     ..registerSingleton<InventoryRepository>(InventoryRepositoryImpl())
     ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
     ..registerSingleton<MaterialRepository>(MaterialRepositoryImpl())
     ..registerSingleton<MealRepository>(MealRepositoryImpl())
+    ..registerSingleton<PickupHintRepository>(PickupHintRepositoryImpl())
     ..registerSingleton<PickupRepository>(PickupRepositoryImpl())
     ..registerSingleton<PlayerRepository>(PlayerRepositoryImpl())
     ..registerSingleton<PollutionRepository>(PollutionRepositoryImpl())

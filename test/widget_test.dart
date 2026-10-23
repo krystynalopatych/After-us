@@ -5,10 +5,12 @@ import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
+import 'package:data/pickup/repository/pickup_hint_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
 import 'package:data/player/repository/meal_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
@@ -27,6 +29,7 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
+import 'package:domain/dialogue/repository/dialogue_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
@@ -37,6 +40,8 @@ import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/pickup/model/pickup_kind.dart';
+import 'package:domain/pickup/repository/pickup_hint_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/meal_repository.dart';
@@ -102,6 +107,15 @@ void main() {
     await pumpScene(tester);
   }
 
+  Future<void> keepFound(WidgetTester tester) async {
+    await tapText(
+      tester,
+      'KEEP IT',
+    );
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pump(const Duration(seconds: 4));
+  }
+
   Future<void> pumpApp(
     WidgetTester tester, {
     AppRepository? appRepository,
@@ -129,11 +143,13 @@ void main() {
       ..registerSingleton<CompostRepository>(CompostRepositoryImpl())
       ..registerSingleton<ConstructionRepository>(ConstructionRepositoryImpl())
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
+      ..registerSingleton<DialogueRepository>(DialogueRepositoryImpl())
       ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
       ..registerSingleton<InventoryRepository>(inventoryRepository ?? InventoryRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
       ..registerSingleton<MaterialRepository>(materialRepository ?? MaterialRepositoryImpl())
       ..registerSingleton<MealRepository>(MealRepositoryImpl())
+      ..registerSingleton<PickupHintRepository>(PickupHintRepositoryImpl())
       ..registerSingleton<PickupRepository>(PickupRepositoryImpl())
       ..registerSingleton<PlayerRepository>(playerRepository ?? PlayerRepositoryImpl())
       ..registerSingleton<PollutionRepository>(pollutionRepository ?? PollutionRepositoryImpl())
@@ -670,10 +686,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tapText(
-        tester,
-        'KEEP IT',
-      );
+      await keepFound(tester);
 
       expect(
         find.text('YOU FOUND PLASTIC'),
@@ -704,10 +717,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tapText(
-        tester,
-        'KEEP IT',
-      );
+      await keepFound(tester);
 
       expect(
         buttonImage(images.imgBushBerriespng),
@@ -719,6 +729,60 @@ void main() {
       );
       expect(
         find.byType(InventorySlotContainer),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'The hero types a hint the first time a resource is kept, blocks taps while it shows, then hides it',
+    (
+      WidgetTester tester,
+    ) async {
+      final images = Assets.resources.assets.images;
+      await pumpApp(tester);
+      await startLevel1(tester);
+
+      Finder heroLine(String text) => find.byWidgetPredicate(
+        (widget) => widget is HeroLineContainer && widget.text == text,
+      );
+
+      await tester.tap(buttonImage(images.imgPlasticBottle).last);
+      await pumpScene(tester);
+      await tester.tap(find.text('KEEP IT'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(
+        heroLine(PickupKind.plastic.hint),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        buttonImage(images.imgMapIconPixel).last,
+        warnIfMissed: false,
+      );
+      await tester.pump();
+
+      expect(
+        buttonImage(images.imgMap),
+        findsNothing,
+      );
+
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(
+        find.byType(HeroLineContainer),
+        findsNothing,
+      );
+
+      await tester.tap(buttonImage(images.imgMapIconPixel).last);
+      await tester.pump();
+
+      expect(
+        buttonImage(images.imgMap),
         findsOneWidget,
       );
     },
@@ -1011,10 +1075,7 @@ void main() {
 
       await tester.tap(buttonImage(images.imgBushBerriespng).last);
       await pumpScene(tester);
-      await tapText(
-        tester,
-        'KEEP IT',
-      );
+      await keepFound(tester);
 
       expect(
         find.text('YOUR INVENTORY IS FULL'),
@@ -1048,10 +1109,7 @@ void main() {
 
       await tester.tap(buttonImage(images.imgBushBerriespng).last);
       await pumpScene(tester);
-      await tapText(
-        tester,
-        'KEEP IT',
-      );
+      await keepFound(tester);
 
       final slot = find.ancestor(
         of: find.byType(InventorySlotContainer),
@@ -1353,7 +1411,7 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.text('You did not finish the water filter and the rocket stove.'),
+        find.text('NO TIME LEFT'),
         findsOneWidget,
       );
 

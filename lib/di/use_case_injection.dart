@@ -94,8 +94,10 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => KeepPickupUseCase(
+        dialogueRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        pickupHintRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
       ),
     )
@@ -121,6 +123,7 @@ void registerUseCases() {
     ..registerFactory(
       () => NewGameUseCase(
         bookRepository: diContainer.get(),
+        pickupHintRepository: diContainer.get(),
         progressRepository: diContainer.get(),
       ),
     )
