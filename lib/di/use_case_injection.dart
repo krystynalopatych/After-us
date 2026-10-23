@@ -55,7 +55,9 @@ void registerUseCases() {
     ..registerFactory(
       () => ConsumeUseCase(
         dayRepository: diContainer.get(),
+        dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         mealRepository: diContainer.get(),
@@ -67,7 +69,9 @@ void registerUseCases() {
       () => CookOnCampfireUseCase(
         campfireRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
@@ -123,6 +127,7 @@ void registerUseCases() {
     ..registerFactory(
       () => NewGameUseCase(
         bookRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
         pickupHintRepository: diContainer.get(),
         progressRepository: diContainer.get(),
       ),
@@ -133,7 +138,9 @@ void registerUseCases() {
         compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
@@ -201,6 +208,9 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => ThrowPickupUseCase(
+        dialogueRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
       ),

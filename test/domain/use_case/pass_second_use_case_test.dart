@@ -2,6 +2,8 @@ import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
+import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
@@ -11,6 +13,7 @@ import 'package:domain/construction/model/construction.dart';
 import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/progress/model/game_level.dart';
@@ -21,7 +24,9 @@ void main() {
   late CompostRepositoryImpl compost;
   late ConstructionRepositoryImpl constructions;
   late DayRepositoryImpl day;
+  late DialogueRepositoryImpl dialogue;
   late FeedbackRepositoryImpl feedback;
+  late HeroReactionRepositoryImpl heroReaction;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
   late SunSpotRepositoryImpl sunSpot;
@@ -32,7 +37,9 @@ void main() {
     compost = CompostRepositoryImpl();
     constructions = ConstructionRepositoryImpl();
     day = DayRepositoryImpl();
+    dialogue = DialogueRepositoryImpl();
     feedback = FeedbackRepositoryImpl();
+    heroReaction = HeroReactionRepositoryImpl();
     player = PlayerRepositoryImpl();
     pollution = PollutionRepositoryImpl();
     sunSpot = SunSpotRepositoryImpl();
@@ -41,7 +48,9 @@ void main() {
       compostRepository: compost,
       constructionRepository: constructions,
       dayRepository: day,
+      dialogueRepository: dialogue,
       feedbackRepository: feedback,
+      heroReactionRepository: heroReaction,
       playerRepository: player,
       pollutionRepository: pollution,
       sunSpotRepository: sunSpot,
@@ -267,24 +276,43 @@ void main() {
     'air pollution lowers the health ceiling at the end of the day and says so',
     () async {
       final messages = <FeedbackMessage>[];
+      final lines = <String>[];
       final subscription = feedback.messageStream.listen(messages.add);
+      final lineSubscription = dialogue.lineStream.listen(lines.add);
       addTearDown(subscription.cancel);
+      addTearDown(lineSubscription.cancel);
       pollution.addAirPoints(8);
       pass(GameDay.secondsPerDay);
       await pumpEventQueue();
 
       expect(
-        messages.single.text,
+        messages.first.text,
         'The air is dirty max health −20',
+      );
+      expect(
+        lines,
+        [
+          HeroReaction.darkSky.line,
+          HeroReaction.dirtyAir.line,
+        ],
       );
 
       expect(
         player.stats.healthCeiling,
         80,
       );
+    },
+  );
+
+  test(
+    'smoky air does not make the hero talk about a dark sky',
+    () {
+      pollution.addAirPoints(3);
+      pass();
+
       expect(
-        player.stats.health,
-        80,
+        heroReaction.heard,
+        isNot(contains(HeroReaction.darkSky)),
       );
     },
   );

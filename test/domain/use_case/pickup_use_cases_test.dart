@@ -1,5 +1,7 @@
 import 'package:data/book/repository/book_repository_impl.dart';
 import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
+import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
+import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
@@ -7,6 +9,8 @@ import 'package:data/pickup/repository/pickup_hint_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
+import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/material/model/game_material.dart';
@@ -20,6 +24,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late DialogueRepositoryImpl dialogue;
+  late FeedbackRepositoryImpl feedback;
+  late HeroReactionRepositoryImpl heroReaction;
   late InventoryRepositoryImpl inventory;
   late LocationRepositoryImpl location;
   late MaterialRepositoryImpl material;
@@ -29,6 +35,8 @@ void main() {
 
   setUp(() {
     dialogue = DialogueRepositoryImpl();
+    feedback = FeedbackRepositoryImpl();
+    heroReaction = HeroReactionRepositoryImpl();
     inventory = InventoryRepositoryImpl();
     location = LocationRepositoryImpl();
     material = MaterialRepositoryImpl();
@@ -175,6 +183,7 @@ void main() {
           keep(firstOf(.wood));
           NewGameUseCase(
             bookRepository: BookRepositoryImpl(),
+            heroReactionRepository: heroReaction,
             pickupHintRepository: pickupHint,
             progressRepository: ProgressRepositoryImpl(),
           )();
@@ -195,6 +204,9 @@ void main() {
 
       setUp(
         () => throwAway = ThrowPickupUseCase(
+          dialogueRepository: dialogue,
+          feedbackRepository: feedback,
+          heroReactionRepository: heroReaction,
           pickupRepository: pickup,
           pollutionRepository: pollution,
         ),
@@ -229,9 +241,9 @@ void main() {
       );
 
       test(
-        'sand, wood, cloth and organics do not pollute the lake and plastic does not pollute the soil',
+        'sand, wood and organics do not pollute the lake and plastic does not pollute the soil',
         () {
-          for (final kind in [PickupKind.sand, PickupKind.wood, PickupKind.cloth, PickupKind.organics]) {
+          for (final kind in [PickupKind.sand, PickupKind.wood, PickupKind.organics]) {
             throwAway(
               firstOf(kind),
               .lake,
@@ -249,6 +261,91 @@ void main() {
           expect(
             pollution.pollution.isWaterPolluted,
             isFalse,
+          );
+        },
+      );
+
+      test(
+        'cloth thrown into the lake pollutes the water',
+        () {
+          throwAway(
+            firstOf(.cloth),
+            .lake,
+          );
+
+          expect(
+            pollution.pollution.isWaterPolluted,
+            isTrue,
+          );
+        },
+      );
+
+      test(
+        'only the first polluting throw into the lake shows a message and a hero line',
+        () async {
+          final messages = <FeedbackMessage>[];
+          final lines = <String>[];
+          final messageSubscription = feedback.messageStream.listen(messages.add);
+          final lineSubscription = dialogue.lineStream.listen(lines.add);
+          addTearDown(messageSubscription.cancel);
+          addTearDown(lineSubscription.cancel);
+
+          throwAway(
+            firstOf(.sand),
+            .lake,
+          );
+          throwAway(
+            firstOf(.plastic),
+            .lake,
+          );
+          throwAway(
+            firstOf(.metal),
+            .lake,
+          );
+          await pumpEventQueue();
+
+          expect(
+            messages.map((message) => message.text),
+            ['You threw plastic into the lake\nThe water is now polluted'],
+          );
+          expect(
+            lines,
+            [HeroReaction.lakePolluted.line],
+          );
+        },
+      );
+
+      test(
+        'only the first trash thrown at the dump shows a message and a hero line',
+        () async {
+          final messages = <FeedbackMessage>[];
+          final lines = <String>[];
+          final messageSubscription = feedback.messageStream.listen(messages.add);
+          final lineSubscription = dialogue.lineStream.listen(lines.add);
+          addTearDown(messageSubscription.cancel);
+          addTearDown(lineSubscription.cancel);
+
+          throwAway(
+            firstOf(.organics),
+            .dump,
+          );
+          throwAway(
+            firstOf(.plastic),
+            .dump,
+          );
+          throwAway(
+            firstOf(.cloth),
+            .house,
+          );
+          await pumpEventQueue();
+
+          expect(
+            messages.map((message) => message.text),
+            ['You threw plastic at the dump Air quality −3'],
+          );
+          expect(
+            lines,
+            [HeroReaction.trashDumped.line],
           );
         },
       );

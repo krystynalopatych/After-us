@@ -8,6 +8,7 @@ import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/day/repository/ticker_repository_impl.dart';
 import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
+import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
@@ -32,6 +33,7 @@ import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
 import 'package:domain/dialogue/repository/dialogue_repository.dart';
+import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
@@ -64,6 +66,7 @@ void registerDependencies() {
     ..registerSingleton<DayRepository>(DayRepositoryImpl())
     ..registerSingleton<DialogueRepository>(DialogueRepositoryImpl())
     ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
+    ..registerSingleton<HeroReactionRepository>(HeroReactionRepositoryImpl())
     ..registerSingleton<InventoryRepository>(InventoryRepositoryImpl())
     ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
     ..registerSingleton<MaterialRepository>(MaterialRepositoryImpl())

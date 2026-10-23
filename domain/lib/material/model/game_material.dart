@@ -3,7 +3,10 @@ enum GameMaterial {
     airPoints: 3,
     pollutesWater: true,
   ),
-  cloth(airPoints: 2),
+  cloth(
+    airPoints: 2,
+    pollutesWater: true,
+  ),
   sand,
   wood,
   metal(pollutesWater: true),

@@ -1,4 +1,7 @@
 import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
+import 'package:domain/dialogue/repository/dialogue_repository.dart';
+import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
@@ -16,7 +19,9 @@ final class ConsumeUseCase {
   static const _monotonyFactor = 0.5;
 
   final DayRepository _dayRepository;
+  final DialogueRepository _dialogueRepository;
   final FeedbackRepository _feedbackRepository;
+  final HeroReactionRepository _heroReactionRepository;
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
   final MealRepository _mealRepository;
@@ -25,7 +30,9 @@ final class ConsumeUseCase {
 
   const ConsumeUseCase({
     required this._dayRepository,
+    required this._dialogueRepository,
     required this._feedbackRepository,
+    required this._heroReactionRepository,
     required this._inventoryRepository,
     required this._materialRepository,
     required this._mealRepository,
@@ -103,7 +110,16 @@ final class ConsumeUseCase {
         ],
       ),
     );
+    if (pollutedZone == .water) {
+      _react(.pollutedWaterDrunk);
+    }
     return true;
+  }
+
+  void _react(HeroReaction reaction) {
+    if (_heroReactionRepository.hear(reaction)) {
+      _dialogueRepository.say(reaction.line);
+    }
   }
 
   static FeedbackMessage _message(
@@ -125,7 +141,6 @@ final class ConsumeUseCase {
     return switch (pollutedZone) {
       .water => FeedbackMessage(
         text: text,
-        heroLine: 'Ugh... The lake is poisoned now.',
         mood: .sad,
       ),
       .soil => FeedbackMessage(

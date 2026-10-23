@@ -6,6 +6,9 @@ import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/model/level_outcome.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
+import 'package:domain/dialogue/repository/dialogue_repository.dart';
+import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
@@ -28,7 +31,9 @@ final class PassSecondUseCase {
   final CompostRepository _compostRepository;
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
+  final DialogueRepository _dialogueRepository;
   final FeedbackRepository _feedbackRepository;
+  final HeroReactionRepository _heroReactionRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
   final SunSpotRepository _sunSpotRepository;
@@ -38,7 +43,9 @@ final class PassSecondUseCase {
     required this._compostRepository,
     required this._constructionRepository,
     required this._dayRepository,
+    required this._dialogueRepository,
     required this._feedbackRepository,
+    required this._heroReactionRepository,
     required this._playerRepository,
     required this._pollutionRepository,
     required this._sunSpotRepository,
@@ -81,6 +88,9 @@ final class PassSecondUseCase {
     _dayRepository.setDay(day);
     _sunSpotRepository.tick();
     _tickCompost();
+    if (_pollutionRepository.pollution.airQuality == .polluted) {
+      _react(.darkSky);
+    }
     if (outcome != null) {
       _dayRepository.setOutcome(outcome);
     }
@@ -153,6 +163,7 @@ final class PassSecondUseCase {
           mood: .sad,
         ),
       );
+      _react(.dirtyAir);
     }
     final ceiling = max(
       0.0,
@@ -165,6 +176,12 @@ final class PassSecondUseCase {
       ),
       healthCeiling: ceiling,
     );
+  }
+
+  void _react(HeroReaction reaction) {
+    if (_heroReactionRepository.hear(reaction)) {
+      _dialogueRepository.say(reaction.line);
+    }
   }
 
   static double _perSecond(double perDay) => perDay / GameDay.secondsPerDay;

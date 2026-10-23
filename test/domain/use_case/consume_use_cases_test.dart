@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:data/day/repository/day_repository_impl.dart';
+import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
+import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
@@ -9,6 +11,7 @@ import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
 import 'package:domain/day/model/game_day.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/water_bottle.dart';
@@ -23,7 +26,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late DayRepositoryImpl day;
+  late DialogueRepositoryImpl dialogue;
   late FeedbackRepositoryImpl feedback;
+  late HeroReactionRepositoryImpl heroReaction;
   late InventoryRepositoryImpl inventory;
   late MaterialRepositoryImpl material;
   late MealRepositoryImpl meal;
@@ -35,7 +40,9 @@ void main() {
 
   setUp(() {
     day = DayRepositoryImpl();
+    dialogue = DialogueRepositoryImpl();
     feedback = FeedbackRepositoryImpl();
+    heroReaction = HeroReactionRepositoryImpl();
     inventory = InventoryRepositoryImpl();
     material = MaterialRepositoryImpl();
     meal = MealRepositoryImpl();
@@ -63,7 +70,9 @@ void main() {
       setUp(
         () => consume = ConsumeUseCase(
           dayRepository: day,
+          dialogueRepository: dialogue,
           feedbackRepository: feedback,
+          heroReactionRepository: heroReaction,
           inventoryRepository: inventory,
           materialRepository: material,
           mealRepository: meal,
@@ -362,10 +371,13 @@ void main() {
               ),
               FeedbackMessage(
                 text: 'You ate cattail roots from the polluted lake +5 hunger −10 health',
-                heroLine: 'Ugh... The lake is poisoned now.',
                 mood: .sad,
               ),
             ],
+          );
+          expect(
+            heroReaction.heard,
+            {HeroReaction.pollutedWaterDrunk},
           );
         },
       );

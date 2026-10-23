@@ -151,7 +151,14 @@ void main() {
     () {
       expect(
         GameMaterial.values.where((material) => material.pollutesWater),
-        [GameMaterial.plastic, GameMaterial.metal, GameMaterial.oil, GameMaterial.chlorine, GameMaterial.electronics],
+        [
+          GameMaterial.plastic,
+          GameMaterial.cloth,
+          GameMaterial.metal,
+          GameMaterial.oil,
+          GameMaterial.chlorine,
+          GameMaterial.electronics,
+        ],
       );
       expect(
         GameMaterial.values.where((material) => material.pollutesSoil),

@@ -6,6 +6,7 @@ import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
+import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
@@ -29,8 +30,10 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/dialogue/repository/dialogue_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
+import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
@@ -145,6 +148,7 @@ void main() {
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
       ..registerSingleton<DialogueRepository>(DialogueRepositoryImpl())
       ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
+      ..registerSingleton<HeroReactionRepository>(HeroReactionRepositoryImpl())
       ..registerSingleton<InventoryRepository>(inventoryRepository ?? InventoryRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
       ..registerSingleton<MaterialRepository>(materialRepository ?? MaterialRepositoryImpl())
@@ -815,10 +819,23 @@ void main() {
         findsOneWidget,
       );
 
-      await tapText(
-        tester,
-        'DUMP',
+      await tester.tap(find.text('DUMP'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(
+        find.text('YOU THREW PLASTIC AT THE DUMP AIR QUALITY −3'),
+        findsOneWidget,
       );
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is HeroLineContainer && widget.text == HeroReaction.trashDumped.line,
+        ),
+        findsOneWidget,
+      );
+
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 4));
 
       expect(
         find.text('WHERE TO THROW IT?'),

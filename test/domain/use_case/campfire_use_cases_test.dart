@@ -1,3 +1,4 @@
+import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
@@ -30,7 +31,9 @@ void main() {
     cookOnCampfire = CookOnCampfireUseCase(
       campfireRepository: deps.campfire,
       dayRepository: deps.day,
+      dialogueRepository: deps.dialogue,
       feedbackRepository: deps.feedback,
+      heroReactionRepository: deps.heroReaction,
       inventoryRepository: deps.inventory,
       materialRepository: deps.material,
       pollutionRepository: deps.pollution,
@@ -457,9 +460,12 @@ void main() {
             messages.single,
             const FeedbackMessage(
               text: 'You boiled water +2 clean water\nYou burned plastic Air quality −3',
-              heroLine: 'Cough... Next time I should think harder.',
               mood: .sad,
             ),
+          );
+          expect(
+            deps.heroReaction.heard,
+            {HeroReaction.plasticBurned},
           );
         },
       );
@@ -486,6 +492,10 @@ void main() {
           expect(
             messages.last.text,
             'You made charcoal +1 charcoal\nToo many fires today Air quality −1',
+          );
+          expect(
+            deps.heroReaction.heard,
+            {HeroReaction.tooManyFires},
           );
         },
       );

@@ -1,4 +1,7 @@
 import 'package:domain/day/repository/day_repository.dart';
+import 'package:domain/dialogue/model/hero_reaction.dart';
+import 'package:domain/dialogue/repository/dialogue_repository.dart';
+import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -18,7 +21,9 @@ final class CookOnCampfireUseCase {
 
   final CampfireRepository _campfireRepository;
   final DayRepository _dayRepository;
+  final DialogueRepository _dialogueRepository;
   final FeedbackRepository _feedbackRepository;
+  final HeroReactionRepository _heroReactionRepository;
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
   final PollutionRepository _pollutionRepository;
@@ -27,7 +32,9 @@ final class CookOnCampfireUseCase {
   const CookOnCampfireUseCase({
     required this._campfireRepository,
     required this._dayRepository,
+    required this._dialogueRepository,
     required this._feedbackRepository,
+    required this._heroReactionRepository,
     required this._inventoryRepository,
     required this._materialRepository,
     required this._pollutionRepository,
@@ -94,7 +101,19 @@ final class CookOnCampfireUseCase {
         isSmoky: isSmoky,
       ),
     );
+    if (fuel.burnReaction case final reaction? when isPolluting) {
+      _react(reaction);
+    }
+    if (isSmoky) {
+      _react(.tooManyFires);
+    }
     return true;
+  }
+
+  void _react(HeroReaction reaction) {
+    if (_heroReactionRepository.hear(reaction)) {
+      _dialogueRepository.say(reaction.line);
+    }
   }
 
   static FeedbackMessage _message(
@@ -117,7 +136,6 @@ final class CookOnCampfireUseCase {
           if (isPolluting) 'You burned ${fuel.name} Air quality −${fuel.airPoints}',
           if (isSmoky) 'Too many fires today Air quality −$_smokeAirPoints',
         ].join('\n'),
-        heroLine: 'Cough... Next time I should think harder.',
         mood: .sad,
       );
     }
