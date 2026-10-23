@@ -46,6 +46,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   static const _skyHeight = 450.0;
   static const _locationHeight = 1280.0;
+  static const _horizonDepth = 160.0;
   static const _sceneSize = Size(
     1920,
     _skyHeight + _locationHeight,
@@ -55,12 +56,6 @@ class _GamePageState extends State<GamePage> {
     _skyHeight,
     680,
     1020,
-  );
-  static const _lakeWaterRect = Rect.fromLTWH(
-    560,
-    _skyHeight + 340,
-    760,
-    380,
   );
   static const _closeButtonOffset = 40.0;
   static const _closeButtonSize = 150.0;
@@ -134,25 +129,26 @@ class _GamePageState extends State<GamePage> {
           SceneContainer(
             size: _sceneSize,
             children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                right: 0,
-                height: _skyHeight,
-                child: SkyPage.withBloc(hasSun: state.location == .lake),
-              ),
+              if (state.location.hasSky)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  height: _skyHeight + _horizonDepth,
+                  child: SkyPage.withBloc(hasSun: state.location == .lake),
+                ),
               Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,
-                height: _locationHeight,
+                height: state.location.hasSky ? _locationHeight : _sceneSize.height,
                 child: switch (state.location) {
                   .house => StationPage.withBloc(
                     background: _locationBackground(state.location),
                     onLocationTap: () => _bloc.add(const GameLocationTapped()),
                     onStationTap: (station) => _bloc.add(GameStationTapped(station)),
                   ),
-                  .lake => LakePage.withBloc(),
+                  .lake => LakePage.withBloc(onWaterTap: () => _bloc.add(const GameLakeWaterTapped())),
                   .forest || .dump || .store || .garage => BackgroundContainer(
                     image: _locationBackground(state.location),
                   ),
@@ -172,17 +168,6 @@ class _GamePageState extends State<GamePage> {
                 child: CharacterPage.withBloc(onTap: () => _characterTaps.add(null)),
               ),
               if (state.location == .lake) Positioned.fill(child: SunSpotPage.withBloc(locationTop: _skyHeight)),
-              if (state.location == .lake)
-                Positioned.fromRect(
-                  rect: _lakeWaterRect,
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      behavior: .opaque,
-                      onTap: () => _bloc.add(const GameLakeWaterTapped()),
-                    ),
-                  ),
-                ),
               if (state.isStationOpen) _pickups(),
               if (state.fireStation case final station?)
                 Positioned.fill(

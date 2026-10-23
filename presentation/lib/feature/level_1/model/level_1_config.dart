@@ -3,116 +3,116 @@ import 'package:flutter/painting.dart';
 abstract final class Level1Config {
   static const pickupSpots = <Offset>[
     Offset(
-      700,
-      560,
+      620,
+      880,
     ),
     Offset(
-      180,
-      600,
+      395,
+      215,
+    ),
+    Offset(
+      880,
+      395,
     ),
     Offset(
       820,
-      160,
+      560,
     ),
     Offset(
-      1050,
-      900,
+      620,
+      330,
     ),
     Offset(
-      520,
+      1200,
       300,
     ),
     Offset(
-      760,
-      200,
-    ),
-    Offset(
-      1100,
-      260,
-    ),
-    Offset(
-      1380,
-      420,
-    ),
-    Offset(
+      300,
       600,
-      700,
-    ),
-    Offset(
-      1250,
-      760,
-    ),
-    Offset(
-      900,
-      520,
     ),
     Offset(
       1500,
       620,
     ),
     Offset(
-      560,
+      1150,
       900,
     ),
     Offset(
-      340,
-      480,
-    ),
-    Offset(
-      1560,
-      280,
-    ),
-    Offset(
-      1500,
-      960,
-    ),
-    Offset(
-      1700,
-      760,
-    ),
-    Offset(
-      480,
+      450,
       850,
     ),
     Offset(
-      600,
+      750,
+      450,
+    ),
+    Offset(
+      1350,
+      450,
+    ),
+    Offset(
+      650,
+      750,
+    ),
+    Offset(
+      1050,
+      650,
+    ),
+    Offset(
+      1400,
+      750,
+    ),
+    Offset(
+      60,
+      150,
+    ),
+    Offset(
+      470,
+      70,
+    ),
+    Offset(
+      360,
       950,
     ),
     Offset(
-      1320,
-      900,
+      540,
+      960,
     ),
     Offset(
-      180,
-      420,
+      1740,
+      860,
     ),
     Offset(
-      400,
-      170,
+      60,
+      330,
     ),
     Offset(
-      1560,
-      240,
+      1700,
+      300,
     ),
     Offset(
-      1600,
+      1700,
       520,
     ),
     Offset(
-      340,
+      700,
+      60,
+    ),
+    Offset(
+      60,
+      560,
+    ),
+    Offset(
+      1700,
       700,
     ),
     Offset(
-      200,
-      600,
+      260,
+      130,
     ),
     Offset(
-      1300,
-      780,
-    ),
-    Offset(
-      1460,
-      760,
+      1500,
+      150,
     ),
     Offset(
       900,

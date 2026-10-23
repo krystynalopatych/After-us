@@ -4,20 +4,20 @@ import 'package:flutter/painting.dart';
 abstract final class StationConfig {
   static const spots = <Station, Rect>{
     Station.campfire: Rect.fromLTWH(
-      430,
-      380,
+      500,
+      480,
       240,
       220,
     ),
     Station.workbench: Rect.fromLTWH(
-      900,
-      700,
+      980,
+      780,
       280,
       256,
     ),
     Station.rocketStove: Rect.fromLTWH(
-      560,
-      720,
+      760,
+      780,
       170,
       170,
     ),

@@ -20,8 +20,8 @@ class CompostPage extends StatefulWidget {
 
 class _CompostPageState extends State<CompostPage> {
   static const _pitRect = Rect.fromLTWH(
-    190,
-    330,
+    220,
+    580,
     230,
     210,
   );
@@ -31,25 +31,25 @@ class _CompostPageState extends State<CompostPage> {
   );
   static const _pileSpots = [
     Offset(
-      250,
-      410,
+      280,
+      660,
     ),
     Offset(
-      305,
-      400,
+      335,
+      650,
     ),
     Offset(
-      270,
-      450,
+      300,
+      700,
     ),
     Offset(
-      325,
-      445,
+      355,
+      695,
     ),
   ];
   static const _timerRect = Rect.fromLTWH(
-    250,
-    220,
+    280,
+    470,
     110,
     110,
   );

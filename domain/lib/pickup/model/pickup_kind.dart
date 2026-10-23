@@ -20,7 +20,7 @@ enum PickupKind {
   ),
   metal(
     material: .metal,
-    hint: 'An old can. Good enough for a cooking pot... With a few more I could build a stove that eats less wood.',
+    hint: 'Scrap metal. Good enough for a cooking pot... With a bit more I could build a stove that eats less wood.',
   ),
   organics(
     material: .organics,
