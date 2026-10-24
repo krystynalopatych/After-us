@@ -12,6 +12,7 @@ import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/model/pollution_zone.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 
 final class ConsumeUseCase {
   static const _pollutedValueFactor = 0.5;
@@ -27,6 +28,7 @@ final class ConsumeUseCase {
   final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
+  final SoundRepository _soundRepository;
 
   const ConsumeUseCase({
     required this._dayRepository,
@@ -38,6 +40,7 @@ final class ConsumeUseCase {
     required this._mealRepository,
     required this._playerRepository,
     required this._pollutionRepository,
+    required this._soundRepository,
   });
 
   bool call(InventoryItem item) {
@@ -72,6 +75,7 @@ final class ConsumeUseCase {
         item,
         day,
       );
+      _soundRepository.play(.eating);
     }
     final factor = (pollutedZone != null ? _pollutedValueFactor : 1.0) * (isMonotonous ? _monotonyFactor : 1.0);
     final hunger = item.hunger * factor;

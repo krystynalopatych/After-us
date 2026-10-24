@@ -56,6 +56,7 @@ import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
@@ -160,6 +161,7 @@ void main() {
       ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
       ..registerSingleton<SaveRepository>(saveRepository ?? SaveRepositoryImpl())
       ..registerSingleton<SelectionRepository>(SelectionRepositoryImpl())
+      ..registerSingleton<SoundRepository>(FakeSoundRepository())
       ..registerSingleton<StationRepository>(StationRepositoryImpl())
       ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
       ..registerSingleton<TickerRepository>(ManualTickerRepository());

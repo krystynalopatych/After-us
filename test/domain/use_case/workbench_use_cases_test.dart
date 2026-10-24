@@ -34,6 +34,7 @@ void main() {
       inventoryRepository: deps.inventory,
       materialRepository: deps.material,
       selectionRepository: deps.selection,
+      soundRepository: deps.sound,
     );
     messages = [];
     final subscription = deps.feedback.messageStream.listen(messages.add);

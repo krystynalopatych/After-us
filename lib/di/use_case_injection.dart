@@ -2,6 +2,7 @@ import 'package:domain/compost/use_case/use_compost_pit_use_case.dart';
 import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/day/use_case/pause_time_use_case.dart';
+import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
@@ -15,6 +16,10 @@ import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/new_game_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:domain/save/use_case/save_game_use_case.dart';
+import 'package:domain/sound/use_case/hero_voice_use_case.dart';
+import 'package:domain/sound/use_case/mute_sound_use_case.dart';
+import 'package:domain/sound/use_case/play_message_sound_use_case.dart';
+import 'package:domain/sound/use_case/stop_music_use_case.dart';
 import 'package:domain/station/use_case/build_station_use_case.dart';
 import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
 import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
@@ -63,6 +68,7 @@ void registerUseCases() {
         mealRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -76,6 +82,7 @@ void registerUseCases() {
         materialRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -86,6 +93,7 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -94,7 +102,14 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => HeroAwakeUseCase(dayRepository: diContainer.get()),
+    )
+    ..registerFactory(
+      () => HeroVoiceUseCase(soundRepository: diContainer.get()),
     )
     ..registerFactory(
       () => KeepPickupUseCase(
@@ -103,6 +118,7 @@ void registerUseCases() {
         materialRepository: diContainer.get(),
         pickupHintRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -125,6 +141,9 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => MuteSoundUseCase(soundRepository: diContainer.get()),
+    )
+    ..registerFactory(
       () => NewGameUseCase(
         bookRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
@@ -143,6 +162,7 @@ void registerUseCases() {
         heroReactionRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
       ),
     )
@@ -156,6 +176,9 @@ void registerUseCases() {
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => PlayMessageSoundUseCase(soundRepository: diContainer.get()),
     )
     ..registerFactory(
       () => ReadBookUseCase(bookRepository: diContainer.get()),
@@ -195,6 +218,7 @@ void registerUseCases() {
         pollutionRepository: diContainer.get(),
         saveRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
       ),
@@ -205,6 +229,9 @@ void registerUseCases() {
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
       ),
+    )
+    ..registerFactory(
+      () => StopMusicUseCase(soundRepository: diContainer.get()),
     )
     ..registerFactory(
       () => ThrowPickupUseCase(
@@ -227,6 +254,7 @@ void registerUseCases() {
         feedbackRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -234,6 +262,7 @@ void registerUseCases() {
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
       ),
     )

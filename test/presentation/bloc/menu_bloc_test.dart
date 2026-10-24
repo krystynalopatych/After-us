@@ -159,4 +159,77 @@ void main() {
       );
     },
   );
+
+  test(
+    'exiting the level stops the music',
+    () async {
+      deps.sound.loop(.backgroundMusic);
+
+      bloc.add(const MenuExitTapped());
+      await pumpEventQueue();
+
+      expect(
+        deps.sound.looping,
+        isEmpty,
+      );
+    },
+  );
+
+  test(
+    'starts with the sound on and the sound button mutes and unmutes it',
+    () async {
+      expect(
+        bloc.state.isMuted,
+        isFalse,
+      );
+
+      bloc.add(const MenuSoundTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isMuted,
+        isTrue,
+      );
+      expect(
+        deps.sound.isMuted,
+        isTrue,
+      );
+
+      bloc.add(const MenuSoundTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isMuted,
+        isFalse,
+      );
+      expect(
+        deps.sound.isMuted,
+        isFalse,
+      );
+    },
+  );
+
+  test(
+    'the sound stays muted when the panel is toggled and in a new menu',
+    () async {
+      bloc
+        ..add(const MenuToggled())
+        ..add(const MenuSoundTapped());
+      await pumpEventQueue();
+      bloc
+        ..add(const MenuToggled())
+        ..add(const MenuClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isMuted,
+        isTrue,
+      );
+
+      final nextBloc = MenuBloc()..add(const MenuStarted());
+      addTearDown(nextBloc.close);
+      await pumpEventQueue();
+      expect(
+        nextBloc.state.isMuted,
+        isTrue,
+      );
+    },
+  );
 }

@@ -41,6 +41,7 @@ void main() {
       pollutionRepository: deps.pollution,
       saveRepository: deps.save,
       selectionRepository: deps.selection,
+      soundRepository: deps.sound,
       stationRepository: deps.station,
       sunSpotRepository: deps.sunSpot,
     );

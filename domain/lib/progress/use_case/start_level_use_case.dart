@@ -14,6 +14,7 @@ import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
@@ -34,6 +35,7 @@ final class StartLevelUseCase {
   final PollutionRepository _pollutionRepository;
   final SaveRepository _saveRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
   final StationRepository _stationRepository;
   final SunSpotRepository _sunSpotRepository;
 
@@ -53,6 +55,7 @@ final class StartLevelUseCase {
     required this._pollutionRepository,
     required this._saveRepository,
     required this._selectionRepository,
+    required this._soundRepository,
     required this._stationRepository,
     required this._sunSpotRepository,
   });
@@ -67,6 +70,7 @@ final class StartLevelUseCase {
     } else {
       _reset(level);
     }
+    _soundRepository.loop(.backgroundMusic);
   }
 
   void _restore(GameSave save) {

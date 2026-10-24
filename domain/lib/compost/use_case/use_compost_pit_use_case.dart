@@ -5,6 +5,7 @@ import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 
 final class UseCompostPitUseCase {
   static const _organicsPerPile = 1;
@@ -13,12 +14,14 @@ final class UseCompostPitUseCase {
   final FeedbackRepository _feedbackRepository;
   final MaterialRepository _materialRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
 
   const UseCompostPitUseCase({
     required this._compostRepository,
     required this._feedbackRepository,
     required this._materialRepository,
     required this._selectionRepository,
+    required this._soundRepository,
   });
 
   bool call() {
@@ -28,6 +31,7 @@ final class UseCompostPitUseCase {
         _materialRepository.add(.compost);
       }
       _compostRepository.empty();
+      _soundRepository.play(.pickUp);
       _show(
         const FeedbackMessage(
           text: 'You took the compost +${CompostPit.compostYield} compost',

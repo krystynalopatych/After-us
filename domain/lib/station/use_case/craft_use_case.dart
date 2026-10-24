@@ -8,6 +8,7 @@ import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/model/workbench_item.dart';
 import 'package:domain/station/model/workbench_recipe.dart';
 
@@ -20,6 +21,7 @@ final class CraftUseCase {
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
 
   const CraftUseCase({
     required this._bookRepository,
@@ -28,6 +30,7 @@ final class CraftUseCase {
     required this._inventoryRepository,
     required this._materialRepository,
     required this._selectionRepository,
+    required this._soundRepository,
   });
 
   bool call(List<WorkbenchItem?> slots) {
@@ -49,6 +52,7 @@ final class CraftUseCase {
           );
     if (isCrafted) {
       _selectionRepository.reset();
+      _soundRepository.play(.pickUp);
     }
     return isCrafted;
   }

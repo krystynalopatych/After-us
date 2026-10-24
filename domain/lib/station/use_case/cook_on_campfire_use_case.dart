@@ -8,6 +8,7 @@ import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
 import 'package:domain/station/model/station.dart';
@@ -28,6 +29,7 @@ final class CookOnCampfireUseCase {
   final MaterialRepository _materialRepository;
   final PollutionRepository _pollutionRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
 
   const CookOnCampfireUseCase({
     required this._campfireRepository,
@@ -39,6 +41,7 @@ final class CookOnCampfireUseCase {
     required this._materialRepository,
     required this._pollutionRepository,
     required this._selectionRepository,
+    required this._soundRepository,
   });
 
   bool call(
@@ -92,6 +95,7 @@ final class CookOnCampfireUseCase {
       _pollutionRepository.addAirPoints(_smokeAirPoints);
     }
     _selectionRepository.reset();
+    _soundRepository.play(.pickUp);
     _feedbackRepository.show(
       _message(
         recipe,

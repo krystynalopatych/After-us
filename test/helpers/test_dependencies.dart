@@ -46,6 +46,8 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/model/game_sound.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
@@ -56,6 +58,34 @@ final class FakeAppRepository implements AppRepository {
 
   @override
   void exit() => exitCount++;
+}
+
+final class FakeSoundRepository implements SoundRepository {
+  final played = <GameSound>[];
+  final looping = <GameSound>{};
+  final _isMutedController = StreamController<bool>.broadcast();
+  var _isMuted = false;
+
+  @override
+  bool get isMuted => _isMuted;
+
+  @override
+  Stream<bool> get isMutedStream => _isMutedController.stream;
+
+  @override
+  void play(GameSound sound) => played.add(sound);
+
+  @override
+  void loop(GameSound sound) => looping.add(sound);
+
+  @override
+  void stop(GameSound sound) => looping.remove(sound);
+
+  @override
+  void setMuted(bool isMuted) {
+    _isMuted = isMuted;
+    _isMutedController.add(isMuted);
+  }
 }
 
 final class ManualTickerRepository implements TickerRepository {
@@ -94,6 +124,7 @@ final class TestDependencies {
   final progress = ProgressRepositoryImpl();
   final save = SaveRepositoryImpl();
   final selection = SelectionRepositoryImpl();
+  final sound = FakeSoundRepository();
   final station = StationRepositoryImpl();
   final sunSpot = SunSpotRepositoryImpl();
   final ticker = ManualTickerRepository();
@@ -123,6 +154,7 @@ final class TestDependencies {
       ..registerSingleton<ProgressRepository>(progress)
       ..registerSingleton<SaveRepository>(save)
       ..registerSingleton<SelectionRepository>(selection)
+      ..registerSingleton<SoundRepository>(sound)
       ..registerSingleton<StationRepository>(station)
       ..registerSingleton<SunSpotRepository>(sunSpot)
       ..registerSingleton<TickerRepository>(ticker);

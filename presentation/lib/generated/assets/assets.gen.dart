@@ -23,6 +23,9 @@ class $ResourcesAssetsGen {
 
   /// Directory path: resources/assets/images
   $ResourcesAssetsImagesGen get images => const $ResourcesAssetsImagesGen();
+
+  /// Directory path: resources/assets/sounds
+  $ResourcesAssetsSoundsGen get sounds => const $ResourcesAssetsSoundsGen();
 }
 
 class $ResourcesAssetsImagesGen {
@@ -461,6 +464,14 @@ class $ResourcesAssetsImagesGen {
     'resources/assets/images/img_sodis_strained_water.png',
   );
 
+  /// File path: resources/assets/images/img_sound_icon.png
+  AssetGenImage get imgSoundIcon =>
+      const AssetGenImage('resources/assets/images/img_sound_icon.png');
+
+  /// File path: resources/assets/images/img_sound_muted_icon.png
+  AssetGenImage get imgSoundMutedIcon =>
+      const AssetGenImage('resources/assets/images/img_sound_muted_icon.png');
+
   /// File path: resources/assets/images/img_store_icon.png
   AssetGenImage get imgStoreIcon =>
       const AssetGenImage('resources/assets/images/img_store_icon.png');
@@ -605,6 +616,8 @@ class $ResourcesAssetsImagesGen {
     imgSodisFilteredWater,
     imgSodisLakeWater,
     imgSodisStrainedWater,
+    imgSoundIcon,
+    imgSoundMutedIcon,
     imgStoreIcon,
     imgSun,
     imgSunLight,
@@ -614,6 +627,42 @@ class $ResourcesAssetsImagesGen {
     imgWood,
     imgZapyska,
     imgZapyskaStory,
+  ];
+}
+
+class $ResourcesAssetsSoundsGen {
+  const $ResourcesAssetsSoundsGen();
+
+  /// File path: resources/assets/sounds/background_music.mp3
+  String get backgroundMusic => 'resources/assets/sounds/background_music.mp3';
+
+  /// File path: resources/assets/sounds/eating_sound.mp3
+  String get eatingSound => 'resources/assets/sounds/eating_sound.mp3';
+
+  /// File path: resources/assets/sounds/lose_sound.mp3
+  String get loseSound => 'resources/assets/sounds/lose_sound.mp3';
+
+  /// File path: resources/assets/sounds/message_sound.mp3
+  String get messageSound => 'resources/assets/sounds/message_sound.mp3';
+
+  /// File path: resources/assets/sounds/pick_up_sound.mp3
+  String get pickUpSound => 'resources/assets/sounds/pick_up_sound.mp3';
+
+  /// File path: resources/assets/sounds/speak_sound.mp3
+  String get speakSound => 'resources/assets/sounds/speak_sound.mp3';
+
+  /// File path: resources/assets/sounds/win_sound.mp3
+  String get winSound => 'resources/assets/sounds/win_sound.mp3';
+
+  /// List of all assets
+  List<String> get values => [
+    backgroundMusic,
+    eatingSound,
+    loseSound,
+    messageSound,
+    pickUpSound,
+    speakSound,
+    winSound,
   ];
 }
 

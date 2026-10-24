@@ -38,6 +38,7 @@ void main() {
       materialRepository: deps.material,
       pollutionRepository: deps.pollution,
       selectionRepository: deps.selection,
+      soundRepository: deps.sound,
     );
     messages = [];
     final subscription = deps.feedback.messageStream.listen(messages.add);

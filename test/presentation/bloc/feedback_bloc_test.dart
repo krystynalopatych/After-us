@@ -1,5 +1,6 @@
 import 'package:domain/character/model/character_mood.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
+import 'package:domain/sound/model/game_sound.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:presentation/feature/feedback/bloc/feedback_bloc.dart';
 
@@ -110,6 +111,35 @@ void main() {
       expect(
         bloc.state.message,
         isNull,
+      );
+    },
+  );
+
+  test(
+    'plays the message sound when a sad message is shown',
+    () async {
+      final bloc = FeedbackBloc(displayDuration: displayDuration)..add(const FeedbackStarted());
+      addTearDown(bloc.close);
+      await pumpEventQueue();
+
+      deps.feedback.show(built);
+      await pumpEventQueue();
+      expect(
+        deps.sound.played,
+        isEmpty,
+      );
+
+      deps.feedback.show(burned);
+      await pumpEventQueue();
+      expect(
+        deps.sound.played,
+        isEmpty,
+      );
+
+      await waitDisplay();
+      expect(
+        deps.sound.played,
+        [GameSound.message],
       );
     },
   );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
+import 'package:domain/sound/use_case/play_message_sound_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/di/di_container.dart';
@@ -16,11 +17,13 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   final Duration _displayDuration;
   final CharacterRepository _characterRepository;
   final FeedbackRepository _feedbackRepository;
+  final PlayMessageSoundUseCase _playMessageSoundUseCase;
   Timer? _timer;
 
   FeedbackBloc({this._displayDuration = _defaultDisplayDuration})
     : _characterRepository = diContainer.get(),
       _feedbackRepository = diContainer.get(),
+      _playMessageSoundUseCase = diContainer.get(),
       super(const FeedbackState()) {
     on<FeedbackStarted>(_onStarted);
     on<FeedbackExpired>(_onExpired);
@@ -70,6 +73,7 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
 
   void _show(FeedbackMessage message) {
     _characterRepository.setMood(message.mood);
+    _playMessageSoundUseCase(message);
     _timer?.cancel();
     _timer = Timer(
       _displayDuration,

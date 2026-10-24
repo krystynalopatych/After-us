@@ -4,6 +4,7 @@ import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/pickup/model/pickup.dart';
 import 'package:domain/pickup/repository/pickup_hint_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 
 final class KeepPickupUseCase {
   final DialogueRepository _dialogueRepository;
@@ -11,6 +12,7 @@ final class KeepPickupUseCase {
   final MaterialRepository _materialRepository;
   final PickupHintRepository _pickupHintRepository;
   final PickupRepository _pickupRepository;
+  final SoundRepository _soundRepository;
 
   const KeepPickupUseCase({
     required this._dialogueRepository,
@@ -18,6 +20,7 @@ final class KeepPickupUseCase {
     required this._materialRepository,
     required this._pickupHintRepository,
     required this._pickupRepository,
+    required this._soundRepository,
   });
 
   bool call(Pickup pickup) {
@@ -27,6 +30,7 @@ final class KeepPickupUseCase {
       return false;
     }
     _pickupRepository.collect(pickup);
+    _soundRepository.play(.pickUp);
     if (_pickupHintRepository.hear(pickup.kind)) {
       _dialogueRepository.say(pickup.kind.hint);
     }

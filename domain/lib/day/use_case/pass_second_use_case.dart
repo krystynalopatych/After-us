@@ -15,6 +15,7 @@ import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
 final class PassSecondUseCase {
@@ -36,6 +37,7 @@ final class PassSecondUseCase {
   final HeroReactionRepository _heroReactionRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
+  final SoundRepository _soundRepository;
   final SunSpotRepository _sunSpotRepository;
 
   const PassSecondUseCase({
@@ -48,6 +50,7 @@ final class PassSecondUseCase {
     required this._heroReactionRepository,
     required this._playerRepository,
     required this._pollutionRepository,
+    required this._soundRepository,
     required this._sunSpotRepository,
   });
 
@@ -61,12 +64,13 @@ final class PassSecondUseCase {
       return;
     }
     if (_playerRepository.stats.health <= 0) {
-      _dayRepository.setOutcome(.died);
+      _finish(.died);
       return;
     }
     var stats = _secondStats(_playerRepository.stats);
     var day = today.copyWith(seconds: today.seconds + 1);
     LevelOutcome? outcome;
+    final hasDirtyAirNight = day.isOver && _pollutionRepository.pollution.dailyHealthCeilingDrop > 0;
 
     if (day.isOver) {
       stats = _endOfDayStats(stats);
@@ -86,14 +90,29 @@ final class PassSecondUseCase {
 
     _playerRepository.setStats(stats);
     _dayRepository.setDay(day);
+    if (hasDirtyAirNight) {
+      _react(.dirtyAir);
+    }
     _sunSpotRepository.tick();
     _tickCompost();
     if (_pollutionRepository.pollution.airQuality == .polluted) {
       _react(.darkSky);
     }
     if (outcome != null) {
-      _dayRepository.setOutcome(outcome);
+      _finish(outcome);
     }
+  }
+
+  void _finish(LevelOutcome outcome) {
+    _soundRepository
+      ..stop(.backgroundMusic)
+      ..play(
+        switch (outcome) {
+          .won => .win,
+          .died || .noTimeLeft => .lose,
+        },
+      );
+    _dayRepository.setOutcome(outcome);
   }
 
   PlayerStats _secondStats(PlayerStats stats) {
@@ -163,7 +182,6 @@ final class PassSecondUseCase {
           mood: .sad,
         ),
       );
-      _react(.dirtyAir);
     }
     final ceiling = max(
       0.0,

@@ -24,8 +24,10 @@ class _MenuPageState extends State<MenuPage> {
   static const _buttonOffset = 20.0;
   static const _buttonSize = 150.0;
   static const _panelWidth = 220.0;
+  static const _buttonInset = (_panelWidth - _buttonSize) / 2;
   static const _saveTop = 200.0;
-  static const _exitTop = 380.0;
+  static const _soundTop = 380.0;
+  static const _exitTop = 560.0;
   static const _doneWidth = 110.0;
   static const _doneHeight = 86.0;
   static const _doneSpacing = 10.0;
@@ -68,10 +70,20 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                     ),
                     _panelButton(
+                      top: _soundTop,
+                      child: PressableContainer(
+                        image: state.isMuted ? images.imgSoundIcon : images.imgSoundMutedIcon,
+                        onTap: () => _bloc.add(const MenuSoundTapped()),
+                      ),
+                    ),
+                    _panelButton(
                       top: _exitTop,
                       child: PressableContainer(
                         image: images.imgExitIcon,
-                        onTap: () => AppRoute.start.go(context),
+                        onTap: () {
+                          _bloc.add(const MenuExitTapped());
+                          AppRoute.start.go(context);
+                        },
                       ),
                     ),
                   ],
@@ -91,7 +103,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
               Positioned(
-                left: constraints.maxWidth - _buttonOffset - _buttonSize,
+                left: constraints.maxWidth - _panelWidth + _buttonInset,
                 top: _buttonOffset,
                 width: _buttonSize,
                 height: _buttonSize,
@@ -111,7 +123,7 @@ class _MenuPageState extends State<MenuPage> {
     required double top,
     required Widget child,
   }) => Positioned(
-    left: (_panelWidth - _buttonSize) / 2,
+    left: _buttonInset,
     top: top,
     width: _buttonSize,
     height: _buttonSize,

@@ -16,6 +16,7 @@ void main() {
       feedbackRepository: deps.feedback,
       inventoryRepository: deps.inventory,
       selectionRepository: deps.selection,
+      soundRepository: deps.sound,
       sunSpotRepository: deps.sunSpot,
     );
     messages = [];

@@ -18,3 +18,7 @@ final class DialogueLineTyped extends DialogueEvent {
 final class DialogueExpired extends DialogueEvent {
   const DialogueExpired();
 }
+
+final class DialogueWoke extends DialogueEvent {
+  const DialogueWoke();
+}

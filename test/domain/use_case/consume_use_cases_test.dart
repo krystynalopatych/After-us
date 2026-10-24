@@ -24,6 +24,8 @@ import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_dependencies.dart';
+
 void main() {
   late DayRepositoryImpl day;
   late DialogueRepositoryImpl dialogue;
@@ -35,6 +37,7 @@ void main() {
   late SelectionRepositoryImpl selection;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
+  late FakeSoundRepository sound;
   late List<FeedbackMessage> messages;
   late StreamSubscription<FeedbackMessage> subscription;
 
@@ -56,6 +59,7 @@ void main() {
         ),
       );
     pollution = PollutionRepositoryImpl();
+    sound = FakeSoundRepository();
     messages = [];
     subscription = feedback.messageStream.listen(messages.add);
   });
@@ -78,6 +82,7 @@ void main() {
           mealRepository: meal,
           playerRepository: player,
           pollutionRepository: pollution,
+          soundRepository: sound,
         ),
       );
 
@@ -410,6 +415,7 @@ void main() {
           inventoryRepository: inventory,
           materialRepository: material,
           selectionRepository: selection,
+          soundRepository: sound,
         ),
       );
 

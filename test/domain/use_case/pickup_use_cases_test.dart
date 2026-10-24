@@ -22,6 +22,8 @@ import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/progress/use_case/new_game_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_dependencies.dart';
+
 void main() {
   late DialogueRepositoryImpl dialogue;
   late FeedbackRepositoryImpl feedback;
@@ -32,6 +34,7 @@ void main() {
   late PickupRepositoryImpl pickup;
   late PickupHintRepositoryImpl pickupHint;
   late PollutionRepositoryImpl pollution;
+  late FakeSoundRepository sound;
 
   setUp(() {
     dialogue = DialogueRepositoryImpl();
@@ -43,6 +46,7 @@ void main() {
     pickup = PickupRepositoryImpl()..startLevel(.level1);
     pickupHint = PickupHintRepositoryImpl();
     pollution = PollutionRepositoryImpl();
+    sound = FakeSoundRepository();
   });
 
   Pickup firstOf(PickupKind kind) => pickup.pickups.firstWhere((item) => item.kind == kind);
@@ -59,6 +63,7 @@ void main() {
           materialRepository: material,
           pickupHintRepository: pickupHint,
           pickupRepository: pickup,
+          soundRepository: sound,
         ),
       );
 

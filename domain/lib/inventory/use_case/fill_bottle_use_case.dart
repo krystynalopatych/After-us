@@ -6,6 +6,7 @@ import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 
 final class FillBottleUseCase {
   static const _bottlePlastic = 1;
@@ -14,12 +15,14 @@ final class FillBottleUseCase {
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
 
   const FillBottleUseCase({
     required this._feedbackRepository,
     required this._inventoryRepository,
     required this._materialRepository,
     required this._selectionRepository,
+    required this._soundRepository,
   });
 
   bool call(
@@ -59,6 +62,7 @@ final class FillBottleUseCase {
     if (selection.slot != null || (selection.material != null && _materialRepository.count(.plastic) == 0)) {
       _selectionRepository.reset();
     }
+    _soundRepository.play(.pickUp);
     _feedbackRepository.show(FeedbackMessage(text: 'You filled a ${_bottleName(bottle)} with ${_waterName(water)}'));
     return true;
   }

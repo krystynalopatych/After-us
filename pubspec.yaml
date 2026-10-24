@@ -36,6 +36,7 @@ flutter:
 
   assets:
     - resources/assets/images/
+    - resources/assets/sounds/
 
   fonts:
     - family: PixelifySans

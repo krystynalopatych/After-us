@@ -17,7 +17,10 @@ import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/sound/model/game_sound.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../helpers/test_dependencies.dart';
 
 void main() {
   late ClockRepositoryImpl clock;
@@ -29,6 +32,7 @@ void main() {
   late HeroReactionRepositoryImpl heroReaction;
   late PlayerRepositoryImpl player;
   late PollutionRepositoryImpl pollution;
+  late FakeSoundRepository sound;
   late SunSpotRepositoryImpl sunSpot;
   late PassSecondUseCase passSecond;
 
@@ -42,6 +46,7 @@ void main() {
     heroReaction = HeroReactionRepositoryImpl();
     player = PlayerRepositoryImpl();
     pollution = PollutionRepositoryImpl();
+    sound = FakeSoundRepository();
     sunSpot = SunSpotRepositoryImpl();
     passSecond = PassSecondUseCase(
       clockRepository: clock,
@@ -53,6 +58,7 @@ void main() {
       heroReactionRepository: heroReaction,
       playerRepository: player,
       pollutionRepository: pollution,
+      soundRepository: sound,
       sunSpotRepository: sunSpot,
     );
   });
@@ -305,6 +311,38 @@ void main() {
   );
 
   test(
+    'the hero talks about the dirty air only after the night has started',
+    () async {
+      final events = <Object>[];
+      final daySubscription = day.dayStream.listen((gameDay) => events.add(gameDay.isNight));
+      final lineSubscription = dialogue.lineStream.listen(events.add);
+      addTearDown(daySubscription.cancel);
+      addTearDown(lineSubscription.cancel);
+      heroReaction.hear(.darkSky);
+      pollution.addAirPoints(8);
+      day.setDay(
+        const GameDay(
+          number: 1,
+          seconds: GameDay.secondsPerDay - 1,
+        ),
+      );
+      await pumpEventQueue();
+      events.clear();
+
+      pass();
+      await pumpEventQueue();
+
+      expect(
+        events,
+        [
+          true,
+          HeroReaction.dirtyAir.line,
+        ],
+      );
+    },
+  );
+
+  test(
     'smoky air does not make the hero talk about a dark sky',
     () {
       pollution.addAirPoints(3);
@@ -415,6 +453,10 @@ void main() {
         day.day.number,
         3,
       );
+      expect(
+        sound.played,
+        [GameSound.lose],
+      );
     },
   );
 
@@ -444,6 +486,10 @@ void main() {
       expect(
         day.outcome,
         LevelOutcome.won,
+      );
+      expect(
+        sound.played,
+        [GameSound.win],
       );
     },
   );

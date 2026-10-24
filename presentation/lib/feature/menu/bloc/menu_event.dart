@@ -19,6 +19,14 @@ final class MenuClosed extends MenuEvent {
   const MenuClosed();
 }
 
+final class MenuSoundTapped extends MenuEvent {
+  const MenuSoundTapped();
+}
+
+final class MenuExitTapped extends MenuEvent {
+  const MenuExitTapped();
+}
+
 final class MenuSaveTapped extends MenuEvent {
   final GameLevel level;
 

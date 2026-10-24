@@ -3,6 +3,7 @@ import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/sun_spot/model/sun_bottle.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
@@ -10,12 +11,14 @@ final class UseSunSpotUseCase {
   final FeedbackRepository _feedbackRepository;
   final InventoryRepository _inventoryRepository;
   final SelectionRepository _selectionRepository;
+  final SoundRepository _soundRepository;
   final SunSpotRepository _sunSpotRepository;
 
   const UseSunSpotUseCase({
     required this._feedbackRepository,
     required this._inventoryRepository,
     required this._selectionRepository,
+    required this._soundRepository,
     required this._sunSpotRepository,
   });
 
@@ -55,6 +58,7 @@ final class UseSunSpotUseCase {
       return false;
     }
     _sunSpotRepository.take();
+    _soundRepository.play(.pickUp);
     final isCleaned = bottle.result != bottle.item;
     _feedbackRepository.show(
       FeedbackMessage(

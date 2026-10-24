@@ -21,6 +21,7 @@ import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
+import 'package:data/sound/repository/sound_repository_impl.dart';
 import 'package:data/station/repository/campfire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
@@ -46,6 +47,7 @@ import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
+import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
@@ -78,6 +80,7 @@ void registerDependencies() {
     ..registerSingleton<ProgressRepository>(ProgressRepositoryImpl())
     ..registerSingleton<SaveRepository>(SaveRepositoryImpl())
     ..registerSingleton<SelectionRepository>(SelectionRepositoryImpl())
+    ..registerSingleton<SoundRepository>(SoundRepositoryImpl())
     ..registerSingleton<StationRepository>(StationRepositoryImpl())
     ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
     ..registerSingleton<TickerRepository>(TickerRepositoryImpl());
