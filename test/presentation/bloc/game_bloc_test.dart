@@ -22,6 +22,8 @@ void main() {
   Future<void> travel(GameLocation location) async {
     bloc.add(GameLocationSelected(location));
     await pumpEventQueue();
+    bloc.add(const GameMapClosed());
+    await pumpEventQueue();
   }
 
   test(
@@ -97,16 +99,44 @@ void main() {
   );
 
   test(
-    'choosing a location closes the map and moves the player',
+    'choosing a location moves the player under the open map until the page closes it',
     () async {
       bloc.add(const GameMapTapped());
       await pumpEventQueue();
-      await travel(.lake);
+      bloc.add(const GameLocationSelected(.lake));
+      await pumpEventQueue();
 
       expect(
-        bloc.state.isMapOpen,
-        isFalse,
+        bloc.state,
+        const GameState(
+          location: .lake,
+          isMapOpen: true,
+          isTraveling: true,
+        ),
       );
+      expect(
+        deps.location.location,
+        GameLocation.lake,
+      );
+
+      bloc.add(const GameMapClosed());
+      await pumpEventQueue();
+      expect(
+        bloc.state,
+        const GameState(location: .lake),
+      );
+    },
+  );
+
+  test(
+    'choosing another location while traveling is ignored',
+    () async {
+      bloc.add(const GameMapTapped());
+      await pumpEventQueue();
+      bloc.add(const GameLocationSelected(.lake));
+      bloc.add(const GameLocationSelected(.forest));
+      await pumpEventQueue();
+
       expect(
         bloc.state.location,
         GameLocation.lake,
@@ -264,7 +294,11 @@ void main() {
 
       expect(
         states.first,
-        const GameState(location: .lake),
+        const GameState(
+          location: .lake,
+          isMapOpen: true,
+          isTraveling: true,
+        ),
       );
       expect(
         states.where((state) => !state.isMapOpen && state.location == .house),

@@ -1,8 +1,10 @@
 import 'package:domain/progress/model/game_level.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:presentation/extension/level_image_extension.dart';
 import 'package:presentation/feature/game/page/game_page.dart';
 import 'package:presentation/feature/level_3/bloc/level_3_bloc.dart';
+import 'package:presentation/feature/loading/page/loading_page.dart';
 
 class Level3Page extends StatefulWidget {
   const Level3Page._();
@@ -17,6 +19,8 @@ class Level3Page extends StatefulWidget {
 }
 
 class _Level3PageState extends State<Level3Page> {
+  static const _level = GameLevel.level3;
+
   late final Level3Bloc _bloc;
 
   @override
@@ -29,7 +33,18 @@ class _Level3PageState extends State<Level3Page> {
   Widget build(BuildContext context) {
     return BlocBuilder<Level3Bloc, Level3State>(
       bloc: _bloc,
-      builder: (context, state) => GamePage.withBloc(level: GameLevel.level3),
+      builder: (context, state) => state.isStarted
+          ? LoadingPage.withBloc(
+              images: _level.images(context),
+              child: KeyedSubtree(
+                key: ValueKey(state.run),
+                child: GamePage.withBloc(
+                  level: _level,
+                  onRetry: () => _bloc.add(const Level3Retried()),
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

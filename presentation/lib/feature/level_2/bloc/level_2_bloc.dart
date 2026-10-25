@@ -13,6 +13,15 @@ class Level2Bloc extends Bloc<Level2Event, Level2State> {
   final StartLevelUseCase _startLevelUseCase;
 
   Level2Bloc() : _startLevelUseCase = diContainer.get(), super(const Level2State()) {
-    on<Level2Started>((event, emit) => _startLevelUseCase(_level));
+    on<Level2Started>(_onStarted);
+    on<Level2Retried>(_onStarted);
+  }
+
+  void _onStarted(
+    Level2Event event,
+    Emitter<Level2State> emit,
+  ) {
+    _startLevelUseCase(_level);
+    emit(state.copyWith(run: state.run + 1));
   }
 }

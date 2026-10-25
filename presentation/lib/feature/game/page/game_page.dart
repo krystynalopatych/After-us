@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
+import 'package:presentation/extension/location_image_extension.dart';
 import 'package:presentation/feature/book/page/book_page.dart';
 import 'package:presentation/feature/character/page/character_page.dart';
 import 'package:presentation/feature/compost/page/compost_page.dart';
@@ -27,16 +28,25 @@ import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
 import 'package:presentation/feature/station/page/workbench_page.dart';
 import 'package:presentation/feature/water/page/water_choice_page.dart';
-import 'package:presentation/generated/assets/assets.gen.dart';
 
 class GamePage extends StatefulWidget {
   final GameLevel level;
+  final VoidCallback onRetry;
 
-  const GamePage._({required this.level});
+  const GamePage._({
+    required this.level,
+    required this.onRetry,
+  });
 
-  static Widget withBloc({required GameLevel level}) => BlocProvider(
+  static Widget withBloc({
+    required GameLevel level,
+    required VoidCallback onRetry,
+  }) => BlocProvider(
     create: (_) => GameBloc()..add(const GameStarted()),
-    child: GamePage._(level: level),
+    child: GamePage._(
+      level: level,
+      onRetry: onRetry,
+    ),
   );
 
   @override
@@ -77,9 +87,9 @@ class _GamePageState extends State<GamePage> {
     1330,
     704,
   );
+  static const _maxTravelWait = Duration(seconds: 3);
 
   late final GameBloc _bloc;
-  var _isPrecached = false;
   final _characterTaps = StreamController<void>.broadcast();
 
   @override
@@ -94,35 +104,31 @@ class _GamePageState extends State<GamePage> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isPrecached) {
+  Future<void> _closeMapWhenLoaded() async {
+    await _sceneImagesLoaded().timeout(
+      _maxTravelWait,
+      onTimeout: () {},
+    );
+    if (!mounted || !_bloc.state.isTraveling) {
       return;
     }
-    _isPrecached = true;
-    for (final image in [
-      context.images.imgMap,
-      context.images.imgButtonClose,
-      context.images.imgSunLight,
-      context.images.imgLakeBlackRectangle,
-      context.images.imgMoon,
-      for (final location in widget.level.locations) ...[
-        _locationBackground(location),
-        _locationIcon(location),
-      ],
-    ]) {
-      precacheImage(
-        image.provider(),
-        context,
-      );
-    }
+    _bloc.add(const GameMapClosed());
+  }
+
+  Future<void> _sceneImagesLoaded() async {
+    final binding = WidgetsBinding.instance;
+    final imageCache = PaintingBinding.instance.imageCache;
+    do {
+      await binding.endOfFrame;
+    } while (mounted && _bloc.state.isTraveling && imageCache.pendingImageCount > 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(
+    return BlocConsumer<GameBloc, GameState>(
       bloc: _bloc,
+      listenWhen: (previous, current) => !previous.isTraveling && current.isTraveling,
+      listener: (context, state) => _closeMapWhenLoaded(),
       builder: (context, state) => Stack(
         fit: .expand,
         children: [
@@ -144,13 +150,13 @@ class _GamePageState extends State<GamePage> {
                 height: state.location.hasSky ? _locationHeight : _sceneSize.height,
                 child: switch (state.location) {
                   .house => StationPage.withBloc(
-                    background: _locationBackground(state.location),
+                    background: state.location.background(context),
                     onLocationTap: () => _bloc.add(const GameLocationTapped()),
                     onStationTap: (station) => _bloc.add(GameStationTapped(station)),
                   ),
                   .lake => LakePage.withBloc(onWaterTap: () => _bloc.add(const GameLakeWaterTapped())),
                   .forest || .dump || .store || .garage => BackgroundContainer(
-                    image: _locationBackground(state.location),
+                    image: state.location.background(context),
                   ),
                 },
               ),
@@ -210,7 +216,10 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
           if (state.isMapOpen) _map(),
-          GameOverPage.withBloc(level: widget.level),
+          GameOverPage.withBloc(
+            level: widget.level,
+            onRetry: widget.onRetry,
+          ),
         ],
       ),
     );
@@ -234,7 +243,7 @@ class _GamePageState extends State<GamePage> {
             width: _mapIconWidth,
             height: _mapIconHeight,
             child: PressableContainer(
-              image: _locationIcon(location),
+              image: location.icon(context),
               onTap: () => _bloc.add(GameLocationSelected(location)),
             ),
           ),
@@ -258,28 +267,4 @@ class _GamePageState extends State<GamePage> {
     .forest => _forestSpot,
     .dump || .store || .garage => _farSpot,
   };
-
-  AssetGenImage _locationBackground(GameLocation location) {
-    final images = context.images;
-    return switch (location) {
-      .house => images.imgHouseRectangle,
-      .forest => images.imgForestRectangle,
-      .lake => images.imgLakeRectangle,
-      .dump => images.imgSvalka,
-      .store => images.imgAbandonnedStore,
-      .garage => images.imgGarage,
-    };
-  }
-
-  AssetGenImage _locationIcon(GameLocation location) {
-    final images = context.images;
-    return switch (location) {
-      .house => images.imgHomeIcon,
-      .forest => images.imgForestIcon,
-      .lake => images.imgLakeIcon,
-      .dump => images.imgSvalkaIcon,
-      .store => images.imgStoreIcon,
-      .garage => images.imgGarageIcon,
-    };
-  }
 }

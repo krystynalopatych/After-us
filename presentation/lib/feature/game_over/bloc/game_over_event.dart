@@ -11,10 +11,6 @@ final class GameOverStarted extends GameOverEvent {
   const GameOverStarted();
 }
 
-final class GameOverRetryTapped extends GameOverEvent {
-  const GameOverRetryTapped();
-}
-
 final class GameOverContinueTapped extends GameOverEvent {
   const GameOverContinueTapped();
 }

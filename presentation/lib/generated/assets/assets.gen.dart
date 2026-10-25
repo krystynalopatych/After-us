@@ -31,482 +31,485 @@ class $ResourcesAssetsGen {
 class $ResourcesAssetsImagesGen {
   const $ResourcesAssetsImagesGen();
 
-  /// File path: resources/assets/images/background.png
+  /// File path: resources/assets/images/background.webp
   AssetGenImage get background =>
-      const AssetGenImage('resources/assets/images/background.png');
+      const AssetGenImage('resources/assets/images/background.webp');
 
-  /// File path: resources/assets/images/img_Seeds.png
+  /// File path: resources/assets/images/img_Seeds.webp
   AssetGenImage get imgSeeds =>
-      const AssetGenImage('resources/assets/images/img_Seeds.png');
+      const AssetGenImage('resources/assets/images/img_Seeds.webp');
 
-  /// File path: resources/assets/images/img_abandonned_store.png
+  /// File path: resources/assets/images/img_abandonned_store.webp
   AssetGenImage get imgAbandonnedStore =>
-      const AssetGenImage('resources/assets/images/img_abandonned_store.png');
+      const AssetGenImage('resources/assets/images/img_abandonned_store.webp');
 
-  /// File path: resources/assets/images/img_answer_block.png
+  /// File path: resources/assets/images/img_answer_block.webp
   AssetGenImage get imgAnswerBlock =>
-      const AssetGenImage('resources/assets/images/img_answer_block.png');
+      const AssetGenImage('resources/assets/images/img_answer_block.webp');
 
-  /// File path: resources/assets/images/img_ashes.png
+  /// File path: resources/assets/images/img_ashes.webp
   AssetGenImage get imgAshes =>
-      const AssetGenImage('resources/assets/images/img_ashes.png');
+      const AssetGenImage('resources/assets/images/img_ashes.webp');
 
-  /// File path: resources/assets/images/img_berries.png
+  /// File path: resources/assets/images/img_berries.webp
   AssetGenImage get imgBerries =>
-      const AssetGenImage('resources/assets/images/img_berries.png');
+      const AssetGenImage('resources/assets/images/img_berries.webp');
 
-  /// File path: resources/assets/images/img_boiled_water.png
+  /// File path: resources/assets/images/img_boiled_water.webp
   AssetGenImage get imgBoiledWater =>
-      const AssetGenImage('resources/assets/images/img_boiled_water.png');
+      const AssetGenImage('resources/assets/images/img_boiled_water.webp');
 
-  /// File path: resources/assets/images/img_book_icon.png
+  /// File path: resources/assets/images/img_book_icon.webp
   AssetGenImage get imgBookIcon =>
-      const AssetGenImage('resources/assets/images/img_book_icon.png');
+      const AssetGenImage('resources/assets/images/img_book_icon.webp');
 
-  /// File path: resources/assets/images/img_bottle_filtered_water.png
+  /// File path: resources/assets/images/img_bottle_filtered_water.webp
   AssetGenImage get imgBottleFilteredWater => const AssetGenImage(
-    'resources/assets/images/img_bottle_filtered_water.png',
+    'resources/assets/images/img_bottle_filtered_water.webp',
   );
 
-  /// File path: resources/assets/images/img_bottle_lake_water.png
+  /// File path: resources/assets/images/img_bottle_lake_water.webp
   AssetGenImage get imgBottleLakeWater =>
-      const AssetGenImage('resources/assets/images/img_bottle_lake_water.png');
+      const AssetGenImage('resources/assets/images/img_bottle_lake_water.webp');
 
-  /// File path: resources/assets/images/img_bottle_strained_water.png
+  /// File path: resources/assets/images/img_bottle_strained_water.webp
   AssetGenImage get imgBottleStrainedWater => const AssetGenImage(
-    'resources/assets/images/img_bottle_strained_water.png',
+    'resources/assets/images/img_bottle_strained_water.webp',
   );
 
-  /// File path: resources/assets/images/img_bush_berriespng.png
+  /// File path: resources/assets/images/img_bush_berriespng.webp
   AssetGenImage get imgBushBerriespng =>
-      const AssetGenImage('resources/assets/images/img_bush_berriespng.png');
+      const AssetGenImage('resources/assets/images/img_bush_berriespng.webp');
 
-  /// File path: resources/assets/images/img_button_back.png
+  /// File path: resources/assets/images/img_button_back.webp
   AssetGenImage get imgButtonBack =>
-      const AssetGenImage('resources/assets/images/img_button_back.png');
+      const AssetGenImage('resources/assets/images/img_button_back.webp');
 
-  /// File path: resources/assets/images/img_button_close.png
+  /// File path: resources/assets/images/img_button_close.webp
   AssetGenImage get imgButtonClose =>
-      const AssetGenImage('resources/assets/images/img_button_close.png');
+      const AssetGenImage('resources/assets/images/img_button_close.webp');
 
-  /// File path: resources/assets/images/img_button_exit.png
+  /// File path: resources/assets/images/img_button_exit.webp
   AssetGenImage get imgButtonExit =>
-      const AssetGenImage('resources/assets/images/img_button_exit.png');
+      const AssetGenImage('resources/assets/images/img_button_exit.webp');
 
-  /// File path: resources/assets/images/img_button_level1.png
+  /// File path: resources/assets/images/img_button_level1.webp
   AssetGenImage get imgButtonLevel1 =>
-      const AssetGenImage('resources/assets/images/img_button_level1.png');
+      const AssetGenImage('resources/assets/images/img_button_level1.webp');
 
-  /// File path: resources/assets/images/img_button_level2.png
+  /// File path: resources/assets/images/img_button_level2.webp
   AssetGenImage get imgButtonLevel2 =>
-      const AssetGenImage('resources/assets/images/img_button_level2.png');
+      const AssetGenImage('resources/assets/images/img_button_level2.webp');
 
-  /// File path: resources/assets/images/img_button_level3.png
+  /// File path: resources/assets/images/img_button_level3.webp
   AssetGenImage get imgButtonLevel3 =>
-      const AssetGenImage('resources/assets/images/img_button_level3.png');
+      const AssetGenImage('resources/assets/images/img_button_level3.webp');
 
-  /// File path: resources/assets/images/img_button_load_game.png
+  /// File path: resources/assets/images/img_button_load_game.webp
   AssetGenImage get imgButtonLoadGame =>
-      const AssetGenImage('resources/assets/images/img_button_load_game.png');
+      const AssetGenImage('resources/assets/images/img_button_load_game.webp');
 
-  /// File path: resources/assets/images/img_button_menu.png
+  /// File path: resources/assets/images/img_button_menu.webp
   AssetGenImage get imgButtonMenu =>
-      const AssetGenImage('resources/assets/images/img_button_menu.png');
+      const AssetGenImage('resources/assets/images/img_button_menu.webp');
 
-  /// File path: resources/assets/images/img_button_new_game.png
+  /// File path: resources/assets/images/img_button_new_game.webp
   AssetGenImage get imgButtonNewGame =>
-      const AssetGenImage('resources/assets/images/img_button_new_game.png');
+      const AssetGenImage('resources/assets/images/img_button_new_game.webp');
 
-  /// File path: resources/assets/images/img_button_save_game.png
+  /// File path: resources/assets/images/img_button_save_game.webp
   AssetGenImage get imgButtonSaveGame =>
-      const AssetGenImage('resources/assets/images/img_button_save_game.png');
+      const AssetGenImage('resources/assets/images/img_button_save_game.webp');
 
-  /// File path: resources/assets/images/img_campfire.png
+  /// File path: resources/assets/images/img_campfire.webp
   AssetGenImage get imgCampfire =>
-      const AssetGenImage('resources/assets/images/img_campfire.png');
+      const AssetGenImage('resources/assets/images/img_campfire.webp');
 
-  /// File path: resources/assets/images/img_cardboard.png
+  /// File path: resources/assets/images/img_cardboard.webp
   AssetGenImage get imgCardboard =>
-      const AssetGenImage('resources/assets/images/img_cardboard.png');
+      const AssetGenImage('resources/assets/images/img_cardboard.webp');
 
-  /// File path: resources/assets/images/img_chlorine.png
+  /// File path: resources/assets/images/img_chlorine.webp
   AssetGenImage get imgChlorine =>
-      const AssetGenImage('resources/assets/images/img_chlorine.png');
+      const AssetGenImage('resources/assets/images/img_chlorine.webp');
 
-  /// File path: resources/assets/images/img_circle_timer.png
+  /// File path: resources/assets/images/img_circle_timer.webp
   AssetGenImage get imgCircleTimer =>
-      const AssetGenImage('resources/assets/images/img_circle_timer.png');
+      const AssetGenImage('resources/assets/images/img_circle_timer.webp');
 
-  /// File path: resources/assets/images/img_claud_black.png
+  /// File path: resources/assets/images/img_claud_black.webp
   AssetGenImage get imgClaudBlack =>
-      const AssetGenImage('resources/assets/images/img_claud_black.png');
+      const AssetGenImage('resources/assets/images/img_claud_black.webp');
 
-  /// File path: resources/assets/images/img_claud_blue.png
+  /// File path: resources/assets/images/img_claud_blue.webp
   AssetGenImage get imgClaudBlue =>
-      const AssetGenImage('resources/assets/images/img_claud_blue.png');
+      const AssetGenImage('resources/assets/images/img_claud_blue.webp');
 
-  /// File path: resources/assets/images/img_claud_blue_smaller.png
-  AssetGenImage get imgClaudBlueSmaller =>
-      const AssetGenImage('resources/assets/images/img_claud_blue_smaller.png');
+  /// File path: resources/assets/images/img_claud_blue_smaller.webp
+  AssetGenImage get imgClaudBlueSmaller => const AssetGenImage(
+    'resources/assets/images/img_claud_blue_smaller.webp',
+  );
 
-  /// File path: resources/assets/images/img_clay.png
+  /// File path: resources/assets/images/img_clay.webp
   AssetGenImage get imgClay =>
-      const AssetGenImage('resources/assets/images/img_clay.png');
+      const AssetGenImage('resources/assets/images/img_clay.webp');
 
-  /// File path: resources/assets/images/img_clay_pot.png
+  /// File path: resources/assets/images/img_clay_pot.webp
   AssetGenImage get imgClayPot =>
-      const AssetGenImage('resources/assets/images/img_clay_pot.png');
+      const AssetGenImage('resources/assets/images/img_clay_pot.webp');
 
-  /// File path: resources/assets/images/img_coal.png
+  /// File path: resources/assets/images/img_coal.webp
   AssetGenImage get imgCoal =>
-      const AssetGenImage('resources/assets/images/img_coal.png');
+      const AssetGenImage('resources/assets/images/img_coal.webp');
 
-  /// File path: resources/assets/images/img_cooking_pot.png
+  /// File path: resources/assets/images/img_cooking_pot.webp
   AssetGenImage get imgCookingPot =>
-      const AssetGenImage('resources/assets/images/img_cooking_pot.png');
+      const AssetGenImage('resources/assets/images/img_cooking_pot.webp');
 
-  /// File path: resources/assets/images/img_craft.png
+  /// File path: resources/assets/images/img_craft.webp
   AssetGenImage get imgCraft =>
-      const AssetGenImage('resources/assets/images/img_craft.png');
+      const AssetGenImage('resources/assets/images/img_craft.webp');
 
-  /// File path: resources/assets/images/img_craft_book.png
+  /// File path: resources/assets/images/img_craft_book.webp
   AssetGenImage get imgCraftBook =>
-      const AssetGenImage('resources/assets/images/img_craft_book.png');
+      const AssetGenImage('resources/assets/images/img_craft_book.webp');
 
-  /// File path: resources/assets/images/img_crafting process.png
+  /// File path: resources/assets/images/img_crafting process.webp
   AssetGenImage get imgCraftingProcess =>
-      const AssetGenImage('resources/assets/images/img_crafting process.png');
+      const AssetGenImage('resources/assets/images/img_crafting process.webp');
 
-  /// File path: resources/assets/images/img_dialogue.png
+  /// File path: resources/assets/images/img_dialogue.webp
   AssetGenImage get imgDialogue =>
-      const AssetGenImage('resources/assets/images/img_dialogue.png');
+      const AssetGenImage('resources/assets/images/img_dialogue.webp');
 
-  /// File path: resources/assets/images/img_done_icon.png
+  /// File path: resources/assets/images/img_done_icon.webp
   AssetGenImage get imgDoneIcon =>
-      const AssetGenImage('resources/assets/images/img_done_icon.png');
+      const AssetGenImage('resources/assets/images/img_done_icon.webp');
 
-  /// File path: resources/assets/images/img_eco_brickc.png
+  /// File path: resources/assets/images/img_eco_brickc.webp
   AssetGenImage get imgEcoBrickc =>
-      const AssetGenImage('resources/assets/images/img_eco_brickc.png');
+      const AssetGenImage('resources/assets/images/img_eco_brickc.webp');
 
-  /// File path: resources/assets/images/img_exit_icon.png
+  /// File path: resources/assets/images/img_exit_icon.webp
   AssetGenImage get imgExitIcon =>
-      const AssetGenImage('resources/assets/images/img_exit_icon.png');
+      const AssetGenImage('resources/assets/images/img_exit_icon.webp');
 
-  /// File path: resources/assets/images/img_fabric.png
+  /// File path: resources/assets/images/img_fabric.webp
   AssetGenImage get imgFabric =>
-      const AssetGenImage('resources/assets/images/img_fabric.png');
+      const AssetGenImage('resources/assets/images/img_fabric.webp');
 
-  /// File path: resources/assets/images/img_filter_refresher.png
+  /// File path: resources/assets/images/img_filter_refresher.webp
   AssetGenImage get imgFilterRefresher =>
-      const AssetGenImage('resources/assets/images/img_filter_refresher.png');
+      const AssetGenImage('resources/assets/images/img_filter_refresher.webp');
 
-  /// File path: resources/assets/images/img_fire_stack.png
+  /// File path: resources/assets/images/img_fire_stack.webp
   AssetGenImage get imgFireStack =>
-      const AssetGenImage('resources/assets/images/img_fire_stack.png');
+      const AssetGenImage('resources/assets/images/img_fire_stack.webp');
 
-  /// File path: resources/assets/images/img_forest_icon.png
+  /// File path: resources/assets/images/img_forest_icon.webp
   AssetGenImage get imgForestIcon =>
-      const AssetGenImage('resources/assets/images/img_forest_icon.png');
+      const AssetGenImage('resources/assets/images/img_forest_icon.webp');
 
-  /// File path: resources/assets/images/img_forest_rectangle.png
+  /// File path: resources/assets/images/img_forest_rectangle.webp
   AssetGenImage get imgForestRectangle =>
-      const AssetGenImage('resources/assets/images/img_forest_rectangle.png');
+      const AssetGenImage('resources/assets/images/img_forest_rectangle.webp');
 
-  /// File path: resources/assets/images/img_freezer_gorshok.png
+  /// File path: resources/assets/images/img_freezer_gorshok.webp
   AssetGenImage get imgFreezerGorshok =>
-      const AssetGenImage('resources/assets/images/img_freezer_gorshok.png');
+      const AssetGenImage('resources/assets/images/img_freezer_gorshok.webp');
 
-  /// File path: resources/assets/images/img_full_water_filter.png
+  /// File path: resources/assets/images/img_full_water_filter.webp
   AssetGenImage get imgFullWaterFilter =>
-      const AssetGenImage('resources/assets/images/img_full_water_filter.png');
+      const AssetGenImage('resources/assets/images/img_full_water_filter.webp');
 
-  /// File path: resources/assets/images/img_garage.png
+  /// File path: resources/assets/images/img_garage.webp
   AssetGenImage get imgGarage =>
-      const AssetGenImage('resources/assets/images/img_garage.png');
+      const AssetGenImage('resources/assets/images/img_garage.webp');
 
-  /// File path: resources/assets/images/img_garage_icon.png
+  /// File path: resources/assets/images/img_garage_icon.webp
   AssetGenImage get imgGarageIcon =>
-      const AssetGenImage('resources/assets/images/img_garage_icon.png');
+      const AssetGenImage('resources/assets/images/img_garage_icon.webp');
 
-  /// File path: resources/assets/images/img_greenhouse.png
+  /// File path: resources/assets/images/img_greenhouse.webp
   AssetGenImage get imgGreenhouse =>
-      const AssetGenImage('resources/assets/images/img_greenhouse.png');
+      const AssetGenImage('resources/assets/images/img_greenhouse.webp');
 
-  /// File path: resources/assets/images/img_gryadka.png
+  /// File path: resources/assets/images/img_gryadka.webp
   AssetGenImage get imgGryadka =>
-      const AssetGenImage('resources/assets/images/img_gryadka.png');
+      const AssetGenImage('resources/assets/images/img_gryadka.webp');
 
-  /// File path: resources/assets/images/img_gryadka_rastet.png
+  /// File path: resources/assets/images/img_gryadka_rastet.webp
   AssetGenImage get imgGryadkaRastet =>
-      const AssetGenImage('resources/assets/images/img_gryadka_rastet.png');
+      const AssetGenImage('resources/assets/images/img_gryadka_rastet.webp');
 
-  /// File path: resources/assets/images/img_harvest.png
+  /// File path: resources/assets/images/img_harvest.webp
   AssetGenImage get imgHarvest =>
-      const AssetGenImage('resources/assets/images/img_harvest.png');
+      const AssetGenImage('resources/assets/images/img_harvest.webp');
 
-  /// File path: resources/assets/images/img_hole.png
+  /// File path: resources/assets/images/img_hole.webp
   AssetGenImage get imgHole =>
-      const AssetGenImage('resources/assets/images/img_hole.png');
+      const AssetGenImage('resources/assets/images/img_hole.webp');
 
-  /// File path: resources/assets/images/img_home_icon.png
+  /// File path: resources/assets/images/img_home_icon.webp
   AssetGenImage get imgHomeIcon =>
-      const AssetGenImage('resources/assets/images/img_home_icon.png');
+      const AssetGenImage('resources/assets/images/img_home_icon.webp');
 
-  /// File path: resources/assets/images/img_house.png
+  /// File path: resources/assets/images/img_house.webp
   AssetGenImage get imgHouse =>
-      const AssetGenImage('resources/assets/images/img_house.png');
+      const AssetGenImage('resources/assets/images/img_house.webp');
 
-  /// File path: resources/assets/images/img_house_rectangle.png
+  /// File path: resources/assets/images/img_house_rectangle.webp
   AssetGenImage get imgHouseRectangle =>
-      const AssetGenImage('resources/assets/images/img_house_rectangle.png');
+      const AssetGenImage('resources/assets/images/img_house_rectangle.webp');
 
-  /// File path: resources/assets/images/img_inventory_12.png
+  /// File path: resources/assets/images/img_inventory_12.webp
   AssetGenImage get imgInventory12 =>
-      const AssetGenImage('resources/assets/images/img_inventory_12.png');
+      const AssetGenImage('resources/assets/images/img_inventory_12.webp');
 
-  /// File path: resources/assets/images/img_kamysh.png
+  /// File path: resources/assets/images/img_kamysh.webp
   AssetGenImage get imgKamysh =>
-      const AssetGenImage('resources/assets/images/img_kamysh.png');
+      const AssetGenImage('resources/assets/images/img_kamysh.webp');
 
-  /// File path: resources/assets/images/img_kompost.png
+  /// File path: resources/assets/images/img_kompost.webp
   AssetGenImage get imgKompost =>
-      const AssetGenImage('resources/assets/images/img_kompost.png');
+      const AssetGenImage('resources/assets/images/img_kompost.webp');
 
-  /// File path: resources/assets/images/img_koreni_kamysha_svarenye.png
+  /// File path: resources/assets/images/img_koreni_kamysha_svarenye.webp
   AssetGenImage get imgKoreniKamyshaSvarenye => const AssetGenImage(
-    'resources/assets/images/img_koreni_kamysha_svarenye.png',
+    'resources/assets/images/img_koreni_kamysha_svarenye.webp',
   );
 
-  /// File path: resources/assets/images/img_koreni_kamysha_syrye.png
+  /// File path: resources/assets/images/img_koreni_kamysha_syrye.webp
   AssetGenImage get imgKoreniKamyshaSyrye => const AssetGenImage(
-    'resources/assets/images/img_koreni_kamysha_syrye.png',
+    'resources/assets/images/img_koreni_kamysha_syrye.webp',
   );
 
-  /// File path: resources/assets/images/img_lake.png
+  /// File path: resources/assets/images/img_lake.webp
   AssetGenImage get imgLake =>
-      const AssetGenImage('resources/assets/images/img_lake.png');
+      const AssetGenImage('resources/assets/images/img_lake.webp');
 
-  /// File path: resources/assets/images/img_lake_black.png
+  /// File path: resources/assets/images/img_lake_black.webp
   AssetGenImage get imgLakeBlack =>
-      const AssetGenImage('resources/assets/images/img_lake_black.png');
+      const AssetGenImage('resources/assets/images/img_lake_black.webp');
 
-  /// File path: resources/assets/images/img_lake_black_rectangle.png
+  /// File path: resources/assets/images/img_lake_black_rectangle.webp
   AssetGenImage get imgLakeBlackRectangle => const AssetGenImage(
-    'resources/assets/images/img_lake_black_rectangle.png',
+    'resources/assets/images/img_lake_black_rectangle.webp',
   );
 
-  /// File path: resources/assets/images/img_lake_icon.png
+  /// File path: resources/assets/images/img_lake_icon.webp
   AssetGenImage get imgLakeIcon =>
-      const AssetGenImage('resources/assets/images/img_lake_icon.png');
+      const AssetGenImage('resources/assets/images/img_lake_icon.webp');
 
-  /// File path: resources/assets/images/img_lake_rectangle.png
+  /// File path: resources/assets/images/img_lake_rectangle.webp
   AssetGenImage get imgLakeRectangle =>
-      const AssetGenImage('resources/assets/images/img_lake_rectangle.png');
+      const AssetGenImage('resources/assets/images/img_lake_rectangle.webp');
 
-  /// File path: resources/assets/images/img_logo_page.png
+  /// File path: resources/assets/images/img_logo_page.webp
   AssetGenImage get imgLogoPage =>
-      const AssetGenImage('resources/assets/images/img_logo_page.png');
+      const AssetGenImage('resources/assets/images/img_logo_page.webp');
 
-  /// File path: resources/assets/images/img_lye.png
+  /// File path: resources/assets/images/img_lye.webp
   AssetGenImage get imgLye =>
-      const AssetGenImage('resources/assets/images/img_lye.png');
+      const AssetGenImage('resources/assets/images/img_lye.webp');
 
-  /// File path: resources/assets/images/img_main_character.png
+  /// File path: resources/assets/images/img_main_character.webp
   AssetGenImage get imgMainCharacter =>
-      const AssetGenImage('resources/assets/images/img_main_character.png');
+      const AssetGenImage('resources/assets/images/img_main_character.webp');
 
-  /// File path: resources/assets/images/img_main_character_happy.png
+  /// File path: resources/assets/images/img_main_character_happy.webp
   AssetGenImage get imgMainCharacterHappy => const AssetGenImage(
-    'resources/assets/images/img_main_character_happy.png',
+    'resources/assets/images/img_main_character_happy.webp',
   );
 
-  /// File path: resources/assets/images/img_main_character_sad.png
-  AssetGenImage get imgMainCharacterSad =>
-      const AssetGenImage('resources/assets/images/img_main_character_sad.png');
+  /// File path: resources/assets/images/img_main_character_sad.webp
+  AssetGenImage get imgMainCharacterSad => const AssetGenImage(
+    'resources/assets/images/img_main_character_sad.webp',
+  );
 
-  /// File path: resources/assets/images/img_map.png
+  /// File path: resources/assets/images/img_map.webp
   AssetGenImage get imgMap =>
-      const AssetGenImage('resources/assets/images/img_map.png');
+      const AssetGenImage('resources/assets/images/img_map.webp');
 
-  /// File path: resources/assets/images/img_map_icon_pixel.png
+  /// File path: resources/assets/images/img_map_icon_pixel.webp
   AssetGenImage get imgMapIconPixel =>
-      const AssetGenImage('resources/assets/images/img_map_icon_pixel.png');
+      const AssetGenImage('resources/assets/images/img_map_icon_pixel.webp');
 
-  /// File path: resources/assets/images/img_message_block.png
+  /// File path: resources/assets/images/img_message_block.webp
   AssetGenImage get imgMessageBlock =>
-      const AssetGenImage('resources/assets/images/img_message_block.png');
+      const AssetGenImage('resources/assets/images/img_message_block.webp');
 
-  /// File path: resources/assets/images/img_metal.png
+  /// File path: resources/assets/images/img_metal.webp
   AssetGenImage get imgMetal =>
-      const AssetGenImage('resources/assets/images/img_metal.png');
+      const AssetGenImage('resources/assets/images/img_metal.webp');
 
-  /// File path: resources/assets/images/img_micelium_roof.png
+  /// File path: resources/assets/images/img_micelium_roof.webp
   AssetGenImage get imgMiceliumRoof =>
-      const AssetGenImage('resources/assets/images/img_micelium_roof.png');
+      const AssetGenImage('resources/assets/images/img_micelium_roof.webp');
 
-  /// File path: resources/assets/images/img_miceliy.png
+  /// File path: resources/assets/images/img_miceliy.webp
   AssetGenImage get imgMiceliy =>
-      const AssetGenImage('resources/assets/images/img_miceliy.png');
+      const AssetGenImage('resources/assets/images/img_miceliy.webp');
 
-  /// File path: resources/assets/images/img_moon.png
+  /// File path: resources/assets/images/img_moon.webp
   AssetGenImage get imgMoon =>
-      const AssetGenImage('resources/assets/images/img_moon.png');
+      const AssetGenImage('resources/assets/images/img_moon.webp');
 
-  /// File path: resources/assets/images/img_moser_lamp.png
+  /// File path: resources/assets/images/img_moser_lamp.webp
   AssetGenImage get imgMoserLamp =>
-      const AssetGenImage('resources/assets/images/img_moser_lamp.png');
+      const AssetGenImage('resources/assets/images/img_moser_lamp.webp');
 
-  /// File path: resources/assets/images/img_mushrooms.png
+  /// File path: resources/assets/images/img_mushrooms.webp
   AssetGenImage get imgMushrooms =>
-      const AssetGenImage('resources/assets/images/img_mushrooms.png');
+      const AssetGenImage('resources/assets/images/img_mushrooms.webp');
 
-  /// File path: resources/assets/images/img_mushrooms_cooked.png
+  /// File path: resources/assets/images/img_mushrooms_cooked.webp
   AssetGenImage get imgMushroomsCooked =>
-      const AssetGenImage('resources/assets/images/img_mushrooms_cooked.png');
+      const AssetGenImage('resources/assets/images/img_mushrooms_cooked.webp');
 
-  /// File path: resources/assets/images/img_mushrooms_farm.png
+  /// File path: resources/assets/images/img_mushrooms_farm.webp
   AssetGenImage get imgMushroomsFarm =>
-      const AssetGenImage('resources/assets/images/img_mushrooms_farm.png');
+      const AssetGenImage('resources/assets/images/img_mushrooms_farm.webp');
 
-  /// File path: resources/assets/images/img_mushrooms_syrye.png
+  /// File path: resources/assets/images/img_mushrooms_syrye.webp
   AssetGenImage get imgMushroomsSyrye =>
-      const AssetGenImage('resources/assets/images/img_mushrooms_syrye.png');
+      const AssetGenImage('resources/assets/images/img_mushrooms_syrye.webp');
 
-  /// File path: resources/assets/images/img_oil.png
+  /// File path: resources/assets/images/img_oil.webp
   AssetGenImage get imgOil =>
-      const AssetGenImage('resources/assets/images/img_oil.png');
+      const AssetGenImage('resources/assets/images/img_oil.webp');
 
-  /// File path: resources/assets/images/img_organic.png
+  /// File path: resources/assets/images/img_organic.webp
   AssetGenImage get imgOrganic =>
-      const AssetGenImage('resources/assets/images/img_organic.png');
+      const AssetGenImage('resources/assets/images/img_organic.webp');
 
-  /// File path: resources/assets/images/img_plastic_bottle.png
+  /// File path: resources/assets/images/img_plastic_bottle.webp
   AssetGenImage get imgPlasticBottle =>
-      const AssetGenImage('resources/assets/images/img_plastic_bottle.png');
+      const AssetGenImage('resources/assets/images/img_plastic_bottle.webp');
 
-  /// File path: resources/assets/images/img_player_hp.png
+  /// File path: resources/assets/images/img_player_hp.webp
   AssetGenImage get imgPlayerHp =>
-      const AssetGenImage('resources/assets/images/img_player_hp.png');
+      const AssetGenImage('resources/assets/images/img_player_hp.webp');
 
-  /// File path: resources/assets/images/img_player_hunger.png
+  /// File path: resources/assets/images/img_player_hunger.webp
   AssetGenImage get imgPlayerHunger =>
-      const AssetGenImage('resources/assets/images/img_player_hunger.png');
+      const AssetGenImage('resources/assets/images/img_player_hunger.webp');
 
-  /// File path: resources/assets/images/img_player_thirsty.png
+  /// File path: resources/assets/images/img_player_thirsty.webp
   AssetGenImage get imgPlayerThirsty =>
-      const AssetGenImage('resources/assets/images/img_player_thirsty.png');
+      const AssetGenImage('resources/assets/images/img_player_thirsty.webp');
 
-  /// File path: resources/assets/images/img_prefilter.png
+  /// File path: resources/assets/images/img_prefilter.webp
   AssetGenImage get imgPrefilter =>
-      const AssetGenImage('resources/assets/images/img_prefilter.png');
+      const AssetGenImage('resources/assets/images/img_prefilter.webp');
 
-  /// File path: resources/assets/images/img_provoda.png
+  /// File path: resources/assets/images/img_provoda.webp
   AssetGenImage get imgProvoda =>
-      const AssetGenImage('resources/assets/images/img_provoda.png');
+      const AssetGenImage('resources/assets/images/img_provoda.webp');
 
-  /// File path: resources/assets/images/img_resourse_icon.png
+  /// File path: resources/assets/images/img_resourse_icon.webp
   AssetGenImage get imgResourseIcon =>
-      const AssetGenImage('resources/assets/images/img_resourse_icon.png');
+      const AssetGenImage('resources/assets/images/img_resourse_icon.webp');
 
-  /// File path: resources/assets/images/img_rocket_fire.png
+  /// File path: resources/assets/images/img_rocket_fire.webp
   AssetGenImage get imgRocketFire =>
-      const AssetGenImage('resources/assets/images/img_rocket_fire.png');
+      const AssetGenImage('resources/assets/images/img_rocket_fire.webp');
 
-  /// File path: resources/assets/images/img_sand.png
+  /// File path: resources/assets/images/img_sand.webp
   AssetGenImage get imgSand =>
-      const AssetGenImage('resources/assets/images/img_sand.png');
+      const AssetGenImage('resources/assets/images/img_sand.webp');
 
-  /// File path: resources/assets/images/img_save_icon.png
+  /// File path: resources/assets/images/img_save_icon.webp
   AssetGenImage get imgSaveIcon =>
-      const AssetGenImage('resources/assets/images/img_save_icon.png');
+      const AssetGenImage('resources/assets/images/img_save_icon.webp');
 
-  /// File path: resources/assets/images/img_seaweed_NE_vymochenye.png
+  /// File path: resources/assets/images/img_seaweed_NE_vymochenye.webp
   AssetGenImage get imgSeaweedNEVymochenye => const AssetGenImage(
-    'resources/assets/images/img_seaweed_NE_vymochenye.png',
+    'resources/assets/images/img_seaweed_NE_vymochenye.webp',
   );
 
-  /// File path: resources/assets/images/img_seaweed_vymochenye.png
-  AssetGenImage get imgSeaweedVymochenye =>
-      const AssetGenImage('resources/assets/images/img_seaweed_vymochenye.png');
+  /// File path: resources/assets/images/img_seaweed_vymochenye.webp
+  AssetGenImage get imgSeaweedVymochenye => const AssetGenImage(
+    'resources/assets/images/img_seaweed_vymochenye.webp',
+  );
 
-  /// File path: resources/assets/images/img_shelter.png
+  /// File path: resources/assets/images/img_shelter.webp
   AssetGenImage get imgShelter =>
-      const AssetGenImage('resources/assets/images/img_shelter.png');
+      const AssetGenImage('resources/assets/images/img_shelter.webp');
 
-  /// File path: resources/assets/images/img_sky_black.png
+  /// File path: resources/assets/images/img_sky_black.webp
   AssetGenImage get imgSkyBlack =>
-      const AssetGenImage('resources/assets/images/img_sky_black.png');
+      const AssetGenImage('resources/assets/images/img_sky_black.webp');
 
-  /// File path: resources/assets/images/img_sky_blue.png
+  /// File path: resources/assets/images/img_sky_blue.webp
   AssetGenImage get imgSkyBlue =>
-      const AssetGenImage('resources/assets/images/img_sky_blue.png');
+      const AssetGenImage('resources/assets/images/img_sky_blue.webp');
 
-  /// File path: resources/assets/images/img_soap.png
+  /// File path: resources/assets/images/img_soap.webp
   AssetGenImage get imgSoap =>
-      const AssetGenImage('resources/assets/images/img_soap.png');
+      const AssetGenImage('resources/assets/images/img_soap.webp');
 
-  /// File path: resources/assets/images/img_sodis_clean_water.png
+  /// File path: resources/assets/images/img_sodis_clean_water.webp
   AssetGenImage get imgSodisCleanWater =>
-      const AssetGenImage('resources/assets/images/img_sodis_clean_water.png');
+      const AssetGenImage('resources/assets/images/img_sodis_clean_water.webp');
 
-  /// File path: resources/assets/images/img_sodis_filtered_water.png
+  /// File path: resources/assets/images/img_sodis_filtered_water.webp
   AssetGenImage get imgSodisFilteredWater => const AssetGenImage(
-    'resources/assets/images/img_sodis_filtered_water.png',
+    'resources/assets/images/img_sodis_filtered_water.webp',
   );
 
-  /// File path: resources/assets/images/img_sodis_lake_water.png
+  /// File path: resources/assets/images/img_sodis_lake_water.webp
   AssetGenImage get imgSodisLakeWater =>
-      const AssetGenImage('resources/assets/images/img_sodis_lake_water.png');
+      const AssetGenImage('resources/assets/images/img_sodis_lake_water.webp');
 
-  /// File path: resources/assets/images/img_sodis_strained_water.png
+  /// File path: resources/assets/images/img_sodis_strained_water.webp
   AssetGenImage get imgSodisStrainedWater => const AssetGenImage(
-    'resources/assets/images/img_sodis_strained_water.png',
+    'resources/assets/images/img_sodis_strained_water.webp',
   );
 
-  /// File path: resources/assets/images/img_sound_icon.png
+  /// File path: resources/assets/images/img_sound_icon.webp
   AssetGenImage get imgSoundIcon =>
-      const AssetGenImage('resources/assets/images/img_sound_icon.png');
+      const AssetGenImage('resources/assets/images/img_sound_icon.webp');
 
-  /// File path: resources/assets/images/img_sound_muted_icon.png
+  /// File path: resources/assets/images/img_sound_muted_icon.webp
   AssetGenImage get imgSoundMutedIcon =>
-      const AssetGenImage('resources/assets/images/img_sound_muted_icon.png');
+      const AssetGenImage('resources/assets/images/img_sound_muted_icon.webp');
 
-  /// File path: resources/assets/images/img_store_icon.png
+  /// File path: resources/assets/images/img_store_icon.webp
   AssetGenImage get imgStoreIcon =>
-      const AssetGenImage('resources/assets/images/img_store_icon.png');
+      const AssetGenImage('resources/assets/images/img_store_icon.webp');
 
-  /// File path: resources/assets/images/img_sun.png
+  /// File path: resources/assets/images/img_sun.webp
   AssetGenImage get imgSun =>
-      const AssetGenImage('resources/assets/images/img_sun.png');
+      const AssetGenImage('resources/assets/images/img_sun.webp');
 
-  /// File path: resources/assets/images/img_sun_light.png
+  /// File path: resources/assets/images/img_sun_light.webp
   AssetGenImage get imgSunLight =>
-      const AssetGenImage('resources/assets/images/img_sun_light.png');
+      const AssetGenImage('resources/assets/images/img_sun_light.webp');
 
-  /// File path: resources/assets/images/img_svalka.png
+  /// File path: resources/assets/images/img_svalka.webp
   AssetGenImage get imgSvalka =>
-      const AssetGenImage('resources/assets/images/img_svalka.png');
+      const AssetGenImage('resources/assets/images/img_svalka.webp');
 
-  /// File path: resources/assets/images/img_svalka_icon.png
+  /// File path: resources/assets/images/img_svalka_icon.webp
   AssetGenImage get imgSvalkaIcon =>
-      const AssetGenImage('resources/assets/images/img_svalka_icon.png');
+      const AssetGenImage('resources/assets/images/img_svalka_icon.webp');
 
-  /// File path: resources/assets/images/img_water_sodis.png
+  /// File path: resources/assets/images/img_water_sodis.webp
   AssetGenImage get imgWaterSodis =>
-      const AssetGenImage('resources/assets/images/img_water_sodis.png');
+      const AssetGenImage('resources/assets/images/img_water_sodis.webp');
 
-  /// File path: resources/assets/images/img_wood.png
+  /// File path: resources/assets/images/img_wood.webp
   AssetGenImage get imgWood =>
-      const AssetGenImage('resources/assets/images/img_wood.png');
+      const AssetGenImage('resources/assets/images/img_wood.webp');
 
-  /// File path: resources/assets/images/img_zapyska.png
+  /// File path: resources/assets/images/img_zapyska.webp
   AssetGenImage get imgZapyska =>
-      const AssetGenImage('resources/assets/images/img_zapyska.png');
+      const AssetGenImage('resources/assets/images/img_zapyska.webp');
 
-  /// File path: resources/assets/images/img_zapyska_story.png
+  /// File path: resources/assets/images/img_zapyska_story.webp
   AssetGenImage get imgZapyskaStory =>
-      const AssetGenImage('resources/assets/images/img_zapyska_story.png');
+      const AssetGenImage('resources/assets/images/img_zapyska_story.webp');
 
   /// List of all assets
   List<AssetGenImage> get values => [

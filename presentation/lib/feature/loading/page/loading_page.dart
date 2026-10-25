@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:presentation/design/design_src.dart';
+import 'package:presentation/feature/loading/bloc/loading_bloc.dart';
+import 'package:presentation/generated/assets/assets.gen.dart';
+
+class LoadingPage extends StatefulWidget {
+  final List<AssetGenImage> images;
+  final Widget child;
+
+  const LoadingPage._({
+    required this.images,
+    required this.child,
+  });
+
+  static Widget withBloc({
+    required List<AssetGenImage> images,
+    required Widget child,
+  }) => BlocProvider(
+    create: (_) => LoadingBloc(),
+    child: LoadingPage._(
+      images: images,
+      child: child,
+    ),
+  );
+
+  @override
+  State<LoadingPage> createState() => _LoadingPageState();
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+  late final LoadingBloc _bloc;
+  var _isPrecacheStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = context.read();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isPrecacheStarted) {
+      return;
+    }
+    _isPrecacheStarted = true;
+    final images = widget.images;
+    _bloc.add(LoadingStarted(images.length));
+    for (final image in images) {
+      precacheImage(
+        image.provider(),
+        context,
+        onError: (_, _) {},
+      ).whenComplete(() => _bloc.add(const LoadingImageLoaded()));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoadingBloc, LoadingState>(
+      bloc: _bloc,
+      builder: (context, state) => state.isDone ? widget.child : LoadingContainer(progress: state.progress),
+    );
+  }
+}
