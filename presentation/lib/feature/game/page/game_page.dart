@@ -21,6 +21,7 @@ import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/night/page/night_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
+import 'package:presentation/feature/sky/page/clouds_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/feature/sun_spot/page/sun_spot_page.dart';
 import 'package:presentation/feature/station/page/campfire_page.dart';
@@ -60,6 +61,12 @@ class _GamePageState extends State<GamePage> {
   static const _sceneSize = Size(
     1920,
     _skyHeight + _locationHeight,
+  );
+  static const _sunRect = Rect.fromLTWH(
+    507,
+    330,
+    220,
+    220,
   );
   static const _sunLightRect = Rect.fromLTWH(
     583,
@@ -141,7 +148,7 @@ class _GamePageState extends State<GamePage> {
                   top: 0,
                   right: 0,
                   height: _skyHeight + _horizonDepth,
-                  child: SkyPage.withBloc(hasSun: state.location == .lake),
+                  child: SkyPage.withBloc(),
                 ),
               Positioned(
                 left: 0,
@@ -161,10 +168,23 @@ class _GamePageState extends State<GamePage> {
                 },
               ),
               if (state.location == .house) Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
-              if (state.location == .lake)
+              if (state.location == .lake) ...[
                 Positioned.fromRect(
                   rect: _sunLightRect,
                   child: context.images.imgSunLight.image(fit: .contain),
+                ),
+                Positioned.fromRect(
+                  rect: _sunRect,
+                  child: context.images.imgSun.image(fit: .contain),
+                ),
+              ],
+              if (state.location.hasSky)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  height: _skyHeight + _horizonDepth,
+                  child: CloudsPage.withBloc(),
                 ),
               Positioned(
                 left: 0,

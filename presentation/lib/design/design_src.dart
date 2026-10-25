@@ -21,6 +21,7 @@ export 'src/widget/pressable_container/tap_builder.dart';
 export 'src/widget/scene/scene_container.dart';
 export 'src/widget/selectable/selectable_container.dart';
 export 'src/widget/side_panel/side_panel_container.dart';
+export 'src/widget/sky/clouds_container.dart';
 export 'src/widget/sky/model/sky_state.dart';
 export 'src/widget/sky/sky_container.dart';
 export 'src/widget/stat/stat_container.dart';
