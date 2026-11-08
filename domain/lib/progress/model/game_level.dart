@@ -33,4 +33,6 @@ enum GameLevel {
   });
 
   List<GameLocation> get locations => [.house, .forest, .lake, farLocation];
+
+  GameLevel? get next => index + 1 < values.length ? values[index + 1] : null;
 }

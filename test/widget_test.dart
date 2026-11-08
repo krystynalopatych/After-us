@@ -16,6 +16,7 @@ import 'package:data/pickup/repository/pickup_repository_impl.dart';
 import 'package:data/player/repository/meal_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
+import 'package:data/progress/repository/carry_over_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
@@ -52,6 +53,7 @@ import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/model/pollution.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/progress/repository/carry_over_repository.dart';
 import 'package:domain/progress/repository/progress_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
@@ -144,6 +146,7 @@ void main() {
       ..registerSingleton<AppRepository>(appRepository ?? FakeAppRepository())
       ..registerSingleton<BookRepository>(BookRepositoryImpl())
       ..registerSingleton<CampfireRepository>(CampfireRepositoryImpl())
+      ..registerSingleton<CarryOverRepository>(CarryOverRepositoryImpl())
       ..registerSingleton<CharacterRepository>(CharacterRepositoryImpl())
       ..registerSingleton<ClockRepository>(ClockRepositoryImpl())
       ..registerSingleton<CompostRepository>(CompostRepositoryImpl())

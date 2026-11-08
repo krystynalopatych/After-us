@@ -235,6 +235,24 @@ void main() {
           );
         },
       );
+
+      test(
+        'knows the level that comes next',
+        () {
+          expect(
+            GameLevel.level1.next,
+            GameLevel.level2,
+          );
+          expect(
+            GameLevel.level2.next,
+            GameLevel.level3,
+          );
+          expect(
+            GameLevel.level3.next,
+            isNull,
+          );
+        },
+      );
     },
   );
 

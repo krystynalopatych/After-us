@@ -55,7 +55,14 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
-      () => CompleteLevelUseCase(progressRepository: diContainer.get()),
+      () => CompleteLevelUseCase(
+        carryOverRepository: diContainer.get(),
+        constructionRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        progressRepository: diContainer.get(),
+        stationRepository: diContainer.get(),
+        sunSpotRepository: diContainer.get(),
+      ),
     )
     ..registerFactory(
       () => ConsumeUseCase(
@@ -146,6 +153,7 @@ void registerUseCases() {
     ..registerFactory(
       () => NewGameUseCase(
         bookRepository: diContainer.get(),
+        carryOverRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
         pickupHintRepository: diContainer.get(),
         progressRepository: diContainer.get(),
@@ -204,6 +212,7 @@ void registerUseCases() {
     ..registerFactory(
       () => StartLevelUseCase(
         campfireRepository: diContainer.get(),
+        carryOverRepository: diContainer.get(),
         characterRepository: diContainer.get(),
         clockRepository: diContainer.get(),
         compostRepository: diContainer.get(),

@@ -11,6 +11,7 @@ import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
+import 'package:domain/progress/repository/carry_over_repository.dart';
 import 'package:domain/save/model/game_save.dart';
 import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
@@ -20,6 +21,7 @@ import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 
 final class StartLevelUseCase {
+  final CarryOverRepository _carryOverRepository;
   final CharacterRepository _characterRepository;
   final CampfireRepository _campfireRepository;
   final CompostRepository _compostRepository;
@@ -40,6 +42,7 @@ final class StartLevelUseCase {
   final SunSpotRepository _sunSpotRepository;
 
   const StartLevelUseCase({
+    required this._carryOverRepository,
     required this._characterRepository,
     required this._campfireRepository,
     required this._compostRepository,
@@ -90,14 +93,15 @@ final class StartLevelUseCase {
   }
 
   void _reset(GameLevel level) {
+    final carryOver = _carryOverRepository.carryOver(level);
     _dayRepository.reset();
     _playerRepository.reset();
     _materialRepository.reset();
     _pollutionRepository.reset();
-    _inventoryRepository.reset();
+    _inventoryRepository.restore(carryOver.inventory);
     _pickupRepository.startLevel(level);
-    _constructionRepository.reset();
-    _stationRepository.reset();
+    _constructionRepository.restore(carryOver.constructions);
+    _stationRepository.restore(carryOver.stations);
     _sunSpotRepository.reset();
     _campfireRepository.reset();
     _compostRepository.reset();

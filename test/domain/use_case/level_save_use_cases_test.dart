@@ -26,6 +26,7 @@ void main() {
   setUp(() {
     deps = TestDependencies();
     startLevel = StartLevelUseCase(
+      carryOverRepository: deps.carryOver,
       campfireRepository: deps.campfire,
       compostRepository: deps.compost,
       characterRepository: deps.character,
