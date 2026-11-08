@@ -1,5 +1,6 @@
 import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/station/model/workbench_item.dart';
+import 'package:domain/station/repository/workbench_repository.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:equatable/equatable.dart';
@@ -12,11 +13,13 @@ part 'workbench_state.dart';
 class WorkbenchBloc extends Bloc<WorkbenchEvent, WorkbenchState> {
   final BookRepository _bookRepository;
   final CraftUseCase _craftUseCase;
+  final WorkbenchRepository _workbenchRepository;
   final WorkbenchSlotUseCase _workbenchSlotUseCase;
 
   WorkbenchBloc()
     : _bookRepository = diContainer.get(),
       _craftUseCase = diContainer.get(),
+      _workbenchRepository = diContainer.get(),
       _workbenchSlotUseCase = diContainer.get(),
       super(const WorkbenchState()) {
     on<WorkbenchStarted>(_onStarted);
@@ -28,31 +31,31 @@ class WorkbenchBloc extends Bloc<WorkbenchEvent, WorkbenchState> {
     WorkbenchStarted event,
     Emitter<WorkbenchState> emit,
   ) {
-    emit(WorkbenchState(hasNewRecord: _bookRepository.book.hasNewRecord));
-    return emit.forEach(
-      _bookRepository.bookStream,
-      onData: (book) => state.copyWith(hasNewRecord: book.hasNewRecord),
+    emit(
+      WorkbenchState(
+        slots: _workbenchRepository.slots,
+        hasNewRecord: _bookRepository.book.hasNewRecord,
+      ),
     );
+    return Future.wait([
+      emit.forEach(
+        _bookRepository.bookStream,
+        onData: (book) => state.copyWith(hasNewRecord: book.hasNewRecord),
+      ),
+      emit.forEach(
+        _workbenchRepository.slotsStream,
+        onData: (slots) => state.copyWith(slots: slots),
+      ),
+    ]);
   }
 
   void _onSlotTapped(
     WorkbenchSlotTapped event,
     Emitter<WorkbenchState> emit,
-  ) => emit(
-    state.copyWith(
-      slots: _workbenchSlotUseCase(
-        state.slots,
-        event.index,
-      ),
-    ),
-  );
+  ) => _workbenchSlotUseCase(event.index);
 
   void _onCraftTapped(
     WorkbenchCraftTapped event,
     Emitter<WorkbenchState> emit,
-  ) {
-    if (_craftUseCase(state.slots)) {
-      emit(state.copyWith(slots: WorkbenchState.emptySlots));
-    }
-  }
+  ) => _craftUseCase();
 }

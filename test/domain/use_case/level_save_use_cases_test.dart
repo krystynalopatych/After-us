@@ -26,6 +26,8 @@ void main() {
   setUp(() {
     deps = TestDependencies();
     startLevel = StartLevelUseCase(
+      fireRepository: deps.fire,
+      workbenchRepository: deps.workbench,
       carryOverRepository: deps.carryOver,
       campfireRepository: deps.campfire,
       compostRepository: deps.compost,
@@ -33,6 +35,7 @@ void main() {
       clockRepository: deps.clock,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
+      fridgeRepository: deps.fridge,
       inventoryRepository: deps.inventory,
       locationRepository: deps.location,
       materialRepository: deps.material,
@@ -51,6 +54,7 @@ void main() {
       compostRepository: deps.compost,
       constructionRepository: deps.construction,
       dayRepository: deps.day,
+      fridgeRepository: deps.fridge,
       inventoryRepository: deps.inventory,
       locationRepository: deps.location,
       materialRepository: deps.material,

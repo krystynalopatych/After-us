@@ -153,7 +153,7 @@ void main() {
     );
     expect(
       deps.pickup.pickups.isEmpty,
-      level != .level1,
+      level == .level3,
     );
   }
 

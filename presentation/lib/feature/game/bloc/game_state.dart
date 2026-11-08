@@ -7,6 +7,7 @@ final class GameState extends Equatable {
   final bool isBuildOpen;
   final Station? fireStation;
   final bool isWorkbenchOpen;
+  final bool isFridgeOpen;
   final WaterKind? waterChoice;
   final bool isBookOpen;
 
@@ -17,6 +18,7 @@ final class GameState extends Equatable {
     this.isBuildOpen = false,
     this.fireStation,
     this.isWorkbenchOpen = false,
+    this.isFridgeOpen = false,
     this.waterChoice,
     this.isBookOpen = false,
   });
@@ -28,6 +30,7 @@ final class GameState extends Equatable {
     bool? isBuildOpen,
     Station? Function()? fireStation,
     bool? isWorkbenchOpen,
+    bool? isFridgeOpen,
     WaterKind? Function()? waterChoice,
     bool? isBookOpen,
   }) => GameState(
@@ -37,11 +40,12 @@ final class GameState extends Equatable {
     isBuildOpen: isBuildOpen ?? this.isBuildOpen,
     fireStation: fireStation != null ? fireStation() : this.fireStation,
     isWorkbenchOpen: isWorkbenchOpen ?? this.isWorkbenchOpen,
+    isFridgeOpen: isFridgeOpen ?? this.isFridgeOpen,
     waterChoice: waterChoice != null ? waterChoice() : this.waterChoice,
     isBookOpen: isBookOpen ?? this.isBookOpen,
   );
 
-  bool get isStationOpen => fireStation != null || isWorkbenchOpen;
+  bool get isStationOpen => fireStation != null || isWorkbenchOpen || isFridgeOpen;
 
   @override
   List<Object?> get props => [
@@ -51,6 +55,7 @@ final class GameState extends Equatable {
     isBuildOpen,
     fireStation,
     isWorkbenchOpen,
+    isFridgeOpen,
     waterChoice,
     isBookOpen,
   ];

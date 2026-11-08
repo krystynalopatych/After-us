@@ -100,7 +100,7 @@ class _StartPageState extends State<StartPage> {
   }
 
   void _onLevelTap(GameLevel level) {
-    if (level == .level1) {
+    if (level != .level3) {
       AppRoute.fromLevel(level).go(context);
     }
   }

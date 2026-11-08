@@ -8,6 +8,7 @@ import 'package:data/day/repository/day_repository_impl.dart';
 import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
+import 'package:data/fridge/repository/fridge_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
@@ -21,7 +22,9 @@ import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:data/save/repository/save_repository_impl.dart';
 import 'package:data/selection/repository/selection_repository_impl.dart';
 import 'package:data/station/repository/campfire_repository_impl.dart';
+import 'package:data/station/repository/fire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
+import 'package:data/station/repository/workbench_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/book/repository/book_repository.dart';
@@ -36,6 +39,7 @@ import 'package:domain/dialogue/repository/dialogue_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
+import 'package:domain/fridge/repository/fridge_repository.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
@@ -60,7 +64,9 @@ import 'package:domain/save/repository/save_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
+import 'package:domain/station/repository/fire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
+import 'package:domain/station/repository/workbench_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +160,8 @@ void main() {
       ..registerSingleton<DayRepository>(DayRepositoryImpl())
       ..registerSingleton<DialogueRepository>(DialogueRepositoryImpl())
       ..registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl())
+      ..registerSingleton<FireRepository>(FireRepositoryImpl())
+      ..registerSingleton<FridgeRepository>(FridgeRepositoryImpl())
       ..registerSingleton<HeroReactionRepository>(HeroReactionRepositoryImpl())
       ..registerSingleton<InventoryRepository>(inventoryRepository ?? InventoryRepositoryImpl())
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
@@ -169,7 +177,8 @@ void main() {
       ..registerSingleton<SoundRepository>(FakeSoundRepository())
       ..registerSingleton<StationRepository>(StationRepositoryImpl())
       ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
-      ..registerSingleton<TickerRepository>(ManualTickerRepository());
+      ..registerSingleton<TickerRepository>(ManualTickerRepository())
+      ..registerSingleton<WorkbenchRepository>(WorkbenchRepositoryImpl());
     registerUseCases();
 
     await tester.pumpWidget(const AppPage(createAppBloc: AppBloc.new));

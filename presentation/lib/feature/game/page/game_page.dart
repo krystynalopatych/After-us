@@ -13,6 +13,7 @@ import 'package:presentation/feature/compost/page/compost_page.dart';
 import 'package:presentation/feature/day/page/day_page.dart';
 import 'package:presentation/feature/dialogue/page/dialogue_page.dart';
 import 'package:presentation/feature/feedback/page/feedback_page.dart';
+import 'package:presentation/feature/fridge/page/fridge_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
 import 'package:presentation/feature/goal/page/goal_page.dart';
@@ -208,6 +209,10 @@ class _GamePageState extends State<GamePage> {
                     onClose: () => _bloc.add(const GameWorkbenchClosed()),
                     onBookTap: () => _bloc.add(const GameBookTapped()),
                   ),
+                ),
+              if (state.isFridgeOpen)
+                Positioned.fill(
+                  child: FridgePage.withBloc(onClose: () => _bloc.add(const GameFridgeClosed())),
                 ),
               Positioned.fill(
                 child: HudPage.withBloc(

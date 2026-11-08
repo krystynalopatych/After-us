@@ -12,16 +12,17 @@ import 'package:domain/sound/repository/sound_repository.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
 import 'package:domain/station/model/station.dart';
+import 'package:domain/station/repository/fire_repository.dart';
 import 'package:domain/station/repository/campfire_repository.dart';
 
 final class CookOnCampfireUseCase {
   static const _fuelCount = 1;
-  static const _recipeMaterialCount = 1;
   static const _smokelessCampfiresPerDay = 2;
   static const _smokeAirPoints = 1;
 
   final CampfireRepository _campfireRepository;
   final DayRepository _dayRepository;
+  final FireRepository _fireRepository;
   final DialogueRepository _dialogueRepository;
   final FeedbackRepository _feedbackRepository;
   final HeroReactionRepository _heroReactionRepository;
@@ -34,6 +35,7 @@ final class CookOnCampfireUseCase {
   const CookOnCampfireUseCase({
     required this._campfireRepository,
     required this._dayRepository,
+    required this._fireRepository,
     required this._dialogueRepository,
     required this._feedbackRepository,
     required this._heroReactionRepository,
@@ -49,32 +51,22 @@ final class CookOnCampfireUseCase {
     CampfireFuel fuel,
     Station station,
   ) {
-    final needed = {
-      fuel.material: _fuelCount,
-    };
-    if (recipe.material case final material?) {
-      needed.update(
-        material,
-        (count) => count + _recipeMaterialCount,
-        ifAbsent: () => _recipeMaterialCount,
-      );
-    }
-    if (needed.entries.any((entry) => _materialRepository.count(entry.key) < entry.value)) {
+    if (_fireRepository.recipe != recipe || _materialRepository.count(fuel.material) < _fuelCount) {
       return false;
     }
-    if (recipe case CampfireRecipe(:final input?)
-        when !_inventoryRepository.replace(
-          input,
+    if (recipe.input != null &&
+        !_inventoryRepository.exchange(
+          const [],
           recipe.outputsOn(station),
         )) {
+      _feedbackRepository.show(const FeedbackMessage(text: 'Your inventory is full'));
       return false;
     }
-    for (final MapEntry(key: material, value: count) in needed.entries) {
-      _materialRepository.remove(
-        material,
-        count,
-      );
-    }
+    _materialRepository.remove(
+      fuel.material,
+      _fuelCount,
+    );
+    _fireRepository.reset();
     if (recipe.input?.container case final container?) {
       _materialRepository.add(container);
     }
@@ -132,6 +124,7 @@ final class CookOnCampfireUseCase {
       .boilBottleLakeWater || .boilBottleStrainedWater => 'You boiled water +$count clean water +1 plastic',
       .cookCattailRoot => 'You cooked cattail roots +$count cooked cattail roots',
       .makeCharcoal => 'You made charcoal +1 charcoal',
+      .fireClayPot => 'You fired a clay pot +1 clay pot',
     };
     if (isPolluting || isSmoky) {
       return FeedbackMessage(
@@ -152,6 +145,7 @@ final class CookOnCampfireUseCase {
         .boilBottleStrainedWater => "Now it's safe to drink.",
         .cookCattailRoot => 'Warm food at last.',
         .makeCharcoal => 'Charcoal... I can use it for the water filter.',
+        .fireClayPot => 'A real pot! Two of them and some wet sand make a fridge.',
       },
       mood: .happy,
     );

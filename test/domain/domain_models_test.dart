@@ -237,6 +237,20 @@ void main() {
       );
 
       test(
+        'throws trash into the lake, the forest or the far zone of the level',
+        () {
+          expect(
+            GameLevel.level1.throwTargets,
+            [GameLocation.lake, GameLocation.dump, GameLocation.forest],
+          );
+          expect(
+            GameLevel.level2.throwTargets,
+            [GameLocation.lake, GameLocation.store, GameLocation.forest],
+          );
+        },
+      );
+
+      test(
         'knows the level that comes next',
         () {
           expect(

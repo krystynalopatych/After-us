@@ -37,6 +37,22 @@ enum PickupKind {
   berryBush(
     food: .berries,
     hint: "Berries! Food and a little water. But I shouldn't eat only these all day.",
+  ),
+  clay(
+    material: .clay,
+    hint: "Clay on the shore... If I shape it and fire it on the campfire, I'll have real pots.",
+  ),
+  cardboard(
+    material: .cardboard,
+    hint: 'Cardboard. Soaked in water, it could become a soft bed for mushrooms.',
+  ),
+  seeds(
+    material: .seeds,
+    hint: "Seeds! I shouldn't eat them... Planted in good soil, they'll feed me for days.",
+  ),
+  mushroomStump(
+    food: .mushrooms,
+    hint: "Mushrooms on a stump. Raw they'll make me sick... better boil them, or save one to grow more.",
   );
 
   final GameMaterial? material;

@@ -1,4 +1,5 @@
 import 'package:domain/day/use_case/pause_time_use_case.dart';
+import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/inventory/model/water_request.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
@@ -8,6 +9,7 @@ import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
 import 'package:domain/station/model/station.dart';
 import 'package:domain/station/use_case/place_station_use_case.dart';
+import 'package:domain/station/use_case/return_station_items_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +24,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final LocationRepository _locationRepository;
   final PauseTimeUseCase _pauseTimeUseCase;
   final PlaceStationUseCase _placeStationUseCase;
+  final ReturnStationItemsUseCase _returnStationItemsUseCase;
   final StationChoicesUseCase _stationChoicesUseCase;
   final TravelUseCase _travelUseCase;
+  final WaterFridgeUseCase _waterFridgeUseCase;
 
   GameBloc()
     : _fillBottleUseCase = diContainer.get(),
@@ -31,8 +35,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _locationRepository = diContainer.get(),
       _pauseTimeUseCase = diContainer.get(),
       _placeStationUseCase = diContainer.get(),
+      _returnStationItemsUseCase = diContainer.get(),
       _stationChoicesUseCase = diContainer.get(),
       _travelUseCase = diContainer.get(),
+      _waterFridgeUseCase = diContainer.get(),
       super(GameState(location: diContainer.get<LocationRepository>().location)) {
     on<GameStarted>(_onStarted);
     on<GameMapTapped>(_onMapTapped);
@@ -43,8 +49,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameLocationTapped>(_onLocationTapped);
     on<GameBuildClosed>((event, emit) => emit(state.copyWith(isBuildOpen: false)));
     on<GameStationTapped>(_onStationTapped);
-    on<GameFireClosed>((event, emit) => emit(state.copyWith(fireStation: () => null)));
-    on<GameWorkbenchClosed>((event, emit) => emit(state.copyWith(isWorkbenchOpen: false)));
+    on<GameFireClosed>(_onFireClosed);
+    on<GameWorkbenchClosed>(_onWorkbenchClosed);
+    on<GameFridgeClosed>((event, emit) => emit(state.copyWith(isFridgeOpen: false)));
     on<GameBookTapped>((event, emit) => emit(state.copyWith(isBookOpen: true)));
     on<GameBookClosed>((event, emit) => emit(state.copyWith(isBookOpen: false)));
   }
@@ -124,11 +131,35 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
+  void _onFireClosed(
+    GameFireClosed event,
+    Emitter<GameState> emit,
+  ) {
+    _returnStationItemsUseCase();
+    emit(state.copyWith(fireStation: () => null));
+  }
+
+  void _onWorkbenchClosed(
+    GameWorkbenchClosed event,
+    Emitter<GameState> emit,
+  ) {
+    _returnStationItemsUseCase();
+    emit(state.copyWith(isWorkbenchOpen: false));
+  }
+
   void _onStationTapped(
     GameStationTapped event,
     Emitter<GameState> emit,
   ) => switch (event.station) {
     .campfire || .rocketStove => emit(state.copyWith(fireStation: () => event.station)),
     .workbench => emit(state.copyWith(isWorkbenchOpen: true)),
+    .clayFridge => _onFridgeTapped(emit),
   };
+
+  void _onFridgeTapped(Emitter<GameState> emit) {
+    if (_waterFridgeUseCase()) {
+      return;
+    }
+    emit(state.copyWith(isFridgeOpen: true));
+  }
 }

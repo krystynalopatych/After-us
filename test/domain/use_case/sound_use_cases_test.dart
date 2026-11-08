@@ -250,9 +250,17 @@ void main() {
         'plays when something is crafted and not when crafting fails',
         () {
           final craft = diContainer.get<CraftUseCase>();
+          deps.workbench.setSlot(
+            1,
+            const WorkbenchItem.material(.metal),
+          );
+          deps.workbench.setSlot(
+            2,
+            const WorkbenchItem.material(.metal),
+          );
 
           expect(
-            craft(const [null, WorkbenchItem.material(.plastic), null, null]),
+            craft(),
             isFalse,
           );
           expect(
@@ -260,9 +268,14 @@ void main() {
             isEmpty,
           );
 
-          deps.material.add(.plastic);
+          deps.workbench
+            ..reset()
+            ..setSlot(
+              1,
+              const WorkbenchItem.material(.plastic),
+            );
           expect(
-            craft(const [null, WorkbenchItem.material(.plastic), null, null]),
+            craft(),
             isTrue,
           );
           expect(
@@ -275,14 +288,18 @@ void main() {
       test(
         'plays when the algae are soaked',
         () {
-          deps.inventory
-            ..add(.algae)
-            ..add(.sodisCleanWater);
+          deps.workbench
+            ..setSlot(
+              0,
+              const WorkbenchItem.item(.algae),
+            )
+            ..setSlot(
+              1,
+              const WorkbenchItem.item(.sodisCleanWater),
+            );
 
           expect(
-            diContainer.get<CraftUseCase>()(
-              const [WorkbenchItem.item(.algae), WorkbenchItem.item(.sodisCleanWater), null, null],
-            ),
+            diContainer.get<CraftUseCase>()(),
             isTrue,
           );
           expect(
@@ -295,10 +312,9 @@ void main() {
       test(
         'plays when food is cooked on the campfire',
         () {
-          deps.inventory
-            ..add(.cookingPot)
-            ..add(.cattailRoot);
+          deps.inventory.add(.cookingPot);
           deps.material.add(.wood);
+          deps.fire.load(.cookCattailRoot);
 
           expect(
             diContainer.get<CookOnCampfireUseCase>()(

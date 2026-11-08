@@ -25,6 +25,11 @@ enum InventoryItem {
     thirst: 3,
     zone: .soil,
   ),
+  mushrooms(
+    hunger: 6,
+    health: -10,
+    zone: .soil,
+  ),
   cleanWater(
     thirst: 35,
     water: .boiled,
@@ -76,7 +81,8 @@ enum InventoryItem {
   prefilter,
   cookingPot,
   rocketStove,
-  waterFilter;
+  waterFilter,
+  clayFridge;
 
   final double hunger;
   final double thirst;

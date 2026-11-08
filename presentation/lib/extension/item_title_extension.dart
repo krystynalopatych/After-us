@@ -8,6 +8,9 @@ extension ConstructionTitleExtension on Construction {
     .waterFilter => 'Water filter',
     .compostPit => 'Compost pit',
     .rocketStove => 'Rocket stove',
+    .gardenBed => 'Garden bed with greenhouse',
+    .mushroomFarm => 'Mushroom farm',
+    .clayFridge => 'Clay fridge',
   };
 }
 
@@ -27,6 +30,7 @@ extension GameMaterialTitleExtension on GameMaterial {
     .electronics => 'Electronics',
     .charcoal => 'Charcoal',
     .compost => 'Compost',
+    .clayPot => 'Clay pot',
   };
 }
 
@@ -37,6 +41,7 @@ extension InventoryItemTitleExtension on InventoryItem {
     .algae => 'Algae',
     .algaeSoaked => 'Soaked algae',
     .berries => 'Berries',
+    .mushrooms => 'Mushrooms',
     .cleanWater => 'Clean water',
     .sodisLakeWater => 'Lake water (SODIS)',
     .bottleLakeWater => 'Lake water',
@@ -50,6 +55,7 @@ extension InventoryItemTitleExtension on InventoryItem {
     .cookingPot => 'Cooking pot',
     .rocketStove => 'Rocket stove',
     .waterFilter => 'Water filter',
+    .clayFridge => 'Clay fridge',
   };
 }
 

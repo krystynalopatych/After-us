@@ -49,6 +49,47 @@ final class PickupRepositoryImpl implements PickupRepository {
     (.dump, .organics),
   ];
 
+  static const _level2 = <(GameLocation, PickupKind)>[
+    (.house, .organics),
+    (.house, .organics),
+    (.house, .organics),
+    (.forest, .wood),
+    (.forest, .wood),
+    (.forest, .wood),
+    (.forest, .organics),
+    (.forest, .organics),
+    (.forest, .organics),
+    (.forest, .organics),
+    (.forest, .berryBush),
+    (.forest, .berryBush),
+    (.forest, .berryBush),
+    (.forest, .berryBush),
+    (.forest, .mushroomStump),
+    (.forest, .mushroomStump),
+    (.lake, .clay),
+    (.lake, .clay),
+    (.lake, .clay),
+    (.lake, .clay),
+    (.lake, .sand),
+    (.lake, .sand),
+    (.lake, .sand),
+    (.lake, .wood),
+    (.lake, .wood),
+    (.lake, .organics),
+    (.lake, .organics),
+    (.lake, .algae),
+    (.lake, .algae),
+    (.lake, .algae),
+    (.lake, .algae),
+    (.store, .plastic),
+    (.store, .plastic),
+    (.store, .plastic),
+    (.store, .cardboard),
+    (.store, .cardboard),
+    (.store, .seeds),
+    (.store, .seeds),
+  ];
+
   final _pickupsController = StreamController<List<Pickup>>.broadcast();
   final _pickups = <Pickup>[];
 
@@ -62,7 +103,8 @@ final class PickupRepositoryImpl implements PickupRepository {
   void startLevel(GameLevel level) {
     final layout = switch (level) {
       .level1 => _level1,
-      .level2 || .level3 => const <(GameLocation, PickupKind)>[],
+      .level2 => _level2,
+      .level3 => const <(GameLocation, PickupKind)>[],
     };
     _pickups
       ..clear()

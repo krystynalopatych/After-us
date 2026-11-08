@@ -141,17 +141,89 @@ void main() {
   );
 
   test(
-    'has no resources on levels 2 and 3 yet',
+    'lays out level 2 resources as in the design doc with extra organics',
     () {
-      final repository = PickupRepositoryImpl()..startLevel(.level2);
+      final pickups = (PickupRepositoryImpl()..startLevel(.level2)).pickups;
       expect(
-        repository.pickups,
+        pickups,
+        hasLength(38),
+      );
+      expect(
+        count(
+          pickups,
+          .house,
+          .organics,
+        ),
+        3,
+      );
+      expect(
+        count(
+          pickups,
+          .forest,
+          .organics,
+        ),
+        4,
+      );
+      expect(
+        count(
+          pickups,
+          .lake,
+          .organics,
+        ),
+        2,
+      );
+      expect(
+        count(
+          pickups,
+          .forest,
+          .mushroomStump,
+        ),
+        2,
+      );
+      expect(
+        count(
+          pickups,
+          .lake,
+          .clay,
+        ),
+        4,
+      );
+      expect(
+        count(
+          pickups,
+          .store,
+          .cardboard,
+        ),
+        2,
+      );
+      expect(
+        count(
+          pickups,
+          .store,
+          .seeds,
+        ),
+        2,
+      );
+      expect(
+        count(
+          pickups,
+          .store,
+          .plastic,
+        ),
+        3,
+      );
+      expect(
+        pickups.where((pickup) => pickup.kind == .cattail || pickup.kind == .cloth || pickup.kind == .metal),
         isEmpty,
       );
+    },
+  );
 
-      repository.startLevel(.level3);
+  test(
+    'has no resources on level 3 yet',
+    () {
       expect(
-        repository.pickups,
+        (PickupRepositoryImpl()..startLevel(.level3)).pickups,
         isEmpty,
       );
     },

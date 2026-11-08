@@ -8,7 +8,6 @@ import 'package:domain/station/model/campfire_recipe.dart';
 
 final class CampfireFuelUseCase {
   static const _fuelCount = 1;
-  static const _recipeMaterialCount = 1;
 
   final FeedbackRepository _feedbackRepository;
   final MaterialRepository _materialRepository;
@@ -25,10 +24,9 @@ final class CampfireFuelUseCase {
     GameMaterial material,
   ) {
     final fuel = CampfireFuel.fromMaterial(material);
-    final needed = _fuelCount + (recipe.material == material ? _recipeMaterialCount : 0);
     final problem = switch (fuel) {
       null => "You can't start a fire with this",
-      _ when _materialRepository.count(material) < needed => 'You need $needed ${material.name} for this',
+      _ when _materialRepository.count(material) < _fuelCount => 'You need $_fuelCount ${material.name} for this',
       _ => null,
     };
     if (problem != null) {

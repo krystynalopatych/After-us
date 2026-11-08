@@ -218,6 +218,11 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgFreezerGorshok =>
       const AssetGenImage('resources/assets/images/img_freezer_gorshok.webp');
 
+  /// File path: resources/assets/images/img_freezer_gorshok_slots.webp
+  AssetGenImage get imgFreezerGorshokSlots => const AssetGenImage(
+    'resources/assets/images/img_freezer_gorshok_slots.webp',
+  );
+
   /// File path: resources/assets/images/img_full_water_filter.webp
   AssetGenImage get imgFullWaterFilter =>
       const AssetGenImage('resources/assets/images/img_full_water_filter.webp');
@@ -559,6 +564,7 @@ class $ResourcesAssetsImagesGen {
     imgForestIcon,
     imgForestRectangle,
     imgFreezerGorshok,
+    imgFreezerGorshokSlots,
     imgFullWaterFilter,
     imgGarage,
     imgGarageIcon,

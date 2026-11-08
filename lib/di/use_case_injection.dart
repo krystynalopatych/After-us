@@ -3,6 +3,9 @@ import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
+import 'package:domain/fridge/use_case/fridge_cooling_use_case.dart';
+import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
+import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
@@ -26,6 +29,7 @@ import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
 import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
 import 'package:domain/station/use_case/craft_use_case.dart';
 import 'package:domain/station/use_case/place_station_use_case.dart';
+import 'package:domain/station/use_case/return_station_items_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:domain/sun_spot/use_case/use_sun_spot_use_case.dart';
@@ -50,7 +54,9 @@ void registerUseCases() {
     ..registerFactory(
       () => CampfireRecipeUseCase(
         feedbackRepository: diContainer.get(),
+        fireRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
       ),
     )
@@ -58,6 +64,7 @@ void registerUseCases() {
       () => CompleteLevelUseCase(
         carryOverRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         progressRepository: diContainer.get(),
         stationRepository: diContainer.get(),
@@ -82,6 +89,7 @@ void registerUseCases() {
       () => CookOnCampfireUseCase(
         campfireRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        fireRepository: diContainer.get(),
         dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
@@ -101,6 +109,7 @@ void registerUseCases() {
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
+        workbenchRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -110,6 +119,20 @@ void registerUseCases() {
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => FridgeCoolingUseCase(
+        dayRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => FridgeSlotUseCase(
+        feedbackRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -192,11 +215,20 @@ void registerUseCases() {
       () => ReadBookUseCase(bookRepository: diContainer.get()),
     )
     ..registerFactory(
+      () => ReturnStationItemsUseCase(
+        fireRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        workbenchRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => SaveGameUseCase(
         campfireRepository: diContainer.get(),
         compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -218,6 +250,8 @@ void registerUseCases() {
         compostRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
+        fireRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -230,6 +264,7 @@ void registerUseCases() {
         soundRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+        workbenchRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -282,11 +317,23 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => WaterFridgeUseCase(
+        dayRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => WorkbenchSlotUseCase(
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+        workbenchRepository: diContainer.get(),
       ),
     );
 }

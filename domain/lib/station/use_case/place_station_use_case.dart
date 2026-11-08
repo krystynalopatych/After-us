@@ -1,6 +1,5 @@
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
-import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/station/model/station.dart';
@@ -24,16 +23,25 @@ final class PlaceStationUseCase {
       final slot? => _inventoryRepository.stacks.elementAtOrNull(slot)?.item,
       null => null,
     };
-    if (item != InventoryItem.rocketStove ||
-        _stationRepository.built.contains(Station.rocketStove) ||
-        !_inventoryRepository.remove(.rocketStove)) {
+    final station = switch (item) {
+      .rocketStove => Station.rocketStove,
+      .clayFridge => Station.clayFridge,
+      _ => null,
+    };
+    if (item == null ||
+        station == null ||
+        _stationRepository.built.contains(station) ||
+        !_inventoryRepository.remove(item)) {
       return false;
     }
-    _stationRepository.build(.rocketStove);
+    _stationRepository.build(station);
     _selectionRepository.reset();
     _feedbackRepository.show(
-      const FeedbackMessage(
-        text: 'You set up the rocket stove',
+      FeedbackMessage(
+        text: switch (station) {
+          .clayFridge => 'You set up the clay fridge Water it with lake water every day',
+          .campfire || .workbench || .rocketStove => 'You set up the rocket stove',
+        },
         mood: .happy,
       ),
     );

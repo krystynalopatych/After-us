@@ -4,24 +4,24 @@ import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/station/model/workbench_item.dart';
+import 'package:domain/station/repository/workbench_repository.dart';
 
 final class WorkbenchSlotUseCase {
   final FeedbackRepository _feedbackRepository;
   final InventoryRepository _inventoryRepository;
   final MaterialRepository _materialRepository;
   final SelectionRepository _selectionRepository;
+  final WorkbenchRepository _workbenchRepository;
 
   const WorkbenchSlotUseCase({
     required this._feedbackRepository,
     required this._inventoryRepository,
     required this._materialRepository,
     required this._selectionRepository,
+    required this._workbenchRepository,
   });
 
-  List<WorkbenchItem?> call(
-    List<WorkbenchItem?> slots,
-    int index,
-  ) {
+  void call(int index) {
     final selection = _selectionRepository.selection;
     final selected = switch ((selection.material, selection.slot)) {
       (final material?, _) => WorkbenchItem.material(material),
@@ -31,35 +31,54 @@ final class WorkbenchSlotUseCase {
       },
       _ => null,
     };
+    final current = _workbenchRepository.slots[index];
     if (selected == null) {
-      return _withSlot(
-        slots,
-        index,
-        null,
-      );
+      if (current != null) {
+        _giveBack(current);
+        _workbenchRepository.setSlot(
+          index,
+          null,
+        );
+      }
+      return;
     }
-    final reserved = slots.indexed.where((entry) => entry.$1 != index && entry.$2 == selected).length;
-    final owned = switch (selected) {
-      WorkbenchItem(:final material?) => _materialRepository.count(material),
-      WorkbenchItem(:final item?) => _inventoryRepository.count(item),
-      _ => 0,
-    };
-    if (owned <= reserved) {
+    if (!_take(selected)) {
       _feedbackRepository.show(FeedbackMessage(text: 'You have no more ${selected.material?.name ?? 'of it'}'));
-      return slots;
+      return;
     }
-    return _withSlot(
-      slots,
+    if (current != null) {
+      _giveBack(current);
+    }
+    _workbenchRepository.setSlot(
       index,
       selected,
     );
+    if (_owned(selected) == 0) {
+      _selectionRepository.reset();
+    }
   }
 
-  static List<WorkbenchItem?> _withSlot(
-    List<WorkbenchItem?> slots,
-    int index,
-    WorkbenchItem? selected,
-  ) => [
-    for (final (slotIndex, slot) in slots.indexed) slotIndex == index ? selected : slot,
-  ];
+  bool _take(WorkbenchItem item) => switch (item) {
+    WorkbenchItem(:final material?) when _materialRepository.count(material) > 0 => _materialRepository.remove(
+      material,
+      1,
+    ),
+    WorkbenchItem(:final item?) => _inventoryRepository.remove(item),
+    _ => false,
+  };
+
+  void _giveBack(WorkbenchItem item) {
+    if (item.material case final material?) {
+      _materialRepository.add(material);
+    }
+    if (item.item case final inventoryItem?) {
+      _inventoryRepository.add(inventoryItem);
+    }
+  }
+
+  int _owned(WorkbenchItem item) => switch (item) {
+    WorkbenchItem(:final material?) => _materialRepository.count(material),
+    WorkbenchItem(:final item?) => _inventoryRepository.count(item),
+    _ => 0,
+  };
 }

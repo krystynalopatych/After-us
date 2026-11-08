@@ -3,7 +3,8 @@ import 'package:domain/material/model/game_material.dart';
 enum Station {
   campfire(cost: {GameMaterial.wood: 1}),
   workbench(cost: {GameMaterial.wood: 1}),
-  rocketStove(cost: {});
+  rocketStove(cost: {}),
+  clayFridge(cost: {});
 
   final Map<GameMaterial, int> cost;
 

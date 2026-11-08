@@ -35,6 +35,15 @@ enum WorkbenchRecipe {
     result: .waterFilter,
     record: .waterFilter,
     construction: .waterFilter,
+  ),
+  clayFridge(
+    ingredients: {
+      GameMaterial.clayPot: 2,
+      GameMaterial.sand: 2,
+    },
+    result: .clayFridge,
+    record: .clayFridge,
+    construction: .clayFridge,
   );
 
   final Map<GameMaterial, int> ingredients;

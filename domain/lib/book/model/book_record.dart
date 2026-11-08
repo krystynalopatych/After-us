@@ -5,4 +5,5 @@ enum BookRecord {
   rocketStove,
   waterFilter,
   soakedAlgae,
+  clayFridge,
 }

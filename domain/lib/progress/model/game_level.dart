@@ -14,7 +14,11 @@ enum GameLevel {
   level2(
     farLocation: .store,
     days: 4,
-    goals: {},
+    goals: {
+      .gardenBed,
+      .mushroomFarm,
+      .clayFridge,
+    },
   ),
   level3(
     farLocation: .garage,
@@ -33,6 +37,8 @@ enum GameLevel {
   });
 
   List<GameLocation> get locations => [.house, .forest, .lake, farLocation];
+
+  List<GameLocation> get throwTargets => [.lake, farLocation, .forest];
 
   GameLevel? get next => index + 1 < values.length ? values[index + 1] : null;
 }
