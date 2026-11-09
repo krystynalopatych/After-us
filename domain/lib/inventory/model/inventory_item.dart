@@ -104,6 +104,8 @@ enum InventoryItem {
 
   bool get isDrink => thirst > hunger;
 
+  bool get isPerishable => hunger > 0 && !isDrink;
+
   InventoryItem? get emptyBottle => switch (bottle) {
     .sodis => sodisBottle,
     .plastic || null => null,

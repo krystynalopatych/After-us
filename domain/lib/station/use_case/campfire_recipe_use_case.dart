@@ -24,10 +24,11 @@ final class CampfireRecipeUseCase {
 
   CampfireRecipe? call(Station station) {
     final selection = _selectionRepository.selection;
-    final item = switch (selection.slot) {
-      final slot? => _inventoryRepository.stacks.elementAtOrNull(slot)?.item,
+    final stack = switch (selection.slot) {
+      final slot? => _inventoryRepository.stacks.elementAtOrNull(slot),
       null => null,
     };
+    final item = stack?.item;
     final material = selection.material;
     if (item == null && material == null) {
       return null;
@@ -39,6 +40,7 @@ final class CampfireRecipeUseCase {
     };
     final problem = switch (recipe) {
       null => "You can't use this here",
+      _ when stack?.isSpoiled ?? false => 'This food went bad',
       CampfireRecipe(:final material?, :final materialCount) when _materialRepository.count(material) < materialCount =>
         'You need $materialCount ${material.name} for this',
       CampfireRecipe(needsCookingPot: true) when _inventoryRepository.count(.cookingPot) == 0 =>
@@ -55,8 +57,8 @@ final class CampfireRecipeUseCase {
       _feedbackRepository.show(FeedbackMessage(text: problem ?? "You can't use this here"));
       return null;
     }
-    if (recipe case CampfireRecipe(:final input?)) {
-      _inventoryRepository.remove(input);
+    if (selection.slot case final slot? when recipe.input != null) {
+      _inventoryRepository.takeAt(slot);
     }
     if (recipe case CampfireRecipe(:final material?, :final materialCount)) {
       _materialRepository.remove(

@@ -2,6 +2,7 @@ import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
+import 'package:domain/inventory/use_case/spoil_food_use_case.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +15,13 @@ class DayBloc extends Bloc<DayEvent, DayState> {
   final DayRepository _dayRepository;
   final TickerRepository _tickerRepository;
   final PassSecondUseCase _passSecondUseCase;
+  final SpoilFoodUseCase _spoilFoodUseCase;
 
   DayBloc()
     : _dayRepository = diContainer.get(),
       _tickerRepository = diContainer.get(),
       _passSecondUseCase = diContainer.get(),
+      _spoilFoodUseCase = diContainer.get(),
       super(DayState(day: diContainer.get<DayRepository>().day)) {
     on<DayStarted>(_onStarted);
   }
@@ -41,6 +44,7 @@ class DayBloc extends Bloc<DayEvent, DayState> {
       emit.forEach(
         _tickerRepository.seconds,
         onData: (_) {
+          _spoilFoodUseCase(event.level);
           _passSecondUseCase(event.level);
           return state;
         },

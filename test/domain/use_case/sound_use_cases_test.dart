@@ -173,7 +173,7 @@ void main() {
           deps.inventory.add(.berries);
 
           expect(
-            diContainer.get<ConsumeUseCase>()(.berries),
+            diContainer.get<ConsumeUseCase>()(0),
             isTrue,
           );
           expect(
@@ -190,11 +190,11 @@ void main() {
           deps.inventory.add(.sodisCleanWater);
 
           expect(
-            consume(.sodisCleanWater),
+            consume(0),
             isTrue,
           );
           expect(
-            consume(.berries),
+            consume(1),
             isFalse,
           );
           expect(

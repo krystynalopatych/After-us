@@ -8,6 +8,7 @@ import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
 import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
+import 'package:domain/inventory/use_case/spoil_food_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
@@ -239,6 +240,15 @@ void registerUseCases() {
         saveRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => SpoilFoodUseCase(
+        clockRepository: diContainer.get(),
+        dayRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

@@ -94,11 +94,11 @@ void main() {
       addTearDown(subscription.cancel);
 
       expect(
-        repository.take(0),
+        repository.take(0)?.item,
         InventoryItem.algae,
       );
       expect(
-        repository.take(0),
+        repository.take(0)?.item,
         InventoryItem.algae,
       );
       expect(

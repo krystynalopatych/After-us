@@ -20,10 +20,16 @@ final class Fridge extends Equatable {
 
   bool canPut(
     int slot,
-    InventoryItem item,
-  ) => switch (slots.elementAtOrNull(slot)) {
+    InventoryItem item, {
+    int age = 0,
+  }) => switch (slots.elementAtOrNull(slot)) {
     null => slot >= 0 && slot < slotCount,
-    final stack => stack.item == item && stack.count < stackSize,
+    final stack =>
+      stack.canTake(
+            item,
+            age,
+          ) &&
+          stack.count < stackSize,
   };
 
   Fridge copyWith({

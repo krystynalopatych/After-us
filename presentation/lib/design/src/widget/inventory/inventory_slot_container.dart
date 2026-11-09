@@ -3,13 +3,17 @@ import 'package:presentation/design/src/theme/design_system_theme.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
 final class InventorySlotContainer extends StatelessWidget {
+  static const _spoiledTintOpacity = 0.55;
+
   final AssetGenImage image;
   final int count;
+  final bool isSpoiled;
 
   const InventorySlotContainer({
     super.key,
     required this.image,
     required this.count,
+    this.isSpoiled = false,
   });
 
   @override
@@ -19,7 +23,16 @@ final class InventorySlotContainer extends StatelessWidget {
     return Stack(
       fit: .expand,
       children: [
-        image.image(fit: .contain),
+        if (isSpoiled)
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              theme.colors.base.green.withValues(alpha: _spoiledTintOpacity),
+              BlendMode.srcATop,
+            ),
+            child: image.image(fit: .contain),
+          )
+        else
+          image.image(fit: .contain),
         Align(
           alignment: .bottomRight,
           child: Text(

@@ -1,5 +1,6 @@
 import 'package:domain/fridge/model/fridge.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
+import 'package:domain/inventory/model/inventory_stack.dart';
 
 abstract interface class FridgeRepository {
   Fridge get fridge;
@@ -8,10 +9,13 @@ abstract interface class FridgeRepository {
 
   bool put(
     int slot,
-    InventoryItem item,
-  );
+    InventoryItem item, {
+    int age,
+  });
 
-  InventoryItem? take(int slot);
+  InventoryStack? take(int slot);
+
+  List<InventoryItem> ageFood();
 
   void water(int day);
 

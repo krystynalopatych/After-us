@@ -40,5 +40,7 @@ enum GameLevel {
 
   List<GameLocation> get throwTargets => [.lake, farLocation, .forest];
 
+  bool get hasSpoilage => this != level1;
+
   GameLevel? get next => index + 1 < values.length ? values[index + 1] : null;
 }

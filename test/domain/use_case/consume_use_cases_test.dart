@@ -69,10 +69,15 @@ void main() {
   group(
     'ConsumeUseCase',
     () {
-      late ConsumeUseCase consume;
+      late ConsumeUseCase consumeAt;
+
+      bool consume(InventoryItem item) {
+        final slot = inventory.stacks.indexWhere((stack) => stack.item == item);
+        return consumeAt(slot == -1 ? inventory.stacks.length : slot);
+      }
 
       setUp(
-        () => consume = ConsumeUseCase(
+        () => consumeAt = ConsumeUseCase(
           dayRepository: day,
           dialogueRepository: dialogue,
           feedbackRepository: feedback,

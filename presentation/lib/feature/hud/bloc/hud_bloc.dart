@@ -92,14 +92,11 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     HudCharacterTapped event,
     Emitter<HudState> emit,
   ) {
-    final item = switch (state.selectedSlot) {
-      final slot? => state.inventory.elementAtOrNull(slot)?.item,
-      null => null,
-    };
-    if (item == null || !item.isConsumable) {
+    final slot = state.selectedSlot;
+    if (slot == null || !(state.inventory.elementAtOrNull(slot)?.item.isConsumable ?? false)) {
       return;
     }
-    _consumeUseCase(item);
+    _consumeUseCase(slot);
     _selectionRepository.selectSlot(null);
   }
 }

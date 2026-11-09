@@ -18,11 +18,13 @@ final class FridgeRepositoryImpl implements FridgeRepository {
   @override
   bool put(
     int slot,
-    InventoryItem item,
-  ) {
+    InventoryItem item, {
+    int age = 0,
+  }) {
     if (!_fridge.canPut(
       slot,
       item,
+      age: age,
     )) {
       return false;
     }
@@ -33,14 +35,15 @@ final class FridgeRepositoryImpl implements FridgeRepository {
           ? InventoryStack(
               item: item,
               count: 1,
+              age: age,
             )
-          : stack.copyWith(count: stack.count + 1),
+          : stack.merged(age),
     );
     return true;
   }
 
   @override
-  InventoryItem? take(int slot) {
+  InventoryStack? take(int slot) {
     final stack = _fridge.slots.elementAtOrNull(slot);
     if (stack == null) {
       return null;
@@ -49,7 +52,26 @@ final class FridgeRepositoryImpl implements FridgeRepository {
       slot,
       stack.count > 1 ? stack.copyWith(count: stack.count - 1) : null,
     );
-    return stack.item;
+    return stack.copyWith(count: 1);
+  }
+
+  @override
+  List<InventoryItem> ageFood() {
+    final spoiled = <InventoryItem>[];
+    final slots = [
+      for (final stack in _fridge.slots)
+        if (stack == null || stack.isSpoiled) stack else stack.copyWith(age: stack.age + 1),
+    ];
+    if (slots.nonNulls.isEmpty) {
+      return spoiled;
+    }
+    for (final (index, stack) in slots.indexed) {
+      if (stack != null && stack.isSpoiled && !(_fridge.slots[index]?.isSpoiled ?? false)) {
+        spoiled.add(stack.item);
+      }
+    }
+    _update(_fridge.copyWith(slots: List.unmodifiable(slots)));
+    return spoiled;
   }
 
   @override

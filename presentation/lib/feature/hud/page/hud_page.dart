@@ -161,13 +161,14 @@ class _HudPageState extends State<HudPage> {
                 height: _slotSize * _inventoryScale,
                 child: SelectableContainer(
                   glowImage: stack.item.asset(context),
-                  label: stack.item.title,
+                  label: stack.title,
                   isSelected: state.selectedSlot == index,
                   isLabelBelow: false,
                   onTap: () => _bloc.add(HudSlotTapped(index)),
                   child: InventorySlotContainer(
                     image: stack.item.asset(context),
                     count: stack.count,
+                    isSpoiled: stack.isSpoiled,
                   ),
                 ),
               ),
