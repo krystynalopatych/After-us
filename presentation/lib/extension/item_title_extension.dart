@@ -43,6 +43,9 @@ extension InventoryItemTitleExtension on InventoryItem {
     .algaeSoaked => 'Soaked algae',
     .berries => 'Berries',
     .mushrooms => 'Mushrooms',
+    .mushroomsCooked => 'Cooked mushrooms',
+    .potato => 'Potatoes',
+    .potatoBoiled => 'Boiled potatoes',
     .cleanWater => 'Clean water',
     .sodisLakeWater => 'Lake water (SODIS)',
     .bottleLakeWater => 'Lake water',
@@ -57,6 +60,8 @@ extension InventoryItemTitleExtension on InventoryItem {
     .rocketStove => 'Rocket stove',
     .waterFilter => 'Water filter',
     .clayFridge => 'Clay fridge',
+    .gardenBed => 'Garden bed',
+    .greenhouse => 'Greenhouse',
   };
 }
 

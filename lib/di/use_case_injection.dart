@@ -6,6 +6,7 @@ import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_cooling_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
 import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
+import 'package:domain/garden/use_case/use_garden_bed_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/inventory/use_case/spoil_food_use_case.dart';
@@ -66,6 +67,7 @@ void registerUseCases() {
         carryOverRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         progressRepository: diContainer.get(),
         stationRepository: diContainer.get(),
@@ -191,6 +193,7 @@ void registerUseCases() {
         dayRepository: diContainer.get(),
         dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
@@ -204,6 +207,7 @@ void registerUseCases() {
     ..registerFactory(
       () => PlaceStationUseCase(
         feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
@@ -230,6 +234,7 @@ void registerUseCases() {
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -262,6 +267,7 @@ void registerUseCases() {
         dayRepository: diContainer.get(),
         fireRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
@@ -306,6 +312,17 @@ void registerUseCases() {
       () => UseCompostPitUseCase(
         compostRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => UseGardenBedUseCase(
+        constructionRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),

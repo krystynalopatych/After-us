@@ -11,6 +11,7 @@ import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/fridge/repository/fridge_repository_impl.dart';
+import 'package:data/garden/repository/garden_bed_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
@@ -40,6 +41,7 @@ import 'package:domain/dialogue/repository/dialogue_repository.dart';
 import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
+import 'package:domain/garden/repository/garden_bed_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
@@ -123,6 +125,7 @@ final class TestDependencies {
   final feedback = FeedbackRepositoryImpl();
   final fire = FireRepositoryImpl();
   final fridge = FridgeRepositoryImpl();
+  final garden = GardenBedRepositoryImpl();
   final heroReaction = HeroReactionRepositoryImpl();
   final inventory = InventoryRepositoryImpl();
   final location = LocationRepositoryImpl();
@@ -157,6 +160,7 @@ final class TestDependencies {
       ..registerSingleton<FeedbackRepository>(feedback)
       ..registerSingleton<FireRepository>(fire)
       ..registerSingleton<FridgeRepository>(fridge)
+      ..registerSingleton<GardenBedRepository>(garden)
       ..registerSingleton<HeroReactionRepository>(heroReaction)
       ..registerSingleton<InventoryRepository>(inventory)
       ..registerSingleton<LocationRepository>(location)

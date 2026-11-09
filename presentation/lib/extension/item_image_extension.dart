@@ -13,6 +13,9 @@ extension InventoryItemImageExtension on InventoryItem {
       .algaeSoaked => images.imgSeaweedVymochenye,
       .berries => images.imgBerries,
       .mushrooms => images.imgMushroomsSyrye,
+      .mushroomsCooked => images.imgMushroomsCooked,
+      .potato => images.imgPotato,
+      .potatoBoiled => images.imgBoiledPotato,
       .cleanWater => images.imgBoiledWater,
       .sodisLakeWater => images.imgSodisLakeWater,
       .bottleLakeWater => images.imgBottleLakeWater,
@@ -27,6 +30,8 @@ extension InventoryItemImageExtension on InventoryItem {
       .rocketStove => images.imgRocketFire,
       .waterFilter => images.imgFullWaterFilter,
       .clayFridge => images.imgFreezerGorshok,
+      .gardenBed => images.imgGryadka,
+      .greenhouse => images.imgGreenhouse,
     };
   }
 }

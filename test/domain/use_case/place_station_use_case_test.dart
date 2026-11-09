@@ -12,6 +12,7 @@ void main() {
     deps = TestDependencies();
     placeStation = PlaceStationUseCase(
       feedbackRepository: deps.feedback,
+      gardenBedRepository: deps.garden,
       inventoryRepository: deps.inventory,
       selectionRepository: deps.selection,
       stationRepository: deps.station,

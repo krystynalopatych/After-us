@@ -189,6 +189,9 @@ final class ConsumeUseCase {
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
     .mushrooms => 'raw mushrooms',
+    .mushroomsCooked => 'cooked mushrooms',
+    .potato => 'a raw potato',
+    .potatoBoiled => 'a boiled potato',
     .cleanWater || .sodisCleanWater => 'clean water',
     .sodisLakeWater || .bottleLakeWater => 'lake water',
     .sodisStrainedWater || .bottleStrainedWater => 'strained water',
@@ -199,5 +202,7 @@ final class ConsumeUseCase {
     .rocketStove => 'a rocket stove',
     .waterFilter => 'a water filter',
     .clayFridge => 'a clay fridge',
+    .gardenBed => 'a garden bed',
+    .greenhouse => 'a greenhouse',
   };
 }

@@ -4,6 +4,7 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
+import 'package:domain/garden/repository/garden_bed_repository.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
@@ -34,6 +35,7 @@ final class StartLevelUseCase {
   final DayRepository _dayRepository;
   final FireRepository _fireRepository;
   final FridgeRepository _fridgeRepository;
+  final GardenBedRepository _gardenBedRepository;
   final InventoryRepository _inventoryRepository;
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
@@ -58,6 +60,7 @@ final class StartLevelUseCase {
     required this._dayRepository,
     required this._fireRepository,
     required this._fridgeRepository,
+    required this._gardenBedRepository,
     required this._inventoryRepository,
     required this._locationRepository,
     required this._materialRepository,
@@ -101,6 +104,7 @@ final class StartLevelUseCase {
     _campfireRepository.restore(save.campfireUses);
     _compostRepository.restore(save.compostPit);
     _fridgeRepository.restore(save.fridge);
+    _gardenBedRepository.restore(save.gardenBed);
     _mealRepository.restore(save.meals);
     _locationRepository.setLocation(save.location);
   }
@@ -127,6 +131,7 @@ final class StartLevelUseCase {
     _campfireRepository.reset();
     _compostRepository.reset();
     _mealRepository.reset();
+    _gardenBedRepository.restore(carryOver.gardenBed);
     _locationRepository.setLocation(.house);
   }
 

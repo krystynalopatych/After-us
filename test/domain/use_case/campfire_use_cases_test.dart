@@ -644,4 +644,75 @@ void main() {
       );
     },
   );
+
+  test(
+    'cooks raw mushrooms into cooked mushrooms, two on the rocket stove',
+    () async {
+      deps.inventory
+        ..add(.cookingPot)
+        ..add(.mushrooms)
+        ..add(.mushrooms);
+      addWood(2);
+
+      expect(
+        cook(
+          .cookMushrooms,
+          .wood,
+          .campfire,
+        ),
+        isTrue,
+      );
+      expect(
+        cook(
+          .cookMushrooms,
+          .wood,
+          .rocketStove,
+        ),
+        isTrue,
+      );
+      await pumpEventQueue();
+
+      expect(
+        deps.inventory.count(.mushroomsCooked),
+        3,
+      );
+      expect(
+        deps.inventory.count(.mushrooms),
+        0,
+      );
+      expect(
+        messages.first.text,
+        'You cooked mushrooms +1 cooked mushrooms',
+      );
+    },
+  );
+
+  test(
+    'boils potatoes',
+    () async {
+      deps.inventory
+        ..add(.cookingPot)
+        ..add(.potato);
+      addWood(1);
+
+      expect(
+        cook(
+          .boilPotato,
+          .wood,
+          .campfire,
+        ),
+        isTrue,
+      );
+      await pumpEventQueue();
+
+      expect(
+        deps.inventory.count(.potatoBoiled),
+        1,
+      );
+      expect(
+        messages.single.text,
+        'You boiled potatoes +1 boiled potatoes',
+      );
+    },
+  );
 }

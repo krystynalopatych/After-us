@@ -133,5 +133,7 @@ final class CraftUseCase {
     .rocketStove => 'You built a rocket stove',
     .waterFilter => 'You built a water filter',
     .clayFridge => 'You built a clay fridge',
+    .gardenBed => 'You made a garden bed',
+    .greenhouse => 'You made a greenhouse',
   };
 }

@@ -48,6 +48,9 @@ final class SpoilFoodUseCase {
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
     .mushrooms => 'mushrooms',
+    .mushroomsCooked => 'cooked mushrooms',
+    .potato => 'potatoes',
+    .potatoBoiled => 'boiled potatoes',
     .cleanWater ||
     .sodisLakeWater ||
     .bottleLakeWater ||
@@ -61,6 +64,8 @@ final class SpoilFoodUseCase {
     .cookingPot ||
     .rocketStove ||
     .waterFilter ||
-    .clayFridge => 'food',
+    .clayFridge ||
+    .gardenBed ||
+    .greenhouse => 'food',
   };
 }

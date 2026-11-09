@@ -32,6 +32,16 @@ enum CampfireRecipe {
     output: .cattailRootCooked,
     stoveOutputCount: 2,
   ),
+  cookMushrooms(
+    input: .mushrooms,
+    output: .mushroomsCooked,
+    stoveOutputCount: 2,
+  ),
+  boilPotato(
+    input: .potato,
+    output: .potatoBoiled,
+    stoveOutputCount: 2,
+  ),
   makeCharcoal(
     material: .wood,
     product: .charcoal,

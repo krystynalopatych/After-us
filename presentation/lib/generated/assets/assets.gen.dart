@@ -55,6 +55,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgBerries =>
       const AssetGenImage('resources/assets/images/img_berries.webp');
 
+  /// File path: resources/assets/images/img_boiled_potato.webp
+  AssetGenImage get imgBoiledPotato =>
+      const AssetGenImage('resources/assets/images/img_boiled_potato.webp');
+
   /// File path: resources/assets/images/img_boiled_water.webp
   AssetGenImage get imgBoiledWater =>
       const AssetGenImage('resources/assets/images/img_boiled_water.webp');
@@ -247,6 +251,16 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgGryadkaRastet =>
       const AssetGenImage('resources/assets/images/img_gryadka_rastet.webp');
 
+  /// File path: resources/assets/images/img_gryadka_with_greenhouse.webp
+  AssetGenImage get imgGryadkaWithGreenhouse => const AssetGenImage(
+    'resources/assets/images/img_gryadka_with_greenhouse.webp',
+  );
+
+  /// File path: resources/assets/images/img_gryadka_with_greenhouse_rastet.webp
+  AssetGenImage get imgGryadkaWithGreenhouseRastet => const AssetGenImage(
+    'resources/assets/images/img_gryadka_with_greenhouse_rastet.webp',
+  );
+
   /// File path: resources/assets/images/img_harvest.webp
   AssetGenImage get imgHarvest =>
       const AssetGenImage('resources/assets/images/img_harvest.webp');
@@ -404,6 +418,14 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgPlayerThirsty =>
       const AssetGenImage('resources/assets/images/img_player_thirsty.webp');
 
+  /// File path: resources/assets/images/img_potato.webp
+  AssetGenImage get imgPotato =>
+      const AssetGenImage('resources/assets/images/img_potato.webp');
+
+  /// File path: resources/assets/images/img_potato_on_gryadka.webp
+  AssetGenImage get imgPotatoOnGryadka =>
+      const AssetGenImage('resources/assets/images/img_potato_on_gryadka.webp');
+
   /// File path: resources/assets/images/img_prefilter.webp
   AssetGenImage get imgPrefilter =>
       const AssetGenImage('resources/assets/images/img_prefilter.webp');
@@ -524,6 +546,7 @@ class $ResourcesAssetsImagesGen {
     imgAnswerBlock,
     imgAshes,
     imgBerries,
+    imgBoiledPotato,
     imgBoiledWater,
     imgBookIcon,
     imgBottleFilteredWater,
@@ -571,6 +594,8 @@ class $ResourcesAssetsImagesGen {
     imgGreenhouse,
     imgGryadka,
     imgGryadkaRastet,
+    imgGryadkaWithGreenhouse,
+    imgGryadkaWithGreenhouseRastet,
     imgHarvest,
     imgHole,
     imgHomeIcon,
@@ -609,6 +634,8 @@ class $ResourcesAssetsImagesGen {
     imgPlayerHp,
     imgPlayerHunger,
     imgPlayerThirsty,
+    imgPotato,
+    imgPotatoOnGryadka,
     imgPrefilter,
     imgProvoda,
     imgResourseIcon,

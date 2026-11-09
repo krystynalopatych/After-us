@@ -44,6 +44,16 @@ enum WorkbenchRecipe {
     result: .clayFridge,
     record: .clayFridge,
     construction: .clayFridge,
+  ),
+  gardenBed(
+    ingredients: {GameMaterial.compost: 4},
+    result: .gardenBed,
+    record: .gardenBed,
+  ),
+  greenhouse(
+    ingredients: {GameMaterial.plastic: 2},
+    result: .greenhouse,
+    record: .greenhouse,
   );
 
   final Map<GameMaterial, int> ingredients;

@@ -2,6 +2,7 @@ import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
+import 'package:domain/garden/repository/garden_bed_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
@@ -22,6 +23,7 @@ final class SaveGameUseCase {
   final ConstructionRepository _constructionRepository;
   final DayRepository _dayRepository;
   final FridgeRepository _fridgeRepository;
+  final GardenBedRepository _gardenBedRepository;
   final InventoryRepository _inventoryRepository;
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
@@ -39,6 +41,7 @@ final class SaveGameUseCase {
     required this._constructionRepository,
     required this._dayRepository,
     required this._fridgeRepository,
+    required this._gardenBedRepository,
     required this._inventoryRepository,
     required this._locationRepository,
     required this._materialRepository,
@@ -68,6 +71,7 @@ final class SaveGameUseCase {
       campfireUses: _campfireRepository.uses,
       compostPit: _compostRepository.pit,
       fridge: _fridgeRepository.fridge,
+      gardenBed: _gardenBedRepository.bed,
       meals: _mealRepository.meals,
     ),
   );
