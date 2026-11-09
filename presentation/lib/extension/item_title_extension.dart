@@ -1,5 +1,6 @@
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
+import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/pickup/model/pickup_kind.dart';
 
@@ -42,6 +43,9 @@ extension InventoryItemTitleExtension on InventoryItem {
     .algaeSoaked => 'Soaked algae',
     .berries => 'Berries',
     .mushrooms => 'Mushrooms',
+    .mushroomsCooked => 'Cooked mushrooms',
+    .potato => 'Potatoes',
+    .potatoBoiled => 'Boiled potatoes',
     .cleanWater => 'Clean water',
     .sodisLakeWater => 'Lake water (SODIS)',
     .bottleLakeWater => 'Lake water',
@@ -56,9 +60,16 @@ extension InventoryItemTitleExtension on InventoryItem {
     .rocketStove => 'Rocket stove',
     .waterFilter => 'Water filter',
     .clayFridge => 'Clay fridge',
+    .gardenBed => 'Garden bed',
+    .greenhouse => 'Greenhouse',
+    .wetCardboard => 'Wet cardboard',
   };
 }
 
 extension PickupKindTitleExtension on PickupKind {
   String get title => material?.title ?? food?.title ?? '';
+}
+
+extension InventoryStackTitleExtension on InventoryStack {
+  String get title => isSpoiled ? 'Spoiled ${item.title.toLowerCase()}' : item.title;
 }

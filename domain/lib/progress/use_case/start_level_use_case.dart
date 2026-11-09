@@ -4,9 +4,12 @@ import 'package:domain/construction/repository/construction_repository.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
+import 'package:domain/garden/repository/garden_bed_repository.dart';
+import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
@@ -33,9 +36,11 @@ final class StartLevelUseCase {
   final DayRepository _dayRepository;
   final FireRepository _fireRepository;
   final FridgeRepository _fridgeRepository;
+  final GardenBedRepository _gardenBedRepository;
   final InventoryRepository _inventoryRepository;
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
+  final MushroomFarmRepository _mushroomFarmRepository;
   final PickupRepository _pickupRepository;
   final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
@@ -57,9 +62,11 @@ final class StartLevelUseCase {
     required this._dayRepository,
     required this._fireRepository,
     required this._fridgeRepository,
+    required this._gardenBedRepository,
     required this._inventoryRepository,
     required this._locationRepository,
     required this._materialRepository,
+    required this._mushroomFarmRepository,
     required this._pickupRepository,
     required this._mealRepository,
     required this._playerRepository,
@@ -100,6 +107,8 @@ final class StartLevelUseCase {
     _campfireRepository.restore(save.campfireUses);
     _compostRepository.restore(save.compostPit);
     _fridgeRepository.restore(save.fridge);
+    _gardenBedRepository.restore(save.gardenBed);
+    _mushroomFarmRepository.restore(save.mushroomFarm);
     _mealRepository.restore(save.meals);
     _locationRepository.setLocation(save.location);
   }
@@ -110,15 +119,26 @@ final class StartLevelUseCase {
     _playerRepository.reset();
     _materialRepository.reset();
     _pollutionRepository.reset();
-    _inventoryRepository.restore(carryOver.inventory);
+    _inventoryRepository.restore(carryOver.inventory.map(_fresh).toList());
     _pickupRepository.startLevel(level);
     _constructionRepository.restore(carryOver.constructions);
     _stationRepository.restore(carryOver.stations);
-    _fridgeRepository.restore(carryOver.fridge);
+    _fridgeRepository.restore(
+      carryOver.fridge.copyWith(
+        slots: [
+          for (final stack in carryOver.fridge.slots)
+            if (stack == null) null else _fresh(stack),
+        ],
+      ),
+    );
     _sunSpotRepository.reset();
     _campfireRepository.reset();
     _compostRepository.reset();
     _mealRepository.reset();
+    _gardenBedRepository.restore(carryOver.gardenBed);
+    _mushroomFarmRepository.restore(carryOver.mushroomFarm);
     _locationRepository.setLocation(.house);
   }
+
+  static InventoryStack _fresh(InventoryStack stack) => stack.isSpoiled ? stack : stack.copyWith(age: 0);
 }

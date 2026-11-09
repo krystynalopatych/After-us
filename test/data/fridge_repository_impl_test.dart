@@ -15,7 +15,7 @@ void main() {
         const Fridge.empty(),
       );
       expect(
-        fridge.isCoolingOn(1),
+        fridge.isWateredOn(1),
         isFalse,
       );
     },
@@ -94,11 +94,11 @@ void main() {
       addTearDown(subscription.cancel);
 
       expect(
-        repository.take(0),
+        repository.take(0)?.item,
         InventoryItem.algae,
       );
       expect(
-        repository.take(0),
+        repository.take(0)?.item,
         InventoryItem.algae,
       );
       expect(
@@ -124,11 +124,11 @@ void main() {
       final repository = FridgeRepositoryImpl()..water(2);
 
       expect(
-        repository.fridge.isCoolingOn(2),
+        repository.fridge.isWateredOn(2),
         isTrue,
       );
       expect(
-        repository.fridge.isCoolingOn(3),
+        repository.fridge.isWateredOn(3),
         isFalse,
       );
     },

@@ -8,7 +8,14 @@ abstract interface class InventoryRepository {
 
   int count(InventoryItem item);
 
-  bool add(InventoryItem item);
+  bool add(
+    InventoryItem item, {
+    int age,
+  });
+
+  InventoryStack? takeAt(int slot);
+
+  List<InventoryItem> ageFood();
 
   bool remove(InventoryItem item);
 

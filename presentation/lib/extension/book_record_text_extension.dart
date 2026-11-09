@@ -9,6 +9,11 @@ extension BookRecordTextExtension on BookRecord {
     .waterFilter => 'Water filter: plastic, cloth, sand and charcoal',
     .soakedAlgae => 'Soaked algae: algae and clean water',
     .clayFridge => 'Clay fridge: 2 clay pots and 2 sand',
+    .gardenBed => 'Garden bed: 4 compost',
+    .greenhouse => 'Greenhouse: 2 plastic',
+    .wetCardboard => 'Wet cardboard: cardboard and any water',
+    .mushroomFarm => 'Mushroom farm: 2 wet cardboard and a wild mushroom',
+    .clayPot => 'Clay pot: 2 clay fired in the fire',
   };
 
   String get fact => switch (this) {
@@ -21,5 +26,14 @@ extension BookRecordTextExtension on BookRecord {
       'Seaweed grows without soil, fresh water or fertilizer and takes in carbon. In Japan it becomes nori.',
     .clayFridge =>
       'A zeer is a pot in a pot with wet sand between. Drying water cools it: in Nigeria food lasts weeks longer.',
+    .gardenBed =>
+      'Compost brings worms and food for plants back to dead soil. A raised bed of it can feed a family all year.',
+    .greenhouse =>
+      'Clear plastic traps the warmth of the sun. Even a cover of old bottles lets plants grow in cold months.',
+    .wetCardboard => 'Wet cardboard is soft food for mushroom roots. Paper waste becomes the start of a new harvest.',
+    .mushroomFarm =>
+      'Oyster mushrooms grow on wet cardboard and coffee grounds. City farms turn waste into food this way.',
+    .clayPot =>
+      'Fired clay pots are among the oldest tools people made. Unglazed clay lets water seep and cool the pot.',
   };
 }

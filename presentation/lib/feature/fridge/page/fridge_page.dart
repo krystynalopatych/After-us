@@ -98,6 +98,7 @@ class _FridgePageState extends State<FridgePage> {
                     child: InventorySlotContainer(
                       image: stack.item.asset(context),
                       count: stack.count,
+                      isSpoiled: stack.isSpoiled,
                     ),
                   ),
                   null => const SizedBox.expand(),

@@ -3,17 +3,24 @@ import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
+import 'package:domain/dialogue/use_case/level_intro_use_case.dart';
+import 'package:domain/dialogue/use_case/read_note_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_cooling_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
 import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
+import 'package:domain/garden/use_case/use_garden_bed_use_case.dart';
 import 'package:domain/inventory/use_case/fill_bottle_use_case.dart';
 import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
+import 'package:domain/inventory/use_case/spoil_food_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
+import 'package:domain/mushroom/use_case/soak_cardboard_use_case.dart';
+import 'package:domain/mushroom/use_case/use_mushroom_farm_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
+import 'package:domain/player/use_case/eat_seeds_use_case.dart';
 import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/new_game_use_case.dart';
@@ -65,7 +72,9 @@ void registerUseCases() {
         carryOverRepository: diContainer.get(),
         constructionRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         progressRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
@@ -87,6 +96,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => CookOnCampfireUseCase(
+        bookRepository: diContainer.get(),
         campfireRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         fireRepository: diContainer.get(),
@@ -110,6 +120,17 @@ void registerUseCases() {
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
         workbenchRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => EatSeedsUseCase(
+        dialogueRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        playerRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -159,6 +180,12 @@ void registerUseCases() {
       ),
     )
     ..registerFactory(
+      () => LevelIntroUseCase(
+        dialogueRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
       () => LevelResultUseCase(
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
@@ -190,6 +217,8 @@ void registerUseCases() {
         dayRepository: diContainer.get(),
         dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
@@ -203,7 +232,9 @@ void registerUseCases() {
     ..registerFactory(
       () => PlaceStationUseCase(
         feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
       ),
@@ -213,6 +244,12 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => ReadBookUseCase(bookRepository: diContainer.get()),
+    )
+    ..registerFactory(
+      () => ReadNoteUseCase(
+        dialogueRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
+      ),
     )
     ..registerFactory(
       () => ReturnStationItemsUseCase(
@@ -229,9 +266,11 @@ void registerUseCases() {
         constructionRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
@@ -239,6 +278,25 @@ void registerUseCases() {
         saveRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => SoakCardboardUseCase(
+        bookRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => SpoilFoodUseCase(
+        clockRepository: diContainer.get(),
+        dayRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        fridgeRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -252,9 +310,11 @@ void registerUseCases() {
         dayRepository: diContainer.get(),
         fireRepository: diContainer.get(),
         fridgeRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
@@ -297,6 +357,29 @@ void registerUseCases() {
         compostRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => UseGardenBedUseCase(
+        constructionRepository: diContainer.get(),
+        dayRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        gardenBedRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => UseMushroomFarmUseCase(
+        bookRepository: diContainer.get(),
+        constructionRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
       ),

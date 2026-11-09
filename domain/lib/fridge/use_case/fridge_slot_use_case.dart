@@ -1,7 +1,6 @@
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
-import 'package:domain/inventory/model/inventory_item.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 
@@ -19,11 +18,8 @@ final class FridgeSlotUseCase {
   });
 
   void call(int slot) {
-    final selected = switch (_selectionRepository.selection.slot) {
-      final index? => _inventoryRepository.stacks.elementAtOrNull(index)?.item,
-      null => null,
-    };
-    if (selected == null) {
+    final selected = _selectionRepository.selection.slot;
+    if (selected == null || _inventoryRepository.stacks.elementAtOrNull(selected) == null) {
       _take(slot);
       return;
     }
@@ -35,25 +31,28 @@ final class FridgeSlotUseCase {
 
   void _put(
     int slot,
-    InventoryItem item,
+    int inventorySlot,
   ) {
-    if (!_isFood(item)) {
+    final stack = _inventoryRepository.stacks[inventorySlot];
+    if (!stack.item.isPerishable) {
       _show('Only food goes into the fridge');
       return;
     }
     if (!_fridgeRepository.fridge.canPut(
       slot,
-      item,
+      stack.item,
+      age: stack.age,
     )) {
       _show('There is no room for it here');
       return;
     }
-    _inventoryRepository.remove(item);
+    _inventoryRepository.takeAt(inventorySlot);
     _fridgeRepository.put(
       slot,
-      item,
+      stack.item,
+      age: stack.age,
     );
-    if (_inventoryRepository.count(item) == 0) {
+    if (stack.count == 1) {
       _selectionRepository.reset();
     }
   }
@@ -63,7 +62,10 @@ final class FridgeSlotUseCase {
     if (stack == null) {
       return;
     }
-    if (!_inventoryRepository.add(stack.item)) {
+    if (!_inventoryRepository.add(
+      stack.item,
+      age: stack.age,
+    )) {
       _show('Your inventory is full');
       return;
     }
@@ -71,6 +73,4 @@ final class FridgeSlotUseCase {
   }
 
   void _show(String text) => _feedbackRepository.show(FeedbackMessage(text: text));
-
-  static bool _isFood(InventoryItem item) => item.hunger > 0 && !item.isDrink;
 }

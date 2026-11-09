@@ -1,3 +1,4 @@
+import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/dialogue/repository/dialogue_repository.dart';
@@ -20,6 +21,7 @@ final class CookOnCampfireUseCase {
   static const _smokelessCampfiresPerDay = 2;
   static const _smokeAirPoints = 1;
 
+  final BookRepository _bookRepository;
   final CampfireRepository _campfireRepository;
   final DayRepository _dayRepository;
   final FireRepository _fireRepository;
@@ -33,6 +35,7 @@ final class CookOnCampfireUseCase {
   final SoundRepository _soundRepository;
 
   const CookOnCampfireUseCase({
+    required this._bookRepository,
     required this._campfireRepository,
     required this._dayRepository,
     required this._fireRepository,
@@ -72,6 +75,9 @@ final class CookOnCampfireUseCase {
     }
     if (recipe.product case final product?) {
       _materialRepository.add(product);
+    }
+    if (recipe == .fireClayPot) {
+      _bookRepository.write(.clayPot);
     }
     final isCampfire = station == .campfire;
     final isPolluting = isCampfire && fuel.isPolluting;
@@ -123,6 +129,8 @@ final class CookOnCampfireUseCase {
       .boilSodisLakeWater || .boilSodisStrainedWater => 'You boiled water +$count clean water',
       .boilBottleLakeWater || .boilBottleStrainedWater => 'You boiled water +$count clean water +1 plastic',
       .cookCattailRoot => 'You cooked cattail roots +$count cooked cattail roots',
+      .cookMushrooms => 'You cooked mushrooms +$count cooked mushrooms',
+      .boilPotato => 'You boiled potatoes +$count boiled potatoes',
       .makeCharcoal => 'You made charcoal +1 charcoal',
       .fireClayPot => 'You fired a clay pot +1 clay pot',
     };
@@ -144,6 +152,8 @@ final class CookOnCampfireUseCase {
         .boilSodisStrainedWater ||
         .boilBottleStrainedWater => "Now it's safe to drink.",
         .cookCattailRoot => 'Warm food at last.',
+        .cookMushrooms => 'Boiled mushrooms. Much safer than raw.',
+        .boilPotato => 'Potatoes I grew myself. They taste like hope.',
         .makeCharcoal => 'Charcoal... I can use it for the water filter.',
         .fireClayPot => 'A real pot! Two of them and some wet sand make a fridge.',
       },

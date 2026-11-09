@@ -72,3 +72,11 @@ final class GameLakeWaterTapped extends GameEvent {
 final class GameWaterChoiceClosed extends GameEvent {
   const GameWaterChoiceClosed();
 }
+
+final class GameNoteTapped extends GameEvent {
+  const GameNoteTapped();
+}
+
+final class GameNoteClosed extends GameEvent {
+  const GameNoteClosed();
+}

@@ -26,10 +26,14 @@ final class InventoryRepositoryImpl implements InventoryRepository {
       );
 
   @override
-  bool add(InventoryItem item) {
+  bool add(
+    InventoryItem item, {
+    int age = 0,
+  }) {
     if (!_addTo(
       _stacks,
       item,
+      age: age,
     )) {
       return false;
     }
@@ -47,6 +51,42 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     }
     _stacksController.add(stacks);
     return true;
+  }
+
+  @override
+  InventoryStack? takeAt(int slot) {
+    final stack = _stacks.elementAtOrNull(slot);
+    if (stack == null) {
+      return null;
+    }
+    if (stack.count > 1) {
+      _stacks[slot] = stack.copyWith(count: stack.count - 1);
+    } else {
+      _stacks.removeAt(slot);
+    }
+    _stacksController.add(stacks);
+    return stack.copyWith(count: 1);
+  }
+
+  @override
+  List<InventoryItem> ageFood() {
+    final spoiled = <InventoryItem>[];
+    var isChanged = false;
+    for (final (index, stack) in _stacks.indexed) {
+      if (!stack.item.isPerishable || stack.isSpoiled) {
+        continue;
+      }
+      final aged = stack.copyWith(age: stack.age + 1);
+      _stacks[index] = aged;
+      isChanged = true;
+      if (aged.isSpoiled) {
+        spoiled.add(aged.item);
+      }
+    }
+    if (isChanged) {
+      _stacksController.add(stacks);
+    }
+    return spoiled;
   }
 
   @override
@@ -125,11 +165,19 @@ final class InventoryRepositoryImpl implements InventoryRepository {
 
   static bool _addTo(
     List<InventoryStack> stacks,
-    InventoryItem item,
-  ) {
-    final index = stacks.indexWhere((stack) => stack.item == item && stack.count < _stackSize);
+    InventoryItem item, {
+    int age = 0,
+  }) {
+    final index = stacks.indexWhere(
+      (stack) =>
+          stack.canTake(
+            item,
+            age,
+          ) &&
+          stack.count < _stackSize,
+    );
     if (index != -1) {
-      stacks[index] = stacks[index].copyWith(count: stacks[index].count + 1);
+      stacks[index] = stacks[index].merged(age);
       return true;
     }
     if (stacks.length >= _slotCount) {
@@ -139,6 +187,7 @@ final class InventoryRepositoryImpl implements InventoryRepository {
       InventoryStack(
         item: item,
         count: 1,
+        age: age,
       ),
     );
     return true;
@@ -148,7 +197,8 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     List<InventoryStack> stacks,
     InventoryItem item,
   ) {
-    final index = stacks.lastIndexWhere((stack) => stack.item == item);
+    final fresh = stacks.lastIndexWhere((stack) => stack.item == item && !stack.isSpoiled);
+    final index = fresh != -1 ? fresh : stacks.lastIndexWhere((stack) => stack.item == item);
     if (index == -1) {
       return false;
     }

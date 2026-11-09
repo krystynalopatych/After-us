@@ -1,3 +1,4 @@
+import 'package:domain/dialogue/use_case/level_intro_use_case.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
 import 'package:equatable/equatable.dart';
@@ -10,9 +11,13 @@ part 'level_2_state.dart';
 class Level2Bloc extends Bloc<Level2Event, Level2State> {
   static const _level = GameLevel.level2;
 
+  final LevelIntroUseCase _levelIntroUseCase;
   final StartLevelUseCase _startLevelUseCase;
 
-  Level2Bloc() : _startLevelUseCase = diContainer.get(), super(const Level2State()) {
+  Level2Bloc()
+    : _levelIntroUseCase = diContainer.get(),
+      _startLevelUseCase = diContainer.get(),
+      super(const Level2State()) {
     on<Level2Started>(_onStarted);
     on<Level2Retried>(_onStarted);
   }
@@ -22,6 +27,7 @@ class Level2Bloc extends Bloc<Level2Event, Level2State> {
     Emitter<Level2State> emit,
   ) {
     _startLevelUseCase(_level);
+    _levelIntroUseCase(_level);
     emit(state.copyWith(run: state.run + 1));
   }
 }

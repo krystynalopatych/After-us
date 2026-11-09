@@ -1,3 +1,4 @@
+import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
@@ -482,6 +483,37 @@ void main() {
       expect(
         deps.fire.recipe,
         isNull,
+      );
+    },
+  );
+
+  test(
+    'the note opens and closes, the hero speaks only after the first reading',
+    () async {
+      final lines = <String>[];
+      final subscription = deps.dialogue.lineStream.listen(lines.add);
+      addTearDown(subscription.cancel);
+
+      bloc.add(const GameNoteTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.isNoteOpen,
+        isTrue,
+      );
+
+      bloc
+        ..add(const GameNoteClosed())
+        ..add(const GameNoteTapped())
+        ..add(const GameNoteClosed());
+      await pumpEventQueue();
+
+      expect(
+        bloc.state.isNoteOpen,
+        isFalse,
+      );
+      expect(
+        lines,
+        [HeroReaction.survivorsNote.line],
       );
     },
   );

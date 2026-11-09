@@ -18,6 +18,8 @@ final class ConsumeUseCase {
   static const _pollutedValueFactor = 0.5;
   static const _freshPortionsPerDay = 2;
   static const _monotonyFactor = 0.5;
+  static const _spoiledValueFactor = 0.5;
+  static const _spoiledHealthPenalty = 10.0;
 
   final DayRepository _dayRepository;
   final DialogueRepository _dialogueRepository;
@@ -43,16 +45,19 @@ final class ConsumeUseCase {
     required this._soundRepository,
   });
 
-  bool call(InventoryItem item) {
-    if (!item.isConsumable || _inventoryRepository.count(item) == 0) {
+  bool call(int slot) {
+    final stack = _inventoryRepository.stacks.elementAtOrNull(slot);
+    if (stack == null || !stack.item.isConsumable) {
       return false;
     }
+    final item = stack.item;
+    final isSpoiled = stack.isSpoiled;
     final isTaken = switch (item.emptyBottle) {
       final emptyBottle? => _inventoryRepository.replace(
         item,
         [emptyBottle],
       ),
-      null => _inventoryRepository.remove(item),
+      null => _inventoryRepository.takeAt(slot) != null,
     };
     if (!isTaken) {
       _feedbackRepository.show(const FeedbackMessage(text: 'Your inventory is full'));
@@ -77,10 +82,13 @@ final class ConsumeUseCase {
       );
       _soundRepository.play(.eating);
     }
-    final factor = (pollutedZone != null ? _pollutedValueFactor : 1.0) * (isMonotonous ? _monotonyFactor : 1.0);
+    final factor =
+        (pollutedZone != null ? _pollutedValueFactor : 1.0) *
+        (isMonotonous ? _monotonyFactor : 1.0) *
+        (isSpoiled ? _spoiledValueFactor : 1.0);
     final hunger = item.hunger * factor;
     final thirst = item.thirst * factor;
-    final health = item.health - (pollutedZone?.healthPenalty ?? 0);
+    final health = item.health - (pollutedZone?.healthPenalty ?? 0) - (isSpoiled ? _spoiledHealthPenalty : 0);
     if (item.container case final container?) {
       _materialRepository.add(container);
     }
@@ -106,6 +114,7 @@ final class ConsumeUseCase {
         item,
         pollutedZone,
         isMonotonous,
+        isSpoiled,
         [
           if (hunger > 0) '+${_format(hunger)} hunger',
           if (thirst > 0) '+${_format(thirst)} thirst',
@@ -130,6 +139,7 @@ final class ConsumeUseCase {
     InventoryItem item,
     PollutionZone? pollutedZone,
     bool isMonotonous,
+    bool isSpoiled,
     List<String> changes,
   ) {
     final verb = item.isDrink ? 'drank' : 'ate';
@@ -139,7 +149,7 @@ final class ConsumeUseCase {
       null => '',
     };
     final text = [
-      'You $verb ${_name(item)}$source ${changes.join(' ')}',
+      'You $verb ${isSpoiled ? 'spoiled ' : ''}${_name(item)}$source ${changes.join(' ')}',
       if (isMonotonous) 'The same food again only half as filling',
     ].join('\n');
     return switch (pollutedZone) {
@@ -150,6 +160,11 @@ final class ConsumeUseCase {
       .soil => FeedbackMessage(
         text: text,
         heroLine: 'My stomach... This soil is poisoned.',
+        mood: .sad,
+      ),
+      null when isSpoiled => FeedbackMessage(
+        text: text,
+        heroLine: "Ugh... that one was off. I should've kept it cool.",
         mood: .sad,
       ),
       null when item.health < 0 => FeedbackMessage(
@@ -174,6 +189,9 @@ final class ConsumeUseCase {
     .algaeSoaked => 'soaked algae',
     .berries => 'berries',
     .mushrooms => 'raw mushrooms',
+    .mushroomsCooked => 'cooked mushrooms',
+    .potato => 'a raw potato',
+    .potatoBoiled => 'a boiled potato',
     .cleanWater || .sodisCleanWater => 'clean water',
     .sodisLakeWater || .bottleLakeWater => 'lake water',
     .sodisStrainedWater || .bottleStrainedWater => 'strained water',
@@ -184,5 +202,8 @@ final class ConsumeUseCase {
     .rocketStove => 'a rocket stove',
     .waterFilter => 'a water filter',
     .clayFridge => 'a clay fridge',
+    .gardenBed => 'a garden bed',
+    .greenhouse => 'a greenhouse',
+    .wetCardboard => 'wet cardboard',
   };
 }

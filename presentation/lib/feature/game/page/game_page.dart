@@ -16,10 +16,12 @@ import 'package:presentation/feature/feedback/page/feedback_page.dart';
 import 'package:presentation/feature/fridge/page/fridge_page.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/game_over/page/game_over_page.dart';
+import 'package:presentation/feature/garden/page/garden_page.dart';
 import 'package:presentation/feature/goal/page/goal_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
+import 'package:presentation/feature/mushroom/page/mushroom_page.dart';
 import 'package:presentation/feature/night/page/night_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/clouds_page.dart';
@@ -63,6 +65,25 @@ class _GamePageState extends State<GamePage> {
     1920,
     _skyHeight + _locationHeight,
   );
+  static const _noteRect = Rect.fromLTWH(
+    1180,
+    _skyHeight + 220,
+    130,
+    130,
+  );
+  static const _noteStoryRect = Rect.fromLTWH(
+    460,
+    365,
+    1000,
+    1000,
+  );
+  static const _noteCloseRect = Rect.fromLTWH(
+    430,
+    335,
+    150,
+    150,
+  );
+  static const _noteShadeOpacity = 0.6;
   static const _sunRect = Rect.fromLTWH(
     507,
     330,
@@ -168,7 +189,11 @@ class _GamePageState extends State<GamePage> {
                   ),
                 },
               ),
-              if (state.location == .house) Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
+              if (state.location == .house) ...[
+                Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
+                Positioned.fill(child: GardenPage.withBloc(locationTop: _skyHeight)),
+                Positioned.fill(child: MushroomPage.withBloc(locationTop: _skyHeight)),
+              ],
               if (state.location == .lake) ...[
                 Positioned.fromRect(
                   rect: _sunLightRect,
@@ -220,6 +245,14 @@ class _GamePageState extends State<GamePage> {
                   characterTaps: _characterTaps.stream,
                 ),
               ),
+              if (state.location == .store)
+                Positioned.fromRect(
+                  rect: _noteRect,
+                  child: PressableContainer(
+                    image: context.images.imgZapyska,
+                    onTap: () => _bloc.add(const GameNoteTapped()),
+                  ),
+                ),
               if (!state.isStationOpen) _pickups(),
               if (state.waterChoice case final water?)
                 Positioned.fill(
@@ -232,6 +265,7 @@ class _GamePageState extends State<GamePage> {
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               if (state.isBookOpen)
                 Positioned.fill(child: BookPage.withBloc(onClose: () => _bloc.add(const GameBookClosed()))),
+              if (state.isNoteOpen) ..._note(),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
@@ -249,6 +283,27 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
+
+  List<Widget> _note() => [
+    Positioned.fill(
+      child: GestureDetector(
+        behavior: .opaque,
+        onTap: () => _bloc.add(const GameNoteClosed()),
+        child: ColoredBox(color: context.colors.base.black.withValues(alpha: _noteShadeOpacity)),
+      ),
+    ),
+    Positioned.fromRect(
+      rect: _noteStoryRect,
+      child: context.images.imgZapyskaStory.image(fit: .contain),
+    ),
+    Positioned.fromRect(
+      rect: _noteCloseRect,
+      child: PressableContainer(
+        image: context.images.imgButtonClose,
+        onTap: () => _bloc.add(const GameNoteClosed()),
+      ),
+    ),
+  ];
 
   Widget _pickups() => Positioned.fill(
     child: PickupPage.withBloc(

@@ -5,7 +5,7 @@ abstract final class StationConfig {
   static const spots = <Station, Rect>{
     Station.campfire: Rect.fromLTWH(
       500,
-      480,
+      580,
       240,
       220,
     ),

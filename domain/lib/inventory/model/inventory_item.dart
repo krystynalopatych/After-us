@@ -30,6 +30,18 @@ enum InventoryItem {
     health: -10,
     zone: .soil,
   ),
+  mushroomsCooked(
+    hunger: 15,
+    zone: .soil,
+  ),
+  potato(
+    hunger: 12,
+    zone: .soil,
+  ),
+  potatoBoiled(
+    hunger: 20,
+    zone: .soil,
+  ),
   cleanWater(
     thirst: 35,
     water: .boiled,
@@ -82,7 +94,10 @@ enum InventoryItem {
   cookingPot,
   rocketStove,
   waterFilter,
-  clayFridge;
+  clayFridge,
+  gardenBed,
+  greenhouse,
+  wetCardboard;
 
   final double hunger;
   final double thirst;
@@ -103,6 +118,8 @@ enum InventoryItem {
   bool get isConsumable => hunger > 0 || thirst > 0;
 
   bool get isDrink => thirst > hunger;
+
+  bool get isPerishable => hunger > 0 && !isDrink;
 
   InventoryItem? get emptyBottle => switch (bottle) {
     .sodis => sodisBottle,

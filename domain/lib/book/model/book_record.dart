@@ -6,4 +6,9 @@ enum BookRecord {
   waterFilter,
   soakedAlgae,
   clayFridge,
+  gardenBed,
+  greenhouse,
+  wetCardboard,
+  mushroomFarm,
+  clayPot,
 }

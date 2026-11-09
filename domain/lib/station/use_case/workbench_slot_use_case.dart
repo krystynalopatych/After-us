@@ -42,7 +42,21 @@ final class WorkbenchSlotUseCase {
       }
       return;
     }
-    if (!_take(selected)) {
+    if (switch (selection.slot) {
+      final slot? when selection.material == null => _inventoryRepository.stacks[slot].isSpoiled,
+      _ => false,
+    }) {
+      _feedbackRepository.show(const FeedbackMessage(text: 'This food went bad'));
+      return;
+    }
+    final isLastOfStack = switch (selection.slot) {
+      final slot? when selection.material == null => _inventoryRepository.stacks[slot].count == 1,
+      _ => false,
+    };
+    if (!_take(
+      selected,
+      selection.slot,
+    )) {
       _feedbackRepository.show(FeedbackMessage(text: 'You have no more ${selected.material?.name ?? 'of it'}'));
       return;
     }
@@ -53,17 +67,20 @@ final class WorkbenchSlotUseCase {
       index,
       selected,
     );
-    if (_owned(selected) == 0) {
+    if (isLastOfStack || _owned(selected) == 0) {
       _selectionRepository.reset();
     }
   }
 
-  bool _take(WorkbenchItem item) => switch (item) {
-    WorkbenchItem(:final material?) when _materialRepository.count(material) > 0 => _materialRepository.remove(
+  bool _take(
+    WorkbenchItem item,
+    int? slot,
+  ) => switch ((item, slot)) {
+    (WorkbenchItem(:final material?), _) when _materialRepository.count(material) > 0 => _materialRepository.remove(
       material,
       1,
     ),
-    WorkbenchItem(:final item?) => _inventoryRepository.remove(item),
+    (WorkbenchItem(item: _?), final slot?) => _inventoryRepository.takeAt(slot) != null,
     _ => false,
   };
 

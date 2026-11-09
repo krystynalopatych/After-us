@@ -433,19 +433,63 @@ void main() {
       );
 
       test(
-        'the fridge stops cooling on the next day',
+        'watering keeps the fridge cold through the night until 08:00 of the next day',
         () {
+          final cooling = diContainer.get<FridgeCoolingUseCase>();
           deps.fridge.water(1);
           deps.day.setDay(
             const GameDay(
               number: 2,
               seconds: 0,
+              nightSeconds: 5,
             ),
           );
+          expect(
+            cooling.isCooling,
+            isTrue,
+          );
+
+          deps.day.setDay(
+            const GameDay(
+              number: 2,
+              seconds: Fridge.morningGraceSeconds - 1,
+            ),
+          );
+          expect(
+            cooling.isCooling,
+            isTrue,
+          );
+
+          deps.day.setDay(
+            const GameDay(
+              number: 2,
+              seconds: Fridge.morningGraceSeconds,
+            ),
+          );
+          expect(
+            cooling.isCooling,
+            isFalse,
+          );
+        },
+      );
+
+      test(
+        'during the morning grace the fridge can be watered for the new day',
+        () {
+          deps.fridge.water(1);
+          deps.day.setDay(
+            const GameDay(
+              number: 2,
+              seconds: 10,
+            ),
+          );
+          select(.bottleLakeWater);
+
+          diContainer.get<WaterFridgeUseCase>()();
 
           expect(
-            diContainer.get<FridgeCoolingUseCase>().isCooling,
-            isFalse,
+            deps.fridge.fridge.wateredDay,
+            2,
           );
         },
       );

@@ -1,6 +1,8 @@
 import 'package:domain/construction/model/construction.dart';
 import 'package:domain/fridge/model/fridge.dart';
+import 'package:domain/garden/model/garden_bed.dart';
 import 'package:domain/inventory/model/inventory_stack.dart';
+import 'package:domain/mushroom/model/mushroom_farm.dart';
 import 'package:domain/station/model/station.dart';
 import 'package:equatable/equatable.dart';
 
@@ -9,30 +11,40 @@ final class LevelCarryOver extends Equatable {
   final Set<Construction> constructions;
   final Set<Station> stations;
   final Fridge fridge;
+  final GardenBed gardenBed;
+  final MushroomFarm mushroomFarm;
 
   const LevelCarryOver({
     required this.inventory,
     required this.constructions,
     required this.stations,
     this.fridge = const .empty(),
+    this.gardenBed = const .none(),
+    this.mushroomFarm = const .none(),
   });
 
   const LevelCarryOver.none()
     : inventory = const [],
       constructions = const {},
       stations = const {},
-      fridge = const .empty();
+      fridge = const .empty(),
+      gardenBed = const .none(),
+      mushroomFarm = const .none();
 
   LevelCarryOver copyWith({
     List<InventoryStack>? inventory,
     Set<Construction>? constructions,
     Set<Station>? stations,
     Fridge? fridge,
+    GardenBed? gardenBed,
+    MushroomFarm? mushroomFarm,
   }) => LevelCarryOver(
     inventory: inventory ?? this.inventory,
     constructions: constructions ?? this.constructions,
     stations: stations ?? this.stations,
     fridge: fridge ?? this.fridge,
+    gardenBed: gardenBed ?? this.gardenBed,
+    mushroomFarm: mushroomFarm ?? this.mushroomFarm,
   );
 
   @override
@@ -41,5 +53,7 @@ final class LevelCarryOver extends Equatable {
     constructions,
     stations,
     fridge,
+    gardenBed,
+    mushroomFarm,
   ];
 }

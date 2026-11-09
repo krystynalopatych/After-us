@@ -11,7 +11,7 @@ final class FridgeCoolingUseCase {
     required this._fridgeRepository,
   });
 
-  bool get isCooling => _fridgeRepository.fridge.isCoolingOn(_dayRepository.day.number);
+  bool get isCooling => _fridgeRepository.fridge.isCoolingOn(_dayRepository.day);
 
   Stream<bool> get isCoolingStream => StreamGroup.mergeBroadcast<Object>([
     _dayRepository.dayStream,
