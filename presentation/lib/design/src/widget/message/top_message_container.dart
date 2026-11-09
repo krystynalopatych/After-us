@@ -25,13 +25,18 @@ final class TopMessageContainer extends StatelessWidget {
           child: FractionallySizedBox(
             widthFactor: _contentWidthFactor,
             heightFactor: _contentHeightFactor,
-            child: Center(
-              child: FittedBox(
-                fit: .scaleDown,
-                child: Text(
-                  text.toUpperCase(),
-                  textAlign: .center,
-                  style: theme.typography.display.copyWith(color: theme.colors.base.white),
+            child: LayoutBuilder(
+              builder: (context, constraints) => Center(
+                child: FittedBox(
+                  fit: .scaleDown,
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    child: Text(
+                      text.toUpperCase(),
+                      textAlign: .center,
+                      style: theme.typography.display.copyWith(color: theme.colors.base.white),
+                    ),
+                  ),
                 ),
               ),
             ),

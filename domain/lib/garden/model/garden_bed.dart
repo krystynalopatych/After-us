@@ -7,12 +7,14 @@ final class GardenBed extends Equatable {
   static const greenhouseGrowSeconds = GameDay.secondsPerDay ~/ 2;
   static const harvestYield = 2;
   static const fertilizerBonus = 1;
+  static const _boostShare = 4;
 
   final bool isPlaced;
   final int seeds;
   final bool hasGreenhouse;
   final bool isFertilized;
   final int seconds;
+  final int? boostedDay;
 
   const GardenBed({
     required this.isPlaced,
@@ -20,9 +22,16 @@ final class GardenBed extends Equatable {
     required this.hasGreenhouse,
     required this.isFertilized,
     required this.seconds,
+    this.boostedDay,
   });
 
-  const GardenBed.none() : isPlaced = false, seeds = 0, hasGreenhouse = false, isFertilized = false, seconds = 0;
+  const GardenBed.none()
+    : isPlaced = false,
+      seeds = 0,
+      hasGreenhouse = false,
+      isFertilized = false,
+      seconds = 0,
+      boostedDay = null;
 
   bool get isPlanted => seeds >= seedsNeeded;
 
@@ -38,18 +47,22 @@ final class GardenBed extends Equatable {
 
   bool get isComplete => isPlanted && hasGreenhouse;
 
+  int get boostSeconds => readySeconds ~/ _boostShare;
+
   GardenBed copyWith({
     bool? isPlaced,
     int? seeds,
     bool? hasGreenhouse,
     bool? isFertilized,
     int? seconds,
+    int? Function()? boostedDay,
   }) => GardenBed(
     isPlaced: isPlaced ?? this.isPlaced,
     seeds: seeds ?? this.seeds,
     hasGreenhouse: hasGreenhouse ?? this.hasGreenhouse,
     isFertilized: isFertilized ?? this.isFertilized,
     seconds: seconds ?? this.seconds,
+    boostedDay: boostedDay != null ? boostedDay() : this.boostedDay,
   );
 
   @override
@@ -59,5 +72,6 @@ final class GardenBed extends Equatable {
     hasGreenhouse,
     isFertilized,
     seconds,
+    boostedDay,
   ];
 }

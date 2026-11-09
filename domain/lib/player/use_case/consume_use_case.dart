@@ -204,5 +204,6 @@ final class ConsumeUseCase {
     .clayFridge => 'a clay fridge',
     .gardenBed => 'a garden bed',
     .greenhouse => 'a greenhouse',
+    .wetCardboard => 'wet cardboard',
   };
 }

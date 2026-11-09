@@ -26,9 +26,19 @@ final class SpoilFoodUseCase {
     if (!level.hasSpoilage || _dayRepository.outcome != null || _clockRepository.isPaused) {
       return;
     }
+    final day = _dayRepository.day;
+    final fridge = _fridgeRepository.fridge;
+    if (day.seconds == 0 && !day.isNight && fridge.hasFood && !fridge.isWateredOn(day.number)) {
+      _feedbackRepository.show(
+        const FeedbackMessage(
+          text: 'Water the fridge The food will go bad at 08:00',
+          mood: .sad,
+        ),
+      );
+    }
     final spoiled = {
       ..._inventoryRepository.ageFood(),
-      if (!_fridgeRepository.fridge.isCoolingOn(_dayRepository.day.number)) ..._fridgeRepository.ageFood(),
+      if (!fridge.isCoolingOn(day)) ..._fridgeRepository.ageFood(),
     };
     if (spoiled.isEmpty) {
       return;
@@ -66,6 +76,7 @@ final class SpoilFoodUseCase {
     .waterFilter ||
     .clayFridge ||
     .gardenBed ||
-    .greenhouse => 'food',
+    .greenhouse ||
+    .wetCardboard => 'food',
   };
 }

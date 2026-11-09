@@ -7,6 +7,7 @@ import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/garden/model/garden_bed.dart';
 import 'package:domain/garden/use_case/use_garden_bed_use_case.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
+import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/start_level_use_case.dart';
@@ -420,6 +421,57 @@ void main() {
       expect(
         bloc.state.bed.seeds,
         1,
+      );
+    },
+  );
+
+  test(
+    'spoiled food speeds the bed up by a quarter once a day, not before planting or when ready',
+    () async {
+      deps.garden.place();
+      deps.inventory
+        ..add(
+          .berries,
+          age: InventoryStack.spoilAge,
+        )
+        ..add(
+          .mushrooms,
+          age: InventoryStack.spoilAge,
+        );
+      deps.selection.selectSlot(0);
+      useBed();
+      expect(
+        deps.inventory.stacks,
+        hasLength(2),
+      );
+
+      plantBed();
+      deps.selection.selectSlot(0);
+      useBed();
+      expect(
+        deps.garden.bed.seconds,
+        GardenBed.growSeconds ~/ 4,
+      );
+      expect(
+        deps.inventory.count(.berries),
+        0,
+      );
+
+      deps.selection.selectSlot(0);
+      useBed();
+      await pumpEventQueue();
+
+      expect(
+        deps.inventory.count(.mushrooms),
+        1,
+      );
+      expect(
+        messages.map((message) => message.text),
+        containsAllInOrder([
+          'Spoiled food helps only while potatoes grow',
+          'You fed the bed with spoiled food The potatoes grow faster',
+          'The bed was already fed today',
+        ]),
       );
     },
   );

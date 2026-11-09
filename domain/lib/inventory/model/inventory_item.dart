@@ -96,7 +96,8 @@ enum InventoryItem {
   waterFilter,
   clayFridge,
   gardenBed,
-  greenhouse;
+  greenhouse,
+  wetCardboard;
 
   final double hunger;
   final double thirst;

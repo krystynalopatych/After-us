@@ -1,4 +1,5 @@
 import 'package:domain/day/use_case/pause_time_use_case.dart';
+import 'package:domain/dialogue/use_case/read_note_use_case.dart';
 import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/inventory/model/water_request.dart';
@@ -25,6 +26,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final LocationRepository _locationRepository;
   final PauseTimeUseCase _pauseTimeUseCase;
   final PlaceStationUseCase _placeStationUseCase;
+  final ReadNoteUseCase _readNoteUseCase;
   final ReturnStationItemsUseCase _returnStationItemsUseCase;
   final SoakCardboardUseCase _soakCardboardUseCase;
   final StationChoicesUseCase _stationChoicesUseCase;
@@ -37,6 +39,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _locationRepository = diContainer.get(),
       _pauseTimeUseCase = diContainer.get(),
       _placeStationUseCase = diContainer.get(),
+      _readNoteUseCase = diContainer.get(),
       _returnStationItemsUseCase = diContainer.get(),
       _soakCardboardUseCase = diContainer.get(),
       _stationChoicesUseCase = diContainer.get(),
@@ -57,6 +60,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameFridgeClosed>((event, emit) => emit(state.copyWith(isFridgeOpen: false)));
     on<GameBookTapped>((event, emit) => emit(state.copyWith(isBookOpen: true)));
     on<GameBookClosed>((event, emit) => emit(state.copyWith(isBookOpen: false)));
+    on<GameNoteTapped>((event, emit) => emit(state.copyWith(isNoteOpen: true)));
+    on<GameNoteClosed>(_onNoteClosed);
   }
 
   Future<void> _onStarted(
@@ -135,6 +140,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       case null:
         return;
     }
+  }
+
+  void _onNoteClosed(
+    GameNoteClosed event,
+    Emitter<GameState> emit,
+  ) {
+    emit(state.copyWith(isNoteOpen: false));
+    _readNoteUseCase();
   }
 
   void _onFireClosed(

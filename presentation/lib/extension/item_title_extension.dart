@@ -32,7 +32,6 @@ extension GameMaterialTitleExtension on GameMaterial {
     .charcoal => 'Charcoal',
     .compost => 'Compost',
     .clayPot => 'Clay pot',
-    .wetCardboard => 'Wet cardboard',
   };
 }
 
@@ -63,6 +62,7 @@ extension InventoryItemTitleExtension on InventoryItem {
     .clayFridge => 'Clay fridge',
     .gardenBed => 'Garden bed',
     .greenhouse => 'Greenhouse',
+    .wetCardboard => 'Wet cardboard',
   };
 }
 

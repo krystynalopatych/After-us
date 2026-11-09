@@ -39,7 +39,7 @@ final class WaterFridgeUseCase {
       _show('Use lake water for the fridge');
       return true;
     }
-    if (_fridgeRepository.fridge.isCoolingOn(day)) {
+    if (_fridgeRepository.fridge.isWateredOn(day)) {
       _show('The fridge is already watered today');
       return true;
     }

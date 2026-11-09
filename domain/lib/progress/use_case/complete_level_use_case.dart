@@ -48,7 +48,10 @@ final class CompleteLevelUseCase {
         constructions: _constructionRepository.built,
         stations: _stationRepository.built,
         fridge: Fridge(slots: _fridgeRepository.fridge.slots),
-        gardenBed: _gardenBedRepository.bed.copyWith(seconds: 0),
+        gardenBed: _gardenBedRepository.bed.copyWith(
+          seconds: 0,
+          boostedDay: () => null,
+        ),
         mushroomFarm: _mushroomFarmRepository.farm.copyWith(seconds: 0),
       ),
     );

@@ -26,6 +26,17 @@ final class GardenBedRepositoryImpl implements GardenBedRepository {
   void fertilize() => _update(_bed.copyWith(isFertilized: true));
 
   @override
+  void boost(int day) => _update(
+    _bed.copyWith(
+      seconds: (_bed.seconds + _bed.boostSeconds).clamp(
+        0,
+        _bed.readySeconds,
+      ),
+      boostedDay: () => day,
+    ),
+  );
+
+  @override
   void tick() {
     if (_bed.isPlanted && !_bed.isReady) {
       _update(_bed.copyWith(seconds: _bed.seconds + 1));

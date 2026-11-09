@@ -20,5 +20,15 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       _readBookUseCase();
       emit(state.copyWith(records: _bookRepository.book.records));
     });
+    on<BookPreviousTapped>((event, emit) {
+      if (state.spread > 0) {
+        emit(state.copyWith(spread: state.spread - 1));
+      }
+    });
+    on<BookNextTapped>((event, emit) {
+      if (state.spread + 1 < event.spreadCount) {
+        emit(state.copyWith(spread: state.spread + 1));
+      }
+    });
   }
 }

@@ -13,6 +13,8 @@ abstract interface class GardenBedRepository {
 
   void fertilize();
 
+  void boost(int day);
+
   void tick();
 
   void harvest();

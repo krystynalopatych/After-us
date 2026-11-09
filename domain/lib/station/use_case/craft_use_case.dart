@@ -141,13 +141,16 @@ final class CraftUseCase {
     }
     if (!_inventoryRepository.exchange(
       const [],
-      [?water.emptyBottle],
+      [
+        ...List.filled(
+          cardboard,
+          InventoryItem.wetCardboard,
+        ),
+        ?water.emptyBottle,
+      ],
     )) {
       _show(const FeedbackMessage(text: 'Your inventory is full'));
       return false;
-    }
-    for (var i = 0; i < cardboard; i++) {
-      _materialRepository.add(.wetCardboard);
     }
     if (water.container case final container?) {
       _materialRepository.add(container);

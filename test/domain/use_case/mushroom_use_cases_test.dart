@@ -86,7 +86,7 @@ void main() {
           await pumpEventQueue();
 
           expect(
-            deps.material.count(.wetCardboard),
+            deps.inventory.count(.wetCardboard),
             1,
           );
           expect(
@@ -154,7 +154,7 @@ void main() {
             isTrue,
           );
           expect(
-            deps.material.count(.wetCardboard),
+            deps.inventory.count(.wetCardboard),
             2,
           );
           expect(
@@ -174,7 +174,7 @@ void main() {
           craft();
 
           expect(
-            deps.material.count(.wetCardboard),
+            deps.inventory.count(.wetCardboard),
             3,
           );
           expect(
@@ -233,11 +233,9 @@ void main() {
       test(
         'wet cardboard and a tap on the house lay an empty farm',
         () async {
-          addMaterial(
-            .wetCardboard,
-            2,
-          );
-          deps.selection.selectMaterial(.wetCardboard);
+          deps.inventory.add(.wetCardboard);
+          deps.inventory.add(.wetCardboard);
+          deps.selection.selectSlot(0);
 
           expect(
             diContainer.get<PlaceStationUseCase>()(),
@@ -254,7 +252,7 @@ void main() {
             ),
           );
           expect(
-            deps.material.count(.wetCardboard),
+            deps.inventory.count(.wetCardboard),
             0,
           );
           expect(
@@ -267,11 +265,8 @@ void main() {
       test(
         'one wet cardboard is not enough',
         () async {
-          addMaterial(
-            .wetCardboard,
-            1,
-          );
-          deps.selection.selectMaterial(.wetCardboard);
+          deps.inventory.add(.wetCardboard);
+          deps.selection.selectSlot(0);
 
           diContainer.get<PlaceStationUseCase>()();
           await pumpEventQueue();

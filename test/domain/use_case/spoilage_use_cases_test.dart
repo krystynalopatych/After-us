@@ -1,3 +1,4 @@
+import 'package:domain/day/model/game_day.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
 import 'package:domain/inventory/model/inventory_item.dart';
@@ -110,7 +111,7 @@ void main() {
             0,
           );
 
-          deps.fridge.water(0);
+          deps.fridge.restore(deps.fridge.fridge.copyWith(wateredDay: () => null));
           passDay();
           expect(
             deps.fridge.fridge.slots.first?.isSpoiled,
@@ -309,6 +310,49 @@ void main() {
             2,
           );
         },
+      );
+    },
+  );
+
+  test(
+    'at dawn the hero is reminded to water a fridge that holds food',
+    () async {
+      deps.fridge
+        ..put(
+          0,
+          .berries,
+        )
+        ..water(1);
+      deps.day.setDay(
+        const GameDay(
+          number: 2,
+          seconds: 0,
+          nightSeconds: 3,
+        ),
+      );
+      spoil(.level2);
+      deps.day.setDay(
+        const GameDay(
+          number: 2,
+          seconds: 0,
+        ),
+      );
+      spoil(.level2);
+      deps.day.setDay(
+        const GameDay(
+          number: 2,
+          seconds: 1,
+        ),
+      );
+      spoil(.level2);
+      await pumpEventQueue();
+
+      expect(
+        messages.single,
+        const FeedbackMessage(
+          text: 'Water the fridge The food will go bad at 08:00',
+          mood: .sad,
+        ),
       );
     },
   );

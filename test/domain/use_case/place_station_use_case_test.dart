@@ -13,7 +13,6 @@ void main() {
     placeStation = PlaceStationUseCase(
       feedbackRepository: deps.feedback,
       gardenBedRepository: deps.garden,
-      materialRepository: deps.material,
       mushroomFarmRepository: deps.mushroom,
       inventoryRepository: deps.inventory,
       selectionRepository: deps.selection,

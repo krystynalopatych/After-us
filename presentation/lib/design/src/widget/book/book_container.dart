@@ -6,7 +6,6 @@ import 'package:presentation/generated/assets/assets.gen.dart';
 
 final class BookContainer extends StatelessWidget {
   static const _imageWidth = 1536.0;
-  static const _entriesPerPage = 5;
   static const _entrySpacing = 18.0;
   static const _slant = -0.18;
   static const _pageRects = [
@@ -31,12 +30,18 @@ final class BookContainer extends StatelessWidget {
   );
 
   final List<BookEntry> entries;
+  final int spread;
   final VoidCallback onClose;
+  final VoidCallback onPreviousTap;
+  final ValueChanged<int> onNextTap;
 
   const BookContainer({
     super.key,
     required this.entries,
+    required this.spread,
     required this.onClose,
+    required this.onPreviousTap,
+    required this.onNextTap,
   });
 
   @override
@@ -44,6 +49,7 @@ final class BookContainer extends StatelessWidget {
     final theme = DesignSystemTheme.of(context);
     final images = Assets.resources.assets.images;
     final style = theme.typography.handwriting.copyWith(color: theme.colors.base.brown);
+    final textScaler = MediaQuery.textScalerOf(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -54,28 +60,56 @@ final class BookContainer extends StatelessWidget {
           rect.width * scale,
           rect.height * scale,
         );
+        final pages = _pages(
+          style,
+          textScaler,
+          scale,
+        );
+        final spreadCount = (pages.length / _pageRects.length).ceil();
 
         return Stack(
           fit: .expand,
           children: [
             images.imgCraftBook.image(fit: .fill),
-            for (final (page, rect) in _pageRects.indexed)
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: constraints.maxWidth / 2,
+              child: GestureDetector(
+                behavior: .opaque,
+                onTap: onPreviousTap,
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: constraints.maxWidth / 2,
+              child: GestureDetector(
+                behavior: .opaque,
+                onTap: () => onNextTap(spreadCount),
+              ),
+            ),
+            for (final (side, rect) in _pageRects.indexed)
               Positioned.fromRect(
                 rect: scaled(rect),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  spacing: _entrySpacing,
-                  children: [
-                    for (final (index, entry) in entries.indexed.skip(page * _entriesPerPage).take(_entriesPerPage))
-                      Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.skewX(_slant),
-                        child: Text(
-                          '${index + 1}. ${entry.title}\nINTERESTING FACT: ${entry.fact}',
-                          style: style,
+                child: IgnorePointer(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    spacing: _entrySpacing * scale,
+                    children: [
+                      for (final index in pages.elementAtOrNull(spread * _pageRects.length + side) ?? const <int>[])
+                        Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.skewX(_slant),
+                          child: Text(
+                            _text(index),
+                            style: style,
+                          ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             Positioned.fromRect(
@@ -89,5 +123,43 @@ final class BookContainer extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _text(int index) => '${index + 1}. ${entries[index].title}\nINTERESTING FACT: ${entries[index].fact}';
+
+  List<List<int>> _pages(
+    TextStyle style,
+    TextScaler textScaler,
+    double scale,
+  ) {
+    final pages = <List<int>>[];
+    var current = <int>[];
+    var used = 0.0;
+    for (var index = 0; index < entries.length; index++) {
+      final rect = _pageRects[pages.length % _pageRects.length];
+      final painter = TextPainter(
+        text: TextSpan(
+          text: _text(index),
+          style: style,
+        ),
+        textDirection: .ltr,
+        textScaler: textScaler,
+      )..layout(maxWidth: rect.width * scale);
+      final height = painter.height + (current.isEmpty ? 0 : _entrySpacing * scale);
+      painter.dispose();
+      if (current.isNotEmpty && used + height > rect.height * scale) {
+        pages.add(current);
+        current = [];
+        used = 0;
+        index--;
+        continue;
+      }
+      current.add(index);
+      used += height;
+    }
+    if (current.isNotEmpty) {
+      pages.add(current);
+    }
+    return pages;
   }
 }

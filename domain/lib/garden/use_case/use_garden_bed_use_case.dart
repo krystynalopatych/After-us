@@ -1,4 +1,5 @@
 import 'package:domain/construction/repository/construction_repository.dart';
+import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/garden/model/garden_bed.dart';
@@ -12,6 +13,7 @@ import 'package:domain/sound/repository/sound_repository.dart';
 
 final class UseGardenBedUseCase {
   final ConstructionRepository _constructionRepository;
+  final DayRepository _dayRepository;
   final FeedbackRepository _feedbackRepository;
   final GardenBedRepository _gardenBedRepository;
   final InventoryRepository _inventoryRepository;
@@ -21,6 +23,7 @@ final class UseGardenBedUseCase {
 
   const UseGardenBedUseCase({
     required this._constructionRepository,
+    required this._dayRepository,
     required this._feedbackRepository,
     required this._gardenBedRepository,
     required this._inventoryRepository,
@@ -38,6 +41,8 @@ final class UseGardenBedUseCase {
     switch ((selection.material, stack?.item)) {
       case (GameMaterial.seeds, _):
         _plant();
+      case (_, final item?) when item.isPerishable && (stack?.isSpoiled ?? false):
+        _feedSpoiled(selection.slot);
       case (_, InventoryItem.greenhouse):
         _addGreenhouse();
       case (_, InventoryItem.algae) when !(stack?.isSpoiled ?? false):
@@ -110,6 +115,30 @@ final class UseGardenBedUseCase {
     _show(
       const FeedbackMessage(
         text: 'You fed the bed with algae +${GardenBed.fertilizerBonus} potato next time',
+        mood: .happy,
+      ),
+    );
+  }
+
+  void _feedSpoiled(int? slot) {
+    final bed = _gardenBedRepository.bed;
+    final day = _dayRepository.day.number;
+    if (!bed.isPlanted || bed.isReady) {
+      _show(const FeedbackMessage(text: 'Spoiled food helps only while potatoes grow'));
+      return;
+    }
+    if (bed.boostedDay == day) {
+      _show(const FeedbackMessage(text: 'The bed was already fed today'));
+      return;
+    }
+    if (slot == null || _inventoryRepository.takeAt(slot) == null) {
+      return;
+    }
+    _gardenBedRepository.boost(day);
+    _selectionRepository.reset();
+    _show(
+      const FeedbackMessage(
+        text: 'You fed the bed with spoiled food The potatoes grow faster',
         mood: .happy,
       ),
     );

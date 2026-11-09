@@ -234,7 +234,6 @@ void registerUseCases() {
         feedbackRepository: diContainer.get(),
         gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
-        materialRepository: diContainer.get(),
         mushroomFarmRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
@@ -285,6 +284,7 @@ void registerUseCases() {
       () => SoakCardboardUseCase(
         bookRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
@@ -364,6 +364,7 @@ void registerUseCases() {
     ..registerFactory(
       () => UseGardenBedUseCase(
         constructionRepository: diContainer.get(),
+        dayRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),

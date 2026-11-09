@@ -32,6 +32,7 @@ extension InventoryItemImageExtension on InventoryItem {
       .clayFridge => images.imgFreezerGorshok,
       .gardenBed => images.imgGryadka,
       .greenhouse => images.imgGreenhouse,
+      .wetCardboard => images.imgWetCardboard,
     };
   }
 }

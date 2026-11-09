@@ -10,6 +10,7 @@ final class GameState extends Equatable {
   final bool isFridgeOpen;
   final WaterKind? waterChoice;
   final bool isBookOpen;
+  final bool isNoteOpen;
 
   const GameState({
     required this.location,
@@ -21,6 +22,7 @@ final class GameState extends Equatable {
     this.isFridgeOpen = false,
     this.waterChoice,
     this.isBookOpen = false,
+    this.isNoteOpen = false,
   });
 
   GameState copyWith({
@@ -33,6 +35,7 @@ final class GameState extends Equatable {
     bool? isFridgeOpen,
     WaterKind? Function()? waterChoice,
     bool? isBookOpen,
+    bool? isNoteOpen,
   }) => GameState(
     location: location ?? this.location,
     isMapOpen: isMapOpen ?? this.isMapOpen,
@@ -43,6 +46,7 @@ final class GameState extends Equatable {
     isFridgeOpen: isFridgeOpen ?? this.isFridgeOpen,
     waterChoice: waterChoice != null ? waterChoice() : this.waterChoice,
     isBookOpen: isBookOpen ?? this.isBookOpen,
+    isNoteOpen: isNoteOpen ?? this.isNoteOpen,
   );
 
   bool get isStationOpen => fireStation != null || isWorkbenchOpen || isFridgeOpen;
@@ -58,5 +62,6 @@ final class GameState extends Equatable {
     isFridgeOpen,
     waterChoice,
     isBookOpen,
+    isNoteOpen,
   ];
 }

@@ -32,4 +32,36 @@ void main() {
       );
     },
   );
+
+  test(
+    'pages turn forward only while there is a next spread and back down to the first',
+    () async {
+      final bloc = BookBloc()..add(const BookStarted());
+      addTearDown(bloc.close);
+      await pumpEventQueue();
+
+      bloc.add(const BookPreviousTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.spread,
+        0,
+      );
+
+      bloc
+        ..add(const BookNextTapped(2))
+        ..add(const BookNextTapped(2));
+      await pumpEventQueue();
+      expect(
+        bloc.state.spread,
+        1,
+      );
+
+      bloc.add(const BookPreviousTapped());
+      await pumpEventQueue();
+      expect(
+        bloc.state.spread,
+        0,
+      );
+    },
+  );
 }
