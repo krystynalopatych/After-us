@@ -1,7 +1,11 @@
 import 'package:domain/inventory/model/water_kind.dart';
 import 'package:domain/location/model/game_location.dart';
+import 'package:domain/station/model/campfire_recipe.dart';
 import 'package:domain/station/model/station.dart';
+import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
+import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:presentation/di/di_container.dart';
 import 'package:presentation/feature/game/bloc/game_bloc.dart';
 
 import '../../helpers/test_dependencies.dart';
@@ -418,6 +422,66 @@ void main() {
       expect(
         deps.clock.isPaused,
         isFalse,
+      );
+    },
+  );
+
+  test(
+    'closing the workbench gives back what was put on it',
+    () async {
+      deps.material
+        ..add(.metal)
+        ..add(.metal);
+      deps.selection.selectMaterial(.metal);
+      diContainer.get<WorkbenchSlotUseCase>()(0);
+      diContainer.get<WorkbenchSlotUseCase>()(1);
+
+      expect(
+        deps.material.count(.metal),
+        0,
+      );
+
+      bloc.add(const GameWorkbenchClosed());
+      await pumpEventQueue();
+
+      expect(
+        deps.material.count(.metal),
+        2,
+      );
+      expect(
+        deps.workbench.slots.nonNulls,
+        isEmpty,
+      );
+    },
+  );
+
+  test(
+    'closing the fire before lighting it gives the clay back',
+    () async {
+      deps.material
+        ..add(.clay)
+        ..add(.clay);
+      deps.selection.selectMaterial(.clay);
+
+      expect(
+        diContainer.get<CampfireRecipeUseCase>()(.campfire),
+        CampfireRecipe.fireClayPot,
+      );
+      expect(
+        deps.material.count(.clay),
+        0,
+      );
+
+      bloc.add(const GameFireClosed());
+      await pumpEventQueue();
+
+      expect(
+        deps.material.count(.clay),
+        2,
+      );
+      expect(
+        deps.fire.recipe,
+        isNull,
       );
     },
   );

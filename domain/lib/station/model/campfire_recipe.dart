@@ -35,6 +35,12 @@ enum CampfireRecipe {
   makeCharcoal(
     material: .wood,
     product: .charcoal,
+  ),
+  fireClayPot(
+    material: .clay,
+    materialCount: 2,
+    product: .clayPot,
+    needsCookingPot: false,
   );
 
   final InventoryItem? input;
@@ -42,7 +48,9 @@ enum CampfireRecipe {
   final int outputCount;
   final int stoveOutputCount;
   final GameMaterial? material;
+  final int materialCount;
   final GameMaterial? product;
+  final bool needsCookingPot;
 
   const CampfireRecipe({
     this.input,
@@ -50,7 +58,9 @@ enum CampfireRecipe {
     this.outputCount = 1,
     this.stoveOutputCount = 1,
     this.material,
+    this.materialCount = 1,
     this.product,
+    this.needsCookingPot = true,
   });
 
   int outputCountOn(Station station) => station == .rocketStove ? stoveOutputCount : outputCount;

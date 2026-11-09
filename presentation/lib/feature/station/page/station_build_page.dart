@@ -85,5 +85,6 @@ class _StationBuildPageState extends State<StationBuildPage> {
     .campfire => 'CAMPFIRE',
     .workbench => 'WORKBENCH',
     .rocketStove => 'ROCKET STOVE',
+    .clayFridge => 'CLAY FRIDGE',
   };
 }

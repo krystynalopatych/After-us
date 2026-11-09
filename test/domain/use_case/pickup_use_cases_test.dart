@@ -8,6 +8,7 @@ import 'package:data/material/repository/material_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_hint_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
+import 'package:data/progress/repository/carry_over_repository_impl.dart';
 import 'package:data/progress/repository/progress_repository_impl.dart';
 import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
@@ -188,6 +189,7 @@ void main() {
           keep(firstOf(.wood));
           NewGameUseCase(
             bookRepository: BookRepositoryImpl(),
+            carryOverRepository: CarryOverRepositoryImpl(),
             heroReactionRepository: heroReaction,
             pickupHintRepository: pickupHint,
             progressRepository: ProgressRepositoryImpl(),

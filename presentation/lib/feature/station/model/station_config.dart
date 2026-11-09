@@ -21,5 +21,11 @@ abstract final class StationConfig {
       170,
       170,
     ),
+    Station.clayFridge: Rect.fromLTWH(
+      1660,
+      620,
+      160,
+      180,
+    ),
   };
 }

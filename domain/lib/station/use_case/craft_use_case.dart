@@ -9,8 +9,8 @@ import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:domain/sound/repository/sound_repository.dart';
-import 'package:domain/station/model/workbench_item.dart';
 import 'package:domain/station/model/workbench_recipe.dart';
+import 'package:domain/station/repository/workbench_repository.dart';
 
 final class CraftUseCase {
   static const _algaePerWater = 2;
@@ -22,6 +22,7 @@ final class CraftUseCase {
   final MaterialRepository _materialRepository;
   final SelectionRepository _selectionRepository;
   final SoundRepository _soundRepository;
+  final WorkbenchRepository _workbenchRepository;
 
   const CraftUseCase({
     required this._bookRepository,
@@ -31,10 +32,11 @@ final class CraftUseCase {
     required this._materialRepository,
     required this._selectionRepository,
     required this._soundRepository,
+    required this._workbenchRepository,
   });
 
-  bool call(List<WorkbenchItem?> slots) {
-    final placed = slots.nonNulls;
+  bool call() {
+    final placed = _workbenchRepository.slots.nonNulls;
     final materials = <GameMaterial, int>{};
     for (final material in placed.map((slot) => slot.material).nonNulls) {
       materials.update(
@@ -51,6 +53,7 @@ final class CraftUseCase {
             items,
           );
     if (isCrafted) {
+      _workbenchRepository.reset();
       _selectionRepository.reset();
       _soundRepository.play(.pickUp);
     }
@@ -63,19 +66,9 @@ final class CraftUseCase {
       _show(const FeedbackMessage(text: 'Nothing can be crafted from this'));
       return false;
     }
-    if (materials.entries.any((entry) => _materialRepository.count(entry.key) < entry.value)) {
-      _show(const FeedbackMessage(text: 'Not enough materials'));
-      return false;
-    }
     if (!_inventoryRepository.add(recipe.result)) {
       _show(const FeedbackMessage(text: 'Your inventory is full'));
       return false;
-    }
-    for (final MapEntry(key: material, value: count) in materials.entries) {
-      _materialRepository.remove(
-        material,
-        count,
-      );
     }
     if (recipe.construction case final construction?) {
       _constructionRepository.build(construction);
@@ -106,7 +99,7 @@ final class CraftUseCase {
     }
     final water = waters.single;
     if (!_inventoryRepository.exchange(
-      items,
+      const [],
       [
         ...List.filled(
           algae,
@@ -139,5 +132,6 @@ final class CraftUseCase {
     .cookingPot => 'You crafted a cooking pot',
     .rocketStove => 'You built a rocket stove',
     .waterFilter => 'You built a water filter',
+    .clayFridge => 'You built a clay fridge',
   };
 }

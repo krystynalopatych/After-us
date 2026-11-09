@@ -8,6 +8,7 @@ extension BookRecordTextExtension on BookRecord {
     .rocketStove => 'Rocket stove: 3 metal',
     .waterFilter => 'Water filter: plastic, cloth, sand and charcoal',
     .soakedAlgae => 'Soaked algae: algae and clean water',
+    .clayFridge => 'Clay fridge: 2 clay pots and 2 sand',
   };
 
   String get fact => switch (this) {
@@ -18,5 +19,7 @@ extension BookRecordTextExtension on BookRecord {
     .waterFilter => 'Sand traps dirt and charcoal soaks up bad smells and chemicals. Many towns clean water this way.',
     .soakedAlgae =>
       'Seaweed grows without soil, fresh water or fertilizer and takes in carbon. In Japan it becomes nori.',
+    .clayFridge =>
+      'A zeer is a pot in a pot with wet sand between. Drying water cools it: in Nigeria food lasts weeks longer.',
   };
 }

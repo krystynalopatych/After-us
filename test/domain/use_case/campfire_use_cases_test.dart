@@ -2,9 +2,11 @@ import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/station/model/campfire_fuel.dart';
 import 'package:domain/station/model/campfire_recipe.dart';
+import 'package:domain/station/model/station.dart';
 import 'package:domain/station/use_case/campfire_fuel_use_case.dart';
 import 'package:domain/station/use_case/campfire_recipe_use_case.dart';
 import 'package:domain/station/use_case/cook_on_campfire_use_case.dart';
+import 'package:domain/station/use_case/return_station_items_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_dependencies.dart';
@@ -20,7 +22,9 @@ void main() {
     deps = TestDependencies();
     campfireRecipe = CampfireRecipeUseCase(
       feedbackRepository: deps.feedback,
+      fireRepository: deps.fire,
       inventoryRepository: deps.inventory,
+      materialRepository: deps.material,
       selectionRepository: deps.selection,
     );
     campfireFuel = CampfireFuelUseCase(
@@ -31,6 +35,7 @@ void main() {
     cookOnCampfire = CookOnCampfireUseCase(
       campfireRepository: deps.campfire,
       dayRepository: deps.day,
+      fireRepository: deps.fire,
       dialogueRepository: deps.dialogue,
       feedbackRepository: deps.feedback,
       heroReactionRepository: deps.heroReaction,
@@ -49,6 +54,29 @@ void main() {
     for (var i = 0; i < count; i++) {
       deps.material.add(.wood);
     }
+  }
+
+  bool cook(
+    CampfireRecipe recipe,
+    CampfireFuel fuel,
+    Station station,
+  ) {
+    final isLoaded = switch (recipe) {
+      CampfireRecipe(:final input?) => deps.inventory.remove(input),
+      CampfireRecipe(:final material?, :final materialCount) => deps.material.remove(
+        material,
+        materialCount,
+      ),
+      _ => false,
+    };
+    if (isLoaded) {
+      deps.fire.load(recipe);
+    }
+    return cookOnCampfire(
+      recipe,
+      fuel,
+      station,
+    );
   }
 
   group(
@@ -244,10 +272,8 @@ void main() {
       );
 
       test(
-        'needs a second wood when wood is also in the pot',
+        'the fuel needs its own wood after the pot took one',
         () async {
-          addWood(1);
-
           expect(
             campfireFuel(
               .makeCharcoal,
@@ -258,10 +284,10 @@ void main() {
           await pumpEventQueue();
           expect(
             messages.single.text,
-            'You need 2 wood for this',
+            'You need 1 wood for this',
           );
 
-          deps.material.add(.wood);
+          addWood(1);
           expect(
             campfireFuel(
               .makeCharcoal,
@@ -286,7 +312,7 @@ void main() {
           addWood(2);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilSodisLakeWater,
               .wood,
               .campfire,
@@ -330,7 +356,7 @@ void main() {
           addWood(1);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilBottleLakeWater,
               .wood,
               .campfire,
@@ -357,7 +383,7 @@ void main() {
           addWood(1);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilSodisStrainedWater,
               .wood,
               .campfire,
@@ -385,7 +411,7 @@ void main() {
           addWood(1);
 
           expect(
-            cookOnCampfire(
+            cook(
               .cookCattailRoot,
               .wood,
               .campfire,
@@ -414,7 +440,7 @@ void main() {
           addWood(3);
 
           expect(
-            cookOnCampfire(
+            cook(
               .makeCharcoal,
               .wood,
               .campfire,
@@ -441,7 +467,7 @@ void main() {
           deps.material.add(.plastic);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilSodisLakeWater,
               .plastic,
               .campfire,
@@ -478,7 +504,7 @@ void main() {
           addWood(6);
 
           for (var i = 0; i < 3; i++) {
-            cookOnCampfire(
+            cook(
               .makeCharcoal,
               .wood,
               .campfire,
@@ -515,7 +541,7 @@ void main() {
             ..add(.wood);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilSodisLakeWater,
               .plastic,
               .rocketStove,
@@ -523,7 +549,7 @@ void main() {
             isTrue,
           );
           expect(
-            cookOnCampfire(
+            cook(
               .cookCattailRoot,
               .wood,
               .rocketStove,
@@ -532,7 +558,7 @@ void main() {
           );
           for (var i = 0; i < 2; i++) {
             deps.inventory.add(.cattailRoot);
-            cookOnCampfire(
+            cook(
               .cookCattailRoot,
               .wood,
               .rocketStove,
@@ -565,7 +591,7 @@ void main() {
           addWood(1);
 
           expect(
-            cookOnCampfire(
+            cook(
               .cookCattailRoot,
               .wood,
               .campfire,
@@ -580,14 +606,14 @@ void main() {
       );
 
       test(
-        'does nothing without the fuel',
+        'without the fuel the water stays in the fire and comes back when it closes',
         () {
           deps.inventory
             ..add(.cookingPot)
             ..add(.sodisLakeWater);
 
           expect(
-            cookOnCampfire(
+            cook(
               .boilSodisLakeWater,
               .wood,
               .campfire,
@@ -595,8 +621,24 @@ void main() {
             isFalse,
           );
           expect(
+            deps.fire.recipe,
+            CampfireRecipe.boilSodisLakeWater,
+          );
+
+          ReturnStationItemsUseCase(
+            fireRepository: deps.fire,
+            inventoryRepository: deps.inventory,
+            materialRepository: deps.material,
+            workbenchRepository: deps.workbench,
+          )();
+
+          expect(
             deps.inventory.count(.sodisLakeWater),
             1,
+          );
+          expect(
+            deps.fire.recipe,
+            isNull,
           );
         },
       );

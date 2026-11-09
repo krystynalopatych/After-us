@@ -21,6 +21,7 @@ extension GameMaterialImageExtension on GameMaterial {
       .electronics => images.imgProvoda,
       .charcoal => images.imgCoal,
       .compost => images.imgKompost,
+      .clayPot => images.imgClayPot,
     };
   }
 }

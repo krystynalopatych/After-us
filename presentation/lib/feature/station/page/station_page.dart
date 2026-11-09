@@ -85,6 +85,7 @@ class _StationPageState extends State<StationPage> {
       .campfire => images.imgCampfire,
       .workbench => images.imgCraft,
       .rocketStove => images.imgRocketFire,
+      .clayFridge => images.imgFreezerGorshok,
     };
   }
 }

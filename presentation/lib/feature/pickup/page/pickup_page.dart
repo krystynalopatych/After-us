@@ -8,6 +8,7 @@ import 'package:presentation/design/design_src.dart';
 import 'package:presentation/extension/build_context_extension.dart';
 import 'package:presentation/extension/item_title_extension.dart';
 import 'package:presentation/feature/level_1/model/level_1_config.dart';
+import 'package:presentation/feature/level_2/model/level_2_config.dart';
 import 'package:presentation/feature/pickup/bloc/pickup_bloc.dart';
 import 'package:presentation/generated/assets/assets.gen.dart';
 
@@ -69,8 +70,6 @@ class _PickupPageState extends State<PickupPage> {
     250,
     150,
   );
-  static const _throwTargets = [GameLocation.lake, GameLocation.dump, GameLocation.forest];
-
   late final PickupBloc _bloc;
 
   @override
@@ -162,7 +161,7 @@ class _PickupPageState extends State<PickupPage> {
       lines: const ['WHERE TO THROW IT?'],
       actionSize: _threeActionSize,
       actions: [
-        for (final target in _throwTargets)
+        for (final target in widget.level.throwTargets)
           AnswerButtonContainer(
             text: _targetTitle(target),
             onTap: () => _bloc.add(PickupThrowTargetTapped(target)),
@@ -183,19 +182,22 @@ class _PickupPageState extends State<PickupPage> {
 
   Offset _spot(Pickup pickup) => switch (widget.level) {
     .level1 => Level1Config.pickupSpots[pickup.id],
-    .level2 || .level3 => Offset.zero,
+    .level2 => Level2Config.pickupSpots[pickup.id],
+    .level3 => Offset.zero,
   };
 
   static String _targetTitle(GameLocation target) => switch (target) {
     .lake => 'LAKE',
     .dump => 'DUMP',
     .forest => 'FOREST',
-    .house || .store || .garage => '',
+    .store => 'STORE',
+    .garage => 'GARAGE',
+    .house => '',
   };
 
   static Size _size(PickupKind kind) => switch (kind) {
-    .cattail || .berryBush => _plantSize,
-    .plastic || .cloth || .sand || .wood || .metal || .organics || .algae => _itemSize,
+    .cattail || .berryBush || .mushroomStump => _plantSize,
+    .plastic || .cloth || .sand || .wood || .metal || .organics || .algae || .clay || .cardboard || .seeds => _itemSize,
   };
 
   static AssetGenImage _foundImage(
@@ -206,7 +208,8 @@ class _PickupPageState extends State<PickupPage> {
     return switch (kind) {
       .cattail => images.imgKoreniKamyshaSyrye,
       .berryBush => images.imgBerries,
-      .plastic || .cloth || .sand || .wood || .metal || .organics || .algae => _image(
+      .mushroomStump => images.imgMushroomsSyrye,
+      .plastic || .cloth || .sand || .wood || .metal || .organics || .algae || .clay || .cardboard || .seeds => _image(
         context,
         kind,
       ),
@@ -228,6 +231,10 @@ class _PickupPageState extends State<PickupPage> {
       .cattail => images.imgKamysh,
       .algae => images.imgSeaweedNEVymochenye,
       .berryBush => images.imgBushBerriespng,
+      .clay => images.imgClay,
+      .cardboard => images.imgCardboard,
+      .seeds => images.imgSeeds,
+      .mushroomStump => images.imgMushrooms,
     };
   }
 }

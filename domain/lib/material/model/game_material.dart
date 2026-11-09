@@ -29,7 +29,8 @@ enum GameMaterial {
     pollutesSoil: true,
   ),
   charcoal,
-  compost(airPoints: 0);
+  compost(airPoints: 0),
+  clayPot;
 
   final int airPoints;
   final bool pollutesWater;
