@@ -6,6 +6,7 @@ import 'package:domain/garden/repository/garden_bed_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
@@ -27,6 +28,7 @@ final class SaveGameUseCase {
   final InventoryRepository _inventoryRepository;
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
+  final MushroomFarmRepository _mushroomFarmRepository;
   final PickupRepository _pickupRepository;
   final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
@@ -45,6 +47,7 @@ final class SaveGameUseCase {
     required this._inventoryRepository,
     required this._locationRepository,
     required this._materialRepository,
+    required this._mushroomFarmRepository,
     required this._pickupRepository,
     required this._mealRepository,
     required this._playerRepository,
@@ -72,6 +75,7 @@ final class SaveGameUseCase {
       compostPit: _compostRepository.pit,
       fridge: _fridgeRepository.fridge,
       gardenBed: _gardenBedRepository.bed,
+      mushroomFarm: _mushroomFarmRepository.farm,
       meals: _mealRepository.meals,
     ),
   );

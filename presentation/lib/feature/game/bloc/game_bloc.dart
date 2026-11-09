@@ -7,6 +7,7 @@ import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/location/model/game_location.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
+import 'package:domain/mushroom/use_case/soak_cardboard_use_case.dart';
 import 'package:domain/station/model/station.dart';
 import 'package:domain/station/use_case/place_station_use_case.dart';
 import 'package:domain/station/use_case/return_station_items_use_case.dart';
@@ -25,6 +26,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final PauseTimeUseCase _pauseTimeUseCase;
   final PlaceStationUseCase _placeStationUseCase;
   final ReturnStationItemsUseCase _returnStationItemsUseCase;
+  final SoakCardboardUseCase _soakCardboardUseCase;
   final StationChoicesUseCase _stationChoicesUseCase;
   final TravelUseCase _travelUseCase;
   final WaterFridgeUseCase _waterFridgeUseCase;
@@ -36,6 +38,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       _pauseTimeUseCase = diContainer.get(),
       _placeStationUseCase = diContainer.get(),
       _returnStationItemsUseCase = diContainer.get(),
+      _soakCardboardUseCase = diContainer.get(),
       _stationChoicesUseCase = diContainer.get(),
       _travelUseCase = diContainer.get(),
       _waterFridgeUseCase = diContainer.get(),
@@ -118,6 +121,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     GameLakeWaterTapped event,
     Emitter<GameState> emit,
   ) {
+    if (_soakCardboardUseCase()) {
+      return;
+    }
     switch (_lakeWaterRequestUseCase()) {
       case WaterRequest(:final water, :final bottle?):
         _fillBottleUseCase(

@@ -12,6 +12,7 @@ import 'package:domain/dialogue/repository/hero_reaction_repository.dart';
 import 'package:domain/feedback/model/feedback_message.dart';
 import 'package:domain/feedback/repository/feedback_repository.dart';
 import 'package:domain/garden/repository/garden_bed_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/pollution/repository/pollution_repository.dart';
@@ -36,6 +37,7 @@ final class PassSecondUseCase {
   final DialogueRepository _dialogueRepository;
   final FeedbackRepository _feedbackRepository;
   final GardenBedRepository _gardenBedRepository;
+  final MushroomFarmRepository _mushroomFarmRepository;
   final HeroReactionRepository _heroReactionRepository;
   final PlayerRepository _playerRepository;
   final PollutionRepository _pollutionRepository;
@@ -50,6 +52,7 @@ final class PassSecondUseCase {
     required this._dialogueRepository,
     required this._feedbackRepository,
     required this._gardenBedRepository,
+    required this._mushroomFarmRepository,
     required this._heroReactionRepository,
     required this._playerRepository,
     required this._pollutionRepository,
@@ -99,6 +102,7 @@ final class PassSecondUseCase {
     _sunSpotRepository.tick();
     _tickCompost();
     _tickGardenBed();
+    _tickMushroomFarm();
     if (_pollutionRepository.pollution.airQuality == .polluted) {
       _react(.darkSky);
     }
@@ -186,6 +190,20 @@ final class PassSecondUseCase {
     _feedbackRepository.show(
       const FeedbackMessage(
         text: 'Your potatoes are ready',
+        mood: .happy,
+      ),
+    );
+  }
+
+  void _tickMushroomFarm() {
+    final wasReady = _mushroomFarmRepository.farm.isReady;
+    _mushroomFarmRepository.tick();
+    if (wasReady || !_mushroomFarmRepository.farm.isReady) {
+      return;
+    }
+    _feedbackRepository.show(
+      const FeedbackMessage(
+        text: 'A mushroom is ready on the farm',
         mood: .happy,
       ),
     );

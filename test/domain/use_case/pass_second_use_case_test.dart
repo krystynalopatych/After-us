@@ -6,6 +6,7 @@ import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
 import 'package:data/garden/repository/garden_bed_repository_impl.dart';
+import 'package:data/mushroom/repository/mushroom_farm_repository_impl.dart';
 import 'package:data/player/repository/player_repository_impl.dart';
 import 'package:data/pollution/repository/pollution_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
@@ -57,6 +58,7 @@ void main() {
       dialogueRepository: dialogue,
       feedbackRepository: feedback,
       gardenBedRepository: GardenBedRepositoryImpl(),
+      mushroomFarmRepository: MushroomFarmRepositoryImpl(),
       heroReactionRepository: heroReaction,
       playerRepository: player,
       pollutionRepository: pollution,

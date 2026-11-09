@@ -3,6 +3,7 @@ import 'package:domain/fridge/model/fridge.dart';
 import 'package:domain/fridge/repository/fridge_repository.dart';
 import 'package:domain/garden/repository/garden_bed_repository.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/progress/model/game_level.dart';
 import 'package:domain/progress/model/level_carry_over.dart';
 import 'package:domain/progress/repository/carry_over_repository.dart';
@@ -16,6 +17,7 @@ final class CompleteLevelUseCase {
   final FridgeRepository _fridgeRepository;
   final GardenBedRepository _gardenBedRepository;
   final InventoryRepository _inventoryRepository;
+  final MushroomFarmRepository _mushroomFarmRepository;
   final ProgressRepository _progressRepository;
   final StationRepository _stationRepository;
   final SunSpotRepository _sunSpotRepository;
@@ -26,6 +28,7 @@ final class CompleteLevelUseCase {
     required this._fridgeRepository,
     required this._gardenBedRepository,
     required this._inventoryRepository,
+    required this._mushroomFarmRepository,
     required this._progressRepository,
     required this._stationRepository,
     required this._sunSpotRepository,
@@ -46,6 +49,7 @@ final class CompleteLevelUseCase {
         stations: _stationRepository.built,
         fridge: Fridge(slots: _fridgeRepository.fridge.slots),
         gardenBed: _gardenBedRepository.bed.copyWith(seconds: 0),
+        mushroomFarm: _mushroomFarmRepository.farm.copyWith(seconds: 0),
       ),
     );
   }

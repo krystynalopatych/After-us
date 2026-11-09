@@ -12,6 +12,8 @@ import 'package:domain/inventory/use_case/lake_water_request_use_case.dart';
 import 'package:domain/inventory/use_case/spoil_food_use_case.dart';
 import 'package:domain/inventory/use_case/water_bottles_use_case.dart';
 import 'package:domain/location/use_case/travel_use_case.dart';
+import 'package:domain/mushroom/use_case/soak_cardboard_use_case.dart';
+import 'package:domain/mushroom/use_case/use_mushroom_farm_use_case.dart';
 import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
@@ -69,6 +71,7 @@ void registerUseCases() {
         fridgeRepository: diContainer.get(),
         gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         progressRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
@@ -194,6 +197,7 @@ void registerUseCases() {
         dialogueRepository: diContainer.get(),
         feedbackRepository: diContainer.get(),
         gardenBedRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         heroReactionRepository: diContainer.get(),
         playerRepository: diContainer.get(),
         pollutionRepository: diContainer.get(),
@@ -209,6 +213,8 @@ void registerUseCases() {
         feedbackRepository: diContainer.get(),
         gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         stationRepository: diContainer.get(),
       ),
@@ -238,6 +244,7 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
@@ -245,6 +252,15 @@ void registerUseCases() {
         saveRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => SoakCardboardUseCase(
+        bookRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -271,6 +287,7 @@ void registerUseCases() {
         inventoryRepository: diContainer.get(),
         locationRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         mealRepository: diContainer.get(),
         pickupRepository: diContainer.get(),
         playerRepository: diContainer.get(),
@@ -324,6 +341,17 @@ void registerUseCases() {
         gardenBedRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         materialRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => UseMushroomFarmUseCase(
+        bookRepository: diContainer.get(),
+        constructionRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        inventoryRepository: diContainer.get(),
+        mushroomFarmRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
       ),

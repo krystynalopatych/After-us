@@ -32,6 +32,7 @@ extension GameMaterialTitleExtension on GameMaterial {
     .charcoal => 'Charcoal',
     .compost => 'Compost',
     .clayPot => 'Clay pot',
+    .wetCardboard => 'Wet cardboard',
   };
 }
 

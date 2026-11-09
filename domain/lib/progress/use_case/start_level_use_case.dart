@@ -9,6 +9,7 @@ import 'package:domain/inventory/model/inventory_stack.dart';
 import 'package:domain/inventory/repository/inventory_repository.dart';
 import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
 import 'package:domain/player/repository/meal_repository.dart';
 import 'package:domain/player/repository/player_repository.dart';
@@ -39,6 +40,7 @@ final class StartLevelUseCase {
   final InventoryRepository _inventoryRepository;
   final LocationRepository _locationRepository;
   final MaterialRepository _materialRepository;
+  final MushroomFarmRepository _mushroomFarmRepository;
   final PickupRepository _pickupRepository;
   final MealRepository _mealRepository;
   final PlayerRepository _playerRepository;
@@ -64,6 +66,7 @@ final class StartLevelUseCase {
     required this._inventoryRepository,
     required this._locationRepository,
     required this._materialRepository,
+    required this._mushroomFarmRepository,
     required this._pickupRepository,
     required this._mealRepository,
     required this._playerRepository,
@@ -105,6 +108,7 @@ final class StartLevelUseCase {
     _compostRepository.restore(save.compostPit);
     _fridgeRepository.restore(save.fridge);
     _gardenBedRepository.restore(save.gardenBed);
+    _mushroomFarmRepository.restore(save.mushroomFarm);
     _mealRepository.restore(save.meals);
     _locationRepository.setLocation(save.location);
   }
@@ -132,6 +136,7 @@ final class StartLevelUseCase {
     _compostRepository.reset();
     _mealRepository.reset();
     _gardenBedRepository.restore(carryOver.gardenBed);
+    _mushroomFarmRepository.restore(carryOver.mushroomFarm);
     _locationRepository.setLocation(.house);
   }
 

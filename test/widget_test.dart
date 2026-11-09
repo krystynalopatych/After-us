@@ -13,6 +13,7 @@ import 'package:data/garden/repository/garden_bed_repository_impl.dart';
 import 'package:data/inventory/repository/inventory_repository_impl.dart';
 import 'package:data/location/repository/location_repository_impl.dart';
 import 'package:data/material/repository/material_repository_impl.dart';
+import 'package:data/mushroom/repository/mushroom_farm_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_hint_repository_impl.dart';
 import 'package:data/pickup/repository/pickup_repository_impl.dart';
 import 'package:data/player/repository/meal_repository_impl.dart';
@@ -50,6 +51,7 @@ import 'package:domain/location/repository/location_repository.dart';
 import 'package:domain/material/model/game_material.dart';
 import 'package:domain/material/model/material_stock.dart';
 import 'package:domain/material/repository/material_repository.dart';
+import 'package:domain/mushroom/repository/mushroom_farm_repository.dart';
 import 'package:domain/pickup/model/pickup_kind.dart';
 import 'package:domain/pickup/repository/pickup_hint_repository.dart';
 import 'package:domain/pickup/repository/pickup_repository.dart';
@@ -170,6 +172,7 @@ void main() {
       ..registerSingleton<LocationRepository>(LocationRepositoryImpl())
       ..registerSingleton<MaterialRepository>(materialRepository ?? MaterialRepositoryImpl())
       ..registerSingleton<MealRepository>(MealRepositoryImpl())
+      ..registerSingleton<MushroomFarmRepository>(MushroomFarmRepositoryImpl())
       ..registerSingleton<PickupHintRepository>(PickupHintRepositoryImpl())
       ..registerSingleton<PickupRepository>(PickupRepositoryImpl())
       ..registerSingleton<PlayerRepository>(playerRepository ?? PlayerRepositoryImpl())

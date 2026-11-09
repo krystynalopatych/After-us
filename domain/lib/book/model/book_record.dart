@@ -8,4 +8,6 @@ enum BookRecord {
   clayFridge,
   gardenBed,
   greenhouse,
+  wetCardboard,
+  mushroomFarm,
 }

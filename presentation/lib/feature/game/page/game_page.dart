@@ -21,6 +21,7 @@ import 'package:presentation/feature/goal/page/goal_page.dart';
 import 'package:presentation/feature/hud/page/hud_page.dart';
 import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
+import 'package:presentation/feature/mushroom/page/mushroom_page.dart';
 import 'package:presentation/feature/night/page/night_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/clouds_page.dart';
@@ -172,6 +173,7 @@ class _GamePageState extends State<GamePage> {
               if (state.location == .house) ...[
                 Positioned.fill(child: CompostPage.withBloc(locationTop: _skyHeight)),
                 Positioned.fill(child: GardenPage.withBloc(locationTop: _skyHeight)),
+                Positioned.fill(child: MushroomPage.withBloc(locationTop: _skyHeight)),
               ],
               if (state.location == .lake) ...[
                 Positioned.fromRect(

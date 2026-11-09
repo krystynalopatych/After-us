@@ -14,6 +14,7 @@ import 'package:domain/station/repository/workbench_repository.dart';
 
 final class CraftUseCase {
   static const _algaePerWater = 2;
+  static const _cardboardPerWater = 2;
 
   final BookRepository _bookRepository;
   final ConstructionRepository _constructionRepository;
@@ -46,12 +47,17 @@ final class CraftUseCase {
       );
     }
     final items = placed.map((slot) => slot.item).nonNulls.toList();
-    final isCrafted = items.isEmpty
-        ? _craft(materials)
-        : _soakAlgae(
-            materials,
-            items,
-          );
+    final isCrafted = switch ((items.isEmpty, materials.keys.toSet())) {
+      (true, _) => _craft(materials),
+      (false, final kinds) when kinds.length == 1 && kinds.single == GameMaterial.cardboard => _soakCardboard(
+        materials[GameMaterial.cardboard] ?? 0,
+        items,
+      ),
+      _ => _soakAlgae(
+        materials,
+        items,
+      ),
+    };
     if (isCrafted) {
       _workbenchRepository.reset();
       _selectionRepository.reset();
@@ -118,6 +124,38 @@ final class CraftUseCase {
     _show(
       FeedbackMessage(
         text: 'You soaked the algae +$algae soaked algae',
+        mood: .happy,
+      ),
+    );
+    return true;
+  }
+
+  bool _soakCardboard(
+    int cardboard,
+    List<InventoryItem> items,
+  ) {
+    final water = items.singleOrNull;
+    if (water == null || water.water == null || cardboard > _cardboardPerWater) {
+      _show(const FeedbackMessage(text: 'Nothing can be crafted from this'));
+      return false;
+    }
+    if (!_inventoryRepository.exchange(
+      const [],
+      [?water.emptyBottle],
+    )) {
+      _show(const FeedbackMessage(text: 'Your inventory is full'));
+      return false;
+    }
+    for (var i = 0; i < cardboard; i++) {
+      _materialRepository.add(.wetCardboard);
+    }
+    if (water.container case final container?) {
+      _materialRepository.add(container);
+    }
+    _bookRepository.write(BookRecord.wetCardboard);
+    _show(
+      FeedbackMessage(
+        text: 'You soaked the cardboard +$cardboard wet cardboard',
         mood: .happy,
       ),
     );
