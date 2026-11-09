@@ -1,3 +1,4 @@
+import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/dialogue/model/hero_reaction.dart';
 import 'package:domain/dialogue/repository/dialogue_repository.dart';
@@ -20,6 +21,7 @@ final class CookOnCampfireUseCase {
   static const _smokelessCampfiresPerDay = 2;
   static const _smokeAirPoints = 1;
 
+  final BookRepository _bookRepository;
   final CampfireRepository _campfireRepository;
   final DayRepository _dayRepository;
   final FireRepository _fireRepository;
@@ -33,6 +35,7 @@ final class CookOnCampfireUseCase {
   final SoundRepository _soundRepository;
 
   const CookOnCampfireUseCase({
+    required this._bookRepository,
     required this._campfireRepository,
     required this._dayRepository,
     required this._fireRepository,
@@ -72,6 +75,9 @@ final class CookOnCampfireUseCase {
     }
     if (recipe.product case final product?) {
       _materialRepository.add(product);
+    }
+    if (recipe == .fireClayPot) {
+      _bookRepository.write(.clayPot);
     }
     final isCampfire = station == .campfire;
     final isPolluting = isCampfire && fuel.isPolluting;

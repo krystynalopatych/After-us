@@ -13,6 +13,7 @@ extension BookRecordTextExtension on BookRecord {
     .greenhouse => 'Greenhouse: 2 plastic',
     .wetCardboard => 'Wet cardboard: cardboard and any water',
     .mushroomFarm => 'Mushroom farm: 2 wet cardboard and a wild mushroom',
+    .clayPot => 'Clay pot: 2 clay fired in the fire',
   };
 
   String get fact => switch (this) {
@@ -32,5 +33,7 @@ extension BookRecordTextExtension on BookRecord {
     .wetCardboard => 'Wet cardboard is soft food for mushroom roots. Paper waste becomes the start of a new harvest.',
     .mushroomFarm =>
       'Oyster mushrooms grow on wet cardboard and coffee grounds. City farms turn waste into food this way.',
+    .clayPot =>
+      'Fired clay pots are among the oldest tools people made. Unglazed clay lets water seep and cool the pot.',
   };
 }

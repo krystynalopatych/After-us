@@ -3,6 +3,7 @@ import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
+import 'package:domain/dialogue/use_case/level_intro_use_case.dart';
 import 'package:domain/dialogue/use_case/read_note_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_cooling_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
@@ -19,6 +20,7 @@ import 'package:domain/pickup/use_case/keep_pickup_use_case.dart';
 import 'package:domain/pickup/use_case/location_pickups_use_case.dart';
 import 'package:domain/pickup/use_case/throw_pickup_use_case.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
+import 'package:domain/player/use_case/eat_seeds_use_case.dart';
 import 'package:domain/progress/use_case/complete_level_use_case.dart';
 import 'package:domain/progress/use_case/level_result_use_case.dart';
 import 'package:domain/progress/use_case/new_game_use_case.dart';
@@ -94,6 +96,7 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => CookOnCampfireUseCase(
+        bookRepository: diContainer.get(),
         campfireRepository: diContainer.get(),
         dayRepository: diContainer.get(),
         fireRepository: diContainer.get(),
@@ -117,6 +120,17 @@ void registerUseCases() {
         selectionRepository: diContainer.get(),
         soundRepository: diContainer.get(),
         workbenchRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => EatSeedsUseCase(
+        dialogueRepository: diContainer.get(),
+        feedbackRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
+        materialRepository: diContainer.get(),
+        playerRepository: diContainer.get(),
+        selectionRepository: diContainer.get(),
+        soundRepository: diContainer.get(),
       ),
     )
     ..registerFactory(
@@ -163,6 +177,12 @@ void registerUseCases() {
         feedbackRepository: diContainer.get(),
         inventoryRepository: diContainer.get(),
         selectionRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => LevelIntroUseCase(
+        dialogueRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

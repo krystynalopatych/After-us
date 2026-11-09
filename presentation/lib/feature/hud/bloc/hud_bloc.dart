@@ -6,6 +6,7 @@ import 'package:domain/material/repository/material_repository.dart';
 import 'package:domain/player/model/player_stats.dart';
 import 'package:domain/player/repository/player_repository.dart';
 import 'package:domain/player/use_case/consume_use_case.dart';
+import 'package:domain/player/use_case/eat_seeds_use_case.dart';
 import 'package:domain/selection/repository/selection_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ class HudBloc extends Bloc<HudEvent, HudState> {
   final MaterialRepository _materialRepository;
   final InventoryRepository _inventoryRepository;
   final ConsumeUseCase _consumeUseCase;
+  final EatSeedsUseCase _eatSeedsUseCase;
   final SelectionRepository _selectionRepository;
 
   HudBloc()
@@ -26,6 +28,7 @@ class HudBloc extends Bloc<HudEvent, HudState> {
       _materialRepository = diContainer.get(),
       _inventoryRepository = diContainer.get(),
       _consumeUseCase = diContainer.get(),
+      _eatSeedsUseCase = diContainer.get(),
       _selectionRepository = diContainer.get(),
       super(
         HudState(
@@ -92,6 +95,10 @@ class HudBloc extends Bloc<HudEvent, HudState> {
     HudCharacterTapped event,
     Emitter<HudState> emit,
   ) {
+    if (state.selectedMaterial == .seeds) {
+      _eatSeedsUseCase();
+      return;
+    }
     final slot = state.selectedSlot;
     if (slot == null || !(state.inventory.elementAtOrNull(slot)?.item.isConsumable ?? false)) {
       return;

@@ -33,6 +33,7 @@ void main() {
       selectionRepository: deps.selection,
     );
     cookOnCampfire = CookOnCampfireUseCase(
+      bookRepository: deps.book,
       campfireRepository: deps.campfire,
       dayRepository: deps.day,
       fireRepository: deps.fire,

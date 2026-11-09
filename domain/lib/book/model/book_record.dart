@@ -10,4 +10,5 @@ enum BookRecord {
   greenhouse,
   wetCardboard,
   mushroomFarm,
+  clayPot,
 }

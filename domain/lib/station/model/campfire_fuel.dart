@@ -16,6 +16,7 @@ enum CampfireFuel {
   cardboard(
     material: .cardboard,
     isPolluting: true,
+    burnReaction: .cardboardBurned,
   );
 
   final GameMaterial material;
