@@ -23,6 +23,7 @@ import 'package:presentation/feature/lake/page/lake_page.dart';
 import 'package:presentation/feature/menu/page/menu_page.dart';
 import 'package:presentation/feature/mushroom/page/mushroom_page.dart';
 import 'package:presentation/feature/night/page/night_page.dart';
+import 'package:presentation/feature/note/page/note_page.dart';
 import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/clouds_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
@@ -238,6 +239,7 @@ class _GamePageState extends State<GamePage> {
                 Positioned.fill(child: StationBuildPage.withBloc(onClose: () => _bloc.add(const GameBuildClosed()))),
               if (state.isBookOpen)
                 Positioned.fill(child: BookPage.withBloc(onClose: () => _bloc.add(const GameBookClosed()))),
+              Positioned.fill(child: NotePage.withBloc(locationTop: _skyHeight)),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),

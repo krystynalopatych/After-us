@@ -6,7 +6,8 @@ enum HeroReaction {
   tooManyFires(line: 'So much smoke today... I should save the fire for what really matters.'),
   dirtyAir(line: "It's harder to breathe... The air gets heavier every day."),
   darkSky(line: 'The sky is getting darker... Is that because of me?'),
-  pollutedWaterDrunk(line: "Ugh... It tastes like plastic. I shouldn't have thrown it in.");
+  pollutedWaterDrunk(line: "Ugh... It tastes like plastic. I shouldn't have thrown it in."),
+  survivorsNote(line: 'Other people made it this far... I hope they found something to eat.');
 
   final String line;
 

@@ -3,6 +3,7 @@ import 'package:domain/book/use_case/read_book_use_case.dart';
 import 'package:domain/day/use_case/pass_second_use_case.dart';
 import 'package:domain/day/use_case/pause_time_use_case.dart';
 import 'package:domain/dialogue/use_case/hero_awake_use_case.dart';
+import 'package:domain/dialogue/use_case/read_note_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_cooling_use_case.dart';
 import 'package:domain/fridge/use_case/fridge_slot_use_case.dart';
 import 'package:domain/fridge/use_case/water_fridge_use_case.dart';
@@ -224,6 +225,12 @@ void registerUseCases() {
     )
     ..registerFactory(
       () => ReadBookUseCase(bookRepository: diContainer.get()),
+    )
+    ..registerFactory(
+      () => ReadNoteUseCase(
+        dialogueRepository: diContainer.get(),
+        heroReactionRepository: diContainer.get(),
+      ),
     )
     ..registerFactory(
       () => ReturnStationItemsUseCase(
