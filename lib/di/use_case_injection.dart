@@ -40,6 +40,7 @@ import 'package:domain/station/use_case/return_station_items_use_case.dart';
 import 'package:domain/station/use_case/station_choices_use_case.dart';
 import 'package:domain/station/use_case/workbench_slot_use_case.dart';
 import 'package:domain/sun_spot/use_case/use_sun_spot_use_case.dart';
+import 'package:domain/time_speed/use_case/set_time_speed_use_case.dart';
 import 'package:presentation/di/di_container.dart';
 
 void registerUseCases() {
@@ -278,6 +279,12 @@ void registerUseCases() {
         saveRepository: diContainer.get(),
         stationRepository: diContainer.get(),
         sunSpotRepository: diContainer.get(),
+      ),
+    )
+    ..registerFactory(
+      () => SetTimeSpeedUseCase(
+        dayRepository: diContainer.get(),
+        timeSpeedRepository: diContainer.get(),
       ),
     )
     ..registerFactory(

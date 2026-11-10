@@ -28,11 +28,13 @@ import 'package:data/station/repository/fire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/station/repository/workbench_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
+import 'package:data/time_speed/repository/time_speed_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
 import 'package:domain/compost/repository/compost_repository.dart';
 import 'package:domain/construction/repository/construction_repository.dart';
+import 'package:domain/day/model/game_day.dart';
 import 'package:domain/day/repository/clock_repository.dart';
 import 'package:domain/day/repository/day_repository.dart';
 import 'package:domain/day/repository/ticker_repository.dart';
@@ -72,6 +74,7 @@ import 'package:domain/station/repository/fire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/station/repository/workbench_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
+import 'package:domain/time_speed/repository/time_speed_repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -186,6 +189,7 @@ void main() {
       ..registerSingleton<StationRepository>(StationRepositoryImpl())
       ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
       ..registerSingleton<TickerRepository>(ManualTickerRepository())
+      ..registerSingleton<TimeSpeedRepository>(TimeSpeedRepositoryImpl())
       ..registerSingleton<WorkbenchRepository>(WorkbenchRepositoryImpl());
     registerUseCases();
 
@@ -1585,6 +1589,97 @@ void main() {
       expect(
         find.textContaining('Other people made it this far'),
         findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'Time speed button speeds time up, stays fast with the book open, toggles back and switches off at night',
+    (
+      WidgetTester tester,
+    ) async {
+      await pumpApp(tester);
+      await startLevel1(tester);
+
+      final timeSpeed = diContainer.get<TimeSpeedRepository>();
+      final timeSpeedButton = buttonImage(Assets.resources.assets.images.imgTimeSpeed).last;
+      double buttonOpacity() => tester
+          .widget<AnimatedOpacity>(
+            find
+                .ancestor(
+                  of: timeSpeedButton,
+                  matching: find.byType(AnimatedOpacity),
+                )
+                .first,
+          )
+          .opacity;
+
+      expect(
+        timeSpeed.isFast,
+        isFalse,
+      );
+      expect(
+        buttonOpacity(),
+        lessThan(1),
+      );
+
+      await tester.tap(timeSpeedButton);
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isTrue,
+      );
+      expect(
+        buttonOpacity(),
+        1,
+      );
+
+      final game =
+          (tester.widget(
+                find.byWidgetPredicate(
+                  (widget) => widget.runtimeType.toString() == 'BlocConsumer<GameBloc, GameState>',
+                ),
+              ) as dynamic).bloc
+              as GameBloc;
+      game.add(const GameBookTapped());
+      await pumpScene(tester);
+      game.add(const GameBookClosed());
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isTrue,
+      );
+
+      await tester.tap(timeSpeedButton);
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isFalse,
+      );
+
+      await tester.tap(timeSpeedButton);
+      await pumpScene(tester);
+      diContainer.get<DayRepository>().setDay(
+        const GameDay(
+          number: 2,
+          seconds: 0,
+          nightSeconds: GameDay.nightLength,
+        ),
+      );
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isFalse,
+      );
+
+      await tester.tap(
+        timeSpeedButton,
+        warnIfMissed: false,
+      );
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isFalse,
       );
     },
   );

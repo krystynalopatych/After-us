@@ -522,6 +522,10 @@ class $ResourcesAssetsImagesGen {
   AssetGenImage get imgSvalkaIcon =>
       const AssetGenImage('resources/assets/images/img_svalka_icon.webp');
 
+  /// File path: resources/assets/images/img_time_speed.webp
+  AssetGenImage get imgTimeSpeed =>
+      const AssetGenImage('resources/assets/images/img_time_speed.webp');
+
   /// File path: resources/assets/images/img_water_sodis.webp
   AssetGenImage get imgWaterSodis =>
       const AssetGenImage('resources/assets/images/img_water_sodis.webp');
@@ -663,6 +667,7 @@ class $ResourcesAssetsImagesGen {
     imgSunLight,
     imgSvalka,
     imgSvalkaIcon,
+    imgTimeSpeed,
     imgWaterSodis,
     imgWetCardboard,
     imgWood,

@@ -6,7 +6,6 @@ import 'package:data/compost/repository/compost_repository_impl.dart';
 import 'package:data/construction/repository/construction_repository_impl.dart';
 import 'package:data/day/repository/clock_repository_impl.dart';
 import 'package:data/day/repository/day_repository_impl.dart';
-import 'package:data/day/repository/ticker_repository_impl.dart';
 import 'package:data/dialogue/repository/dialogue_repository_impl.dart';
 import 'package:data/dialogue/repository/hero_reaction_repository_impl.dart';
 import 'package:data/feedback/repository/feedback_repository_impl.dart';
@@ -31,6 +30,8 @@ import 'package:data/station/repository/fire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/station/repository/workbench_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
+import 'package:data/time_speed/repository/time_speed_repository_impl.dart';
+import 'package:data/time_speed/repository/time_speed_ticker_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
@@ -63,12 +64,14 @@ import 'package:domain/station/repository/fire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/station/repository/workbench_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
+import 'package:domain/time_speed/repository/time_speed_repository.dart';
 import 'package:presentation/di/di_container.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
 
 AppBloc createAppBloc() => AppBloc();
 
 void registerDependencies() {
+  final timeSpeedRepository = TimeSpeedRepositoryImpl();
   diContainer
     ..registerSingleton<AppRepository>(AppRepositoryImpl())
     ..registerSingleton<BookRepository>(BookRepositoryImpl())
@@ -100,7 +103,8 @@ void registerDependencies() {
     ..registerSingleton<SoundRepository>(SoundRepositoryImpl())
     ..registerSingleton<StationRepository>(StationRepositoryImpl())
     ..registerSingleton<SunSpotRepository>(SunSpotRepositoryImpl())
-    ..registerSingleton<TickerRepository>(TickerRepositoryImpl())
+    ..registerSingleton<TickerRepository>(TimeSpeedTickerRepositoryImpl(timeSpeedRepository))
+    ..registerSingleton<TimeSpeedRepository>(timeSpeedRepository)
     ..registerSingleton<WorkbenchRepository>(WorkbenchRepositoryImpl());
   registerUseCases();
 }
