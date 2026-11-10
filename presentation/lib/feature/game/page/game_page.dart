@@ -241,6 +241,7 @@ class _GamePageState extends State<GamePage> {
                   child: FridgePage.withBloc(onClose: () => _bloc.add(const GameFridgeClosed())),
                 ),
               Positioned.fill(
+                key: const ValueKey(HudPage),
                 child: HudPage.withBloc(
                   onMapTap: () => _bloc.add(const GameMapTapped()),
                   characterTaps: _characterTaps.stream,
@@ -267,13 +268,25 @@ class _GamePageState extends State<GamePage> {
               if (state.isBookOpen)
                 Positioned.fill(child: BookPage.withBloc(onClose: () => _bloc.add(const GameBookClosed()))),
               if (state.isNoteOpen) ..._note(),
-              Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
-              Positioned.fill(child: DayPage.withBloc(level: widget.level)),
-              Positioned.fill(child: TimeSpeedPage.withBloc()),
-              Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
-              Positioned.fill(child: NightPage.withBloc()),
-              Positioned.fill(child: DialoguePage.withBloc()),
-              Positioned.fill(child: FeedbackPage.withBloc()),
+              Positioned.fill(
+                key: const ValueKey(MenuPage),
+                child: MenuPage.withBloc(level: widget.level),
+              ),
+              Positioned.fill(
+                key: const ValueKey(DayPage),
+                child: DayPage.withBloc(level: widget.level),
+              ),
+              Positioned.fill(
+                key: const ValueKey(TimeSpeedPage),
+                child: TimeSpeedPage.withBloc(),
+              ),
+              Positioned.fill(
+                key: const ValueKey(GoalPage),
+                child: GoalPage.withBloc(level: widget.level),
+              ),
+              Positioned.fill(key: const ValueKey(NightPage), child: NightPage.withBloc()),
+              Positioned.fill(key: const ValueKey(DialoguePage), child: DialoguePage.withBloc()),
+              Positioned.fill(key: const ValueKey(FeedbackPage), child: FeedbackPage.withBloc()),
             ],
           ),
           if (state.isMapOpen) _map(),

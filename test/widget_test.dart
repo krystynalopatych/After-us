@@ -82,6 +82,8 @@ import 'package:presentation/design/design_src.dart';
 import 'package:presentation/di/di_container.dart';
 import 'package:presentation/feature/app/bloc/app_bloc.dart';
 import 'package:presentation/feature/app/page/app_page.dart';
+import 'package:presentation/feature/dialogue/page/dialogue_page.dart';
+import 'package:presentation/feature/game/bloc/game_bloc.dart';
 import 'package:presentation/feature/level_1/page/level_1_page.dart';
 import 'package:presentation/feature/level_2/page/level_2_page.dart';
 import 'package:presentation/feature/load_game/page/load_game_page.dart';
@@ -1562,7 +1564,37 @@ void main() {
   );
 
   testWidgets(
-    'Time speed button speeds time up, toggles back and switches off at night',
+    'Closing the note keeps the dialogue window and the hero says the note line',
+    (
+      WidgetTester tester,
+    ) async {
+      await pumpApp(tester);
+      await startLevel1(tester);
+      final dialogue = tester.state(find.byType(DialoguePage));
+      final consumer = tester.widget(
+        find.byWidgetPredicate((widget) => widget.runtimeType.toString() == 'BlocConsumer<GameBloc, GameState>'),
+      );
+      final game = (consumer as dynamic).bloc as GameBloc;
+
+      game.add(const GameNoteTapped());
+      await tester.pump();
+      game.add(const GameNoteClosed());
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+
+      expect(
+        tester.state(find.byType(DialoguePage)),
+        same(dialogue),
+      );
+      expect(
+        find.textContaining('Other people made it this far'),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'Time speed button speeds time up, stays fast with the book open, toggles back and switches off at night',
     (
       WidgetTester tester,
     ) async {
@@ -1600,6 +1632,22 @@ void main() {
       expect(
         buttonOpacity(),
         1,
+      );
+
+      final game =
+          (tester.widget(
+                find.byWidgetPredicate(
+                  (widget) => widget.runtimeType.toString() == 'BlocConsumer<GameBloc, GameState>',
+                ),
+              ) as dynamic).bloc
+              as GameBloc;
+      game.add(const GameBookTapped());
+      await pumpScene(tester);
+      game.add(const GameBookClosed());
+      await pumpScene(tester);
+      expect(
+        timeSpeed.isFast,
+        isTrue,
       );
 
       await tester.tap(timeSpeedButton);
