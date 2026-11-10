@@ -27,6 +27,7 @@ import 'package:presentation/feature/pickup/page/pickup_page.dart';
 import 'package:presentation/feature/sky/page/clouds_page.dart';
 import 'package:presentation/feature/sky/page/sky_page.dart';
 import 'package:presentation/feature/sun_spot/page/sun_spot_page.dart';
+import 'package:presentation/feature/time_speed/page/time_speed_page.dart';
 import 'package:presentation/feature/station/page/campfire_page.dart';
 import 'package:presentation/feature/station/page/station_build_page.dart';
 import 'package:presentation/feature/station/page/station_page.dart';
@@ -268,6 +269,7 @@ class _GamePageState extends State<GamePage> {
               if (state.isNoteOpen) ..._note(),
               Positioned.fill(child: MenuPage.withBloc(level: widget.level)),
               Positioned.fill(child: DayPage.withBloc(level: widget.level)),
+              Positioned.fill(child: TimeSpeedPage.withBloc()),
               Positioned.fill(child: GoalPage.withBloc(level: widget.level)),
               Positioned.fill(child: NightPage.withBloc()),
               Positioned.fill(child: DialoguePage.withBloc()),

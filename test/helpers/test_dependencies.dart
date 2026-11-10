@@ -30,6 +30,7 @@ import 'package:data/station/repository/fire_repository_impl.dart';
 import 'package:data/station/repository/station_repository_impl.dart';
 import 'package:data/station/repository/workbench_repository_impl.dart';
 import 'package:data/sun_spot/repository/sun_spot_repository_impl.dart';
+import 'package:data/time_speed/repository/time_speed_repository_impl.dart';
 import 'package:domain/app/repository/app_repository.dart';
 import 'package:domain/book/repository/book_repository.dart';
 import 'package:domain/character/repository/character_repository.dart';
@@ -63,6 +64,7 @@ import 'package:domain/station/repository/fire_repository.dart';
 import 'package:domain/station/repository/station_repository.dart';
 import 'package:domain/station/repository/workbench_repository.dart';
 import 'package:domain/sun_spot/repository/sun_spot_repository.dart';
+import 'package:domain/time_speed/repository/time_speed_repository.dart';
 import 'package:presentation/di/di_container.dart';
 
 final class FakeAppRepository implements AppRepository {
@@ -145,6 +147,7 @@ final class TestDependencies {
   final station = StationRepositoryImpl();
   final sunSpot = SunSpotRepositoryImpl();
   final ticker = ManualTickerRepository();
+  final timeSpeed = TimeSpeedRepositoryImpl();
   final workbench = WorkbenchRepositoryImpl();
 
   Future<void> register() async {
@@ -181,6 +184,7 @@ final class TestDependencies {
       ..registerSingleton<StationRepository>(station)
       ..registerSingleton<SunSpotRepository>(sunSpot)
       ..registerSingleton<TickerRepository>(ticker)
+      ..registerSingleton<TimeSpeedRepository>(timeSpeed)
       ..registerSingleton<WorkbenchRepository>(workbench);
     registerUseCases();
   }
